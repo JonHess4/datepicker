@@ -1,0 +1,23 @@
+<span *ngIf="calendarCell" class="picker-item-grid" [ngClass]="[calendarCell.value <= 31 ? 'day-grid' : 'year-grid']">
+
+	<span class="left-block" [ngClass]="{ 'highlight' : calendarCell.fillBoxLeft, 'outline-top-bot' : calendarCell.outlineBoxLeft }"></span>
+
+	<span class="right-block" [ngClass]="{ 'highlight' : calendarCell.fillBoxRight, 'outline-top-bot' : calendarCell.outlineBoxRight }"></span>
+
+	<span class="circle-left" [ngClass]="{ 'highlight' : calendarCell.fillCircleLeft, 'outline-circle-left' : calendarCell.outlineCircleLeft }"></span>
+
+	<span class="circle-right" [ngClass]="{ 'highlight' : calendarCell.fillCircleRight, 'outline-circle-right' : calendarCell.outlineCircleRight }"></span>
+
+	<span class="circle"
+		[ngClass]="{ 'selected' : calendarCell.isSelected, 'today' : calendarCell.isToday }"
+		[tabindex]="calendarCell.tabIndex"
+		(click)="onSelect($event, calendarCell);" (keydown.enter)="onSelect($event, calendarCell);"
+		(mouseenter)="onMouseenter($event, calendarCell);" (mouseleave)="onMouseleave($event, calendarCell);"
+		(keydown.arrowup)="onMove('up')"
+		(keydown.arrowleft)="onMove('left')"
+		(keydown.arrowdown)="onMove('down')"
+		(keydown.arrowright)="onMove('right')">
+		{{calendarCell.value}}
+	</span>
+	
+</span>

@@ -1,0 +1,48 @@
+@import '../datepicker-styles.scss';
+
+.calendarMenu-grid {
+	display: grid;
+	grid-template-rows: ($cell-height / 2) ($cell-height * 24 / 32) ($cell-height * 12 / 32);
+	grid-template-columns: ($cell-height * 24 / 32) min-content ($cell-height * 4 / 32) ($cell-height * 24 / 32) auto ($cell-height * 24 / 32) ($cell-height * 24 / 32) ($cell-height * 24 / 32) ($cell-height * 8 / 32);
+	grid-template-areas: 
+		'. . . . . . . . .'
+		'. monthYear . upDownArrow . leftArrow . rightArrow .'
+		'. . . . . . . . .';
+	width: $cell-height * 7 + $cell-height * 24 / 32 + $cell-height * 8 / 32;
+	font-size: 15px;
+	color: grey;
+	white-space: nowrap; // this keeps monthYear on the same line
+	justify-items: center;
+	align-items: center;
+}
+
+.monthYear { grid-area: monthYear; font-size: 16px; }
+.upDownArrow { grid-area: upDownArrow; }
+.leftArrow { grid-area: leftArrow; }
+.rightArrow { grid-area: rightArrow; }
+
+svg {
+	fill: grey;
+}
+
+.upDownArrow, .leftArrow, .rightArrow {
+	cursor: pointer;
+}
+
+.day-label-grid {
+	display: grid;
+	grid-template-columns: $cell-height $cell-height  $cell-height  $cell-height  $cell-height  $cell-height  $cell-height ;
+	padding: 0px ($cell-height / 2) 0px ($cell-height / 2);
+	width: $cell-height * 7;
+	font-size: 13px;
+	color: grey;
+	cursor: default;
+}
+
+.day-label {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: $cell-height * 28 / 32;
+	margin: $cell-height * 2 / 32;
+}

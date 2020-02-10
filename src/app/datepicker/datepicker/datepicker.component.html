@@ -1,0 +1,24 @@
+<div id="datepicker">
+
+	<app-calendar-menu
+		[calendarMenu]="calendarMenu"
+		(displayToggle)="onDisplayToggle($event);"
+		(pagination)="onPagination($event)">
+	</app-calendar-menu>
+
+	<div class="calendar-cell-grid" [ngClass]="{
+		'date-cell-grid' : calendarMenu.type === 'day',
+		'year-cell-grid' : calendarMenu.type === 'year'
+	}">
+		<div *ngFor="let calendarCell of calendarCells">
+			<app-calendar-cell
+				[calendarCell]="calendarCell"
+				(selectedCell)="onCellSelected($event);"
+				(mousedOverCell)="onMouseOverCell($event);"
+				(mousedOutCell)="onMouseOutCell($event);"
+				(direction)="onMove($event);">
+			</app-calendar-cell>
+		</div>
+	</div>
+
+</div>

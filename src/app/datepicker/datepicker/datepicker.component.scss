@@ -1,0 +1,25 @@
+@import '../datepicker-styles.scss';
+
+#datepicker {
+	display: inline-block;
+	width: min-content;
+	border-radius: $picker-border-radius;
+	color: $picker-font-color;
+	background-color: $picker-background-color;
+}
+
+.calendar-cell-grid {
+	display: grid;
+	grid-template-rows:  $cell-height $cell-height $cell-height $cell-height $cell-height $cell-height;
+	padding: 0px ($cell-height / 2) ($cell-height / 4) ($cell-height / 2);
+	width: $cell-height * 7;
+	font-size: $cell-font-size;
+}
+
+.date-cell-grid {
+	grid-template-columns: $cell-height $cell-height $cell-height $cell-height $cell-height $cell-height $cell-height;
+}
+
+.year-cell-grid {
+	grid-template-columns: ($cell-height * 7 / 4) ($cell-height * 7 / 4) ($cell-height * 7 / 4) ($cell-height * 7 / 4);
+}

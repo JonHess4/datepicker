@@ -1,1 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body {
+	margin: 0;
+	font-family: Roboto,"Helvetica Neue", sans-serif;
+	color: #5F4B32;
+	background-color: #FBF0D9;
+}
+
+.show {
+	visibility: visible;
+	opacity: 1;
+	transition: .1s ease-in-out;
+}
+
+.hide {
+	visibility: hidden;
+	opacity: 0;
+	height: 0px;
+	transform: translateY(-10px);
+	transition: .1s ease-in-out;
+}

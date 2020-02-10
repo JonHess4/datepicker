@@ -1,0 +1,21 @@
+$cell-height: 32px;
+$border-radius: 50px;
+$hover-color: lightgrey;
+$today-color: grey;
+$selected-text-color: white;
+$selected-background-color: blue;
+$selected-range-highlight-color: lightblue;
+$dashed-color: lightgrey;
+
+$picker-border-radius: 0px;
+$picker-font-color: #5F4B32;
+$picker-background-color: white;
+$cell-font-size: 13px;
+
+.showDis {
+	display: block;
+}
+
+.hideDis{
+	display: none;
+}

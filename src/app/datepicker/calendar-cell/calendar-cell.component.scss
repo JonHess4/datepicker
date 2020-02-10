@@ -1,0 +1,86 @@
+@import '../datepicker-styles.scss';
+
+$perimeter: ($cell-height * 2 / 32);
+$inner-height: ($cell-height * 28 / 32);
+$day-width: ($cell-height * 28 / 32);
+$year-width: ($cell-height * 7 / 4 * 52 / 56);
+
+.picker-item-grid {
+	display: grid;
+	grid-template-rows: $perimeter $inner-height $perimeter;
+}
+
+.day-grid {
+	grid-template-columns: $perimeter ($day-width / 2) ($day-width / 2) $perimeter;
+	width: $cell-height;
+}
+
+.year-grid {
+	grid-template-columns: $perimeter ($year-width / 2) ($year-width / 2) $perimeter;
+	width: $cell-height * 7 / 4;
+}
+
+.left-block {
+	grid-column: 1 / 3;
+	grid-row: 2 / 3;
+}
+
+.right-block {
+	grid-column: 3 / 5;
+	grid-row: 2 / 3;
+}
+
+.circle-left {
+	grid-column: 2 / 3;
+	grid-row: 2 / 3;
+	border-radius: $border-radius 0px 0px $border-radius;
+}
+
+.circle-right {
+	grid-column: 3 / 4;
+	grid-row: 2 / 3;
+	border-radius: 0px $border-radius $border-radius 0px;
+}
+
+.circle {
+	grid-column: 2 / 4;
+	grid-row: 2 / 3;
+	border-radius: $border-radius;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.circle:hover {
+	border: 1px solid $hover-color;
+}
+
+.today {
+	border: 1px solid $today-color !important;
+}
+
+.selected {
+	color: $selected-text-color;
+	background-color: $selected-background-color !important;
+}
+
+.highlight {
+	background-color: $selected-range-highlight-color;
+}
+
+.outline-top-bot {
+	border-top: 1px dashed $dashed-color;
+	border-bottom: 1px dashed $dashed-color;
+}
+
+.outline-circle-left {
+	border-top: 1px dashed $dashed-color;
+	border-bottom: 1px dashed $dashed-color;
+	border-left: 1px dashed $dashed-color;
+}
+
+.outline-circle-right {
+	border-top: 1px dashed $dashed-color;
+	border-bottom: 1px dashed $dashed-color;
+	border-right: 1px dashed $dashed-color;
+}
