@@ -25,7 +25,7 @@ export class DatepickerDirective extends PickerDirective {
 
 	private init(): void {
 
-		this.parentElement = this.getParentElement(this.elementRef.nativeElement);
+		this.setParentElement(this.elementRef.nativeElement);
 
 		this.datepicker = this.generatePickerComponent();
 		this.pickerElem = this.datepicker.elementRef.nativeElement;

@@ -1,18 +1,11 @@
-import {
-	ComponentFactory,
-	ComponentFactoryResolver,
-	ComponentRef,
-	ElementRef,
-	HostListener,
-	Type,
-	ViewContainerRef } from '@angular/core';
+import { ComponentFactory, ComponentFactoryResolver, ComponentRef, ElementRef, HostListener, Type, ViewContainerRef } from '@angular/core';
 import { DatepickerComponent } from '../datepicker/datepicker.component';
 
 export abstract class PickerDirective {
 
-	// a reference to the parent element of this input form that contains both this input form and the datepicker element
+	// a reference to the parent element of this input form that contains both this input form and the pickerContainer
 	protected parentElement: HTMLElement;
-	// the element to put the datepicker in and control its visibility on the screen
+	// the element to put the datepicker(s) in and control their visibility on the screen
 	protected pickerContainer: HTMLElement;
 
 	constructor(
@@ -21,10 +14,11 @@ export abstract class PickerDirective {
 		protected viewContainerRef: ViewContainerRef
 	) { }
 
-	protected getParentElement(childElement: HTMLInputElement): HTMLElement {
+	protected setParentElement(childElement: HTMLInputElement): void {
 		// a parent element is required for this directive to work
+		this.parentElement = childElement.parentElement;
 		try {
-			return childElement.parentElement;
+			this.parentElement.style.position = 'relative';
 		} catch (exception) {
 			// customized message to help person using this understand why it is crashing
 			if (!this.parentElement) {
@@ -49,7 +43,6 @@ export abstract class PickerDirective {
 	protected generatePickerContainer(): void {
 		this.pickerContainer = document.createElement('div');
 		this.parentElement.appendChild(this.pickerContainer);
-		this.parentElement.style.position = 'relative';
 		this.pickerContainer.style.position = 'absolute';
 		this.pickerContainer.style.top = '100%';
 		this.pickerContainer.style.left = '0%';

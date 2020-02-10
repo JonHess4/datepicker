@@ -33,7 +33,7 @@ export class DaterangepickerDirective extends PickerDirective {
 
 	private init(): void {
 
-		this.parentElement = this.getParentElement(this.elementRef.nativeElement);
+		this.setParentElement(this.elementRef.nativeElement);
 
 		this.leftPicker = this.generatePickerComponent();
 		this.rightPicker = this.generatePickerComponent();
