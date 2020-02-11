@@ -10,16 +10,15 @@
 
 .calendar-cell-grid {
 	display: grid;
-	grid-template-rows:  $cell-height $cell-height $cell-height $cell-height $cell-height $cell-height;
-	padding: 0px ($cell-height / 2) ($cell-height / 4) ($cell-height / 2);
-	width: $cell-height * 7;
+	grid-template-rows: $dp-32 $dp-32 $dp-32 $dp-32 $dp-32 $dp-32;
+	padding: 0px $dp-16 $dp-8 $dp-16;
 	font-size: $cell-font-size;
 }
 
 .date-cell-grid {
-	grid-template-columns: $cell-height $cell-height $cell-height $cell-height $cell-height $cell-height $cell-height;
+	grid-template-columns: $dp-32 $dp-32 $dp-32 $dp-32 $dp-32 $dp-32 $dp-32;
 }
 
 .year-cell-grid {
-	grid-template-columns: ($cell-height * 7 / 4) ($cell-height * 7 / 4) ($cell-height * 7 / 4) ($cell-height * 7 / 4);
+	grid-template-columns: $dp-56 $dp-56 $dp-56 $dp-56;
 }

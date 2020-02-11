@@ -1,16 +1,26 @@
-$cell-height: 32px;
-$border-radius: 50px;
-$hover-color: lightgrey;
-$today-color: grey;
-$selected-text-color: white;
-$selected-background-color: blue;
-$selected-range-highlight-color: lightblue;
-$dashed-color: lightgrey;
+//width of picker in pixels and value used to scale all other specs
+$scalar: 256px;
+
+$cell-border-radius: 50px;
+$cell-hover-color: lightgrey;
+$cell-today-color: grey;
+$cell-selected-text-color: white;
+$cell-selected-background-color: blue;
+$cell-selected-range-highlight-color: lightblue;
+$cell-dashed-color: lightgrey;
+$cell-font-size: $scalar * 13 / 256;
+
+$menu-font-size: $scalar * 16 / 256;
+$menu-font-color: grey;
+
+$svg-color: grey;
+
+$day-label-font-color: grey;
+$day-label-font-size: $scalar * 13 / 256;
 
 $picker-border-radius: 0px;
 $picker-font-color: #5F4B32;
 $picker-background-color: white;
-$cell-font-size: 13px;
 
 .showDis {
 	display: block;
@@ -19,3 +29,30 @@ $cell-font-size: 13px;
 .hideDis{
 	display: none;
 }
+
+// picker height
+$dp-284: $scalar * 284 / 256;
+// picker width
+$dp-256: $scalar;
+// year-cell-width
+$dp-56: $scalar * 56 / 256;
+// year-cell-inner-width
+$dp-52: $scalar * 52 / 256;
+// cell-height & date-cell-width
+$dp-32: $scalar * 32 / 256;
+// cell-inner-height & date-cell-inner-width
+$dp-28: $scalar * 28 / 256;
+
+$dp-24: $scalar * 24 / 256;
+
+$dp-16: $scalar * 16 / 256;
+
+$dp-12: $scalar * 12 / 256;
+
+$dp-8: $scalar * 8 / 256;
+
+$dp-6: $scalar * 6 / 256;
+
+$dp-4: $scalar * 4 / 256;
+
+$dp-2: $scalar * 2 / 256;

@@ -32,7 +32,6 @@ export class DatepickerComponent implements OnInit {
 		};
 
 		this.calendarCells = this.calendarCellService.getDateCells(today.getMonth(), today.getFullYear());
-
 	}
 
 	/**

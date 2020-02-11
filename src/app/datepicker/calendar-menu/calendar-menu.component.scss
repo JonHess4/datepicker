@@ -2,27 +2,27 @@
 
 .calendarMenu-grid {
 	display: grid;
-	grid-template-rows: ($cell-height / 2) ($cell-height * 24 / 32) ($cell-height * 12 / 32);
-	grid-template-columns: ($cell-height * 24 / 32) min-content ($cell-height * 4 / 32) ($cell-height * 24 / 32) auto ($cell-height * 24 / 32) ($cell-height * 24 / 32) ($cell-height * 24 / 32) ($cell-height * 8 / 32);
+	grid-template-rows: $dp-16 $dp-24 $dp-12;
+	grid-template-columns: $dp-24 min-content $dp-4 $dp-24 auto $dp-24 $dp-24 $dp-24 $dp-8;
 	grid-template-areas: 
 		'. . . . . . . . .'
 		'. monthYear . upDownArrow . leftArrow . rightArrow .'
 		'. . . . . . . . .';
-	width: $cell-height * 7 + $cell-height * 24 / 32 + $cell-height * 8 / 32;
-	font-size: 15px;
-	color: grey;
+	color: $menu-font-color;
 	white-space: nowrap; // this keeps monthYear on the same line
 	justify-items: center;
 	align-items: center;
 }
 
-.monthYear { grid-area: monthYear; font-size: 16px; }
+.monthYear { grid-area: monthYear; font-size: $menu-font-size; }
 .upDownArrow { grid-area: upDownArrow; }
 .leftArrow { grid-area: leftArrow; }
 .rightArrow { grid-area: rightArrow; }
 
 svg {
-	fill: grey;
+	fill: $svg-color;
+	width: 90%;
+	height: 90%;
 }
 
 .upDownArrow, .leftArrow, .rightArrow {
@@ -31,18 +31,11 @@ svg {
 
 .day-label-grid {
 	display: grid;
-	grid-template-columns: $cell-height $cell-height  $cell-height  $cell-height  $cell-height  $cell-height  $cell-height ;
-	padding: 0px ($cell-height / 2) 0px ($cell-height / 2);
-	width: $cell-height * 7;
-	font-size: 13px;
-	color: grey;
+	grid-template-columns: $dp-32 $dp-32 $dp-32 $dp-32 $dp-32 $dp-32 $dp-32;
+	padding: 0px $dp-16 0px $dp-16;
+	font-size: $day-label-font-size;
+	color: $day-label-font-color;
 	cursor: default;
-}
-
-.day-label {
-	display: flex;
+	justify-items: center;
 	align-items: center;
-	justify-content: center;
-	height: $cell-height * 28 / 32;
-	margin: $cell-height * 2 / 32;
 }
