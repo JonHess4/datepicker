@@ -1,5 +1,6 @@
 import { ComponentFactoryResolver, Directive, ElementRef, Input, ViewContainerRef } from '@angular/core';
 import { DatepickerComponent } from '../datepicker/datepicker.component';
+import { DaterangepickerCellController } from '../services/cell-controller';
 import { PickerDirective } from './picker.directive';
 
 @Directive({
@@ -9,6 +10,8 @@ export class DaterangepickerDirective extends PickerDirective {
 
 	@Input() secondInput: string;
 
+	private daterangepickerCellController: DaterangepickerCellController = new DaterangepickerCellController();
+
 	// the datepicker component associated with this input form
 	private leftPicker: DatepickerComponent;
 	private rightPicker: DatepickerComponent;
@@ -16,8 +19,8 @@ export class DaterangepickerDirective extends PickerDirective {
 	private leftPickerElem: HTMLElement;
 	private rightPickerElem: HTMLElement;
 
-	private leftSelectedDate: Date;
-	private rightSelectedDate: Date;
+	private leftSelectedDate: Date = this.daterangepickerCellController.firstDate;
+	private rightSelectedDate: Date = this.daterangepickerCellController.secondDate;
 
 	private leftInput: HTMLInputElement = this.elementRef.nativeElement;
 	private rightInput: HTMLInputElement = document.getElementById(this.secondInput) as HTMLInputElement;
@@ -37,6 +40,9 @@ export class DaterangepickerDirective extends PickerDirective {
 
 		this.leftPicker = this.generatePickerComponent();
 		this.rightPicker = this.generatePickerComponent();
+
+		this.leftPicker.cellController = this.daterangepickerCellController;
+		this.rightPicker.cellController = this.daterangepickerCellController;
 
 		this.leftPickerElem = this.leftPicker.elementRef.nativeElement;
 		this.rightPickerElem = this.rightPicker.elementRef.nativeElement;

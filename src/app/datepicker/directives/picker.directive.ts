@@ -8,6 +8,8 @@ export abstract class PickerDirective {
 	// the element to put the datepicker(s) in and control their visibility on the screen
 	protected pickerContainer: HTMLElement;
 
+	private readonly key: number = Math.floor(Math.random() * 10000);
+
 	constructor(
 		protected elementRef: ElementRef,
 		protected componentFactoryResolver: ComponentFactoryResolver,
@@ -37,6 +39,7 @@ export abstract class PickerDirective {
 			= this.componentFactoryResolver.resolveComponentFactory(datepickerComponent);
 		// this.viewContainerRef.clear();
 		const componentRef: ComponentRef<DatepickerComponent> = this.viewContainerRef.createComponent(componentFactory);
+		componentRef.instance.key = this.key;
 		return componentRef.instance;
 	}
 
@@ -64,7 +67,7 @@ export abstract class PickerDirective {
 
 	@HostListener('document:keydown.enter', ['$event.target'])
 	protected onEnter(targetElement: HTMLElement): void {
-		if (this.pickerContainer.style.visibility === 'visible' && this.elementRef.nativeElement === targetElement) {
+		if (this.pickerContainer.classList.contains('show') && this.elementRef.nativeElement === targetElement) {
 			this.hidePicker();
 		}
 	}
@@ -80,6 +83,7 @@ export abstract class PickerDirective {
 
 	// This closes datepicker if the user tabs out of the container.
 	@HostListener('document:keyup.tab')
+	@HostListener('document:keyup.shift.tab')
 	protected onTab(): void {
 		if (!this.parentElement.contains(document.activeElement)) {
 			this.hidePicker();

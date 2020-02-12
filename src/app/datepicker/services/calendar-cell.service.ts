@@ -30,10 +30,10 @@ export class CalendarCellService {
 		return lastDateOfMonth.getDate();
 	}
 
-	public getDateCells(month: number, year: number): ICalendarCell[] {
+	public getDateCells(pickerKey: number, month: number, year: number): ICalendarCell[] {
 
 		let dateCells: ICalendarCell[];
-		const key: string = month + '-' + year;
+		const key: string = pickerKey + '-' + month + '-' + year;
 
 		if (this.calendarCells.has(key)) {
 			dateCells = this.calendarCells.get(key);
@@ -51,10 +51,10 @@ export class CalendarCellService {
 		return null;
 	}
 
-	public getYearCells(year: number): ICalendarCell[] {
+	public getYearCells(pickerKey: number, year: number): ICalendarCell[] {
 
 		let yearCells: ICalendarCell[];
-		const key: string = '' + year;
+		const key: string = pickerKey + '-' + year;
 
 		if (this.calendarCells.has(key)) {
 			yearCells = this.calendarCells.get(key);

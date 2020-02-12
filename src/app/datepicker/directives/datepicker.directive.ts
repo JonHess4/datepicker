@@ -1,6 +1,7 @@
 import { ComponentFactoryResolver, Directive, ElementRef, ViewContainerRef } from '@angular/core';
 import { DatepickerComponent } from '../datepicker/datepicker.component';
 import { PickerDirective } from './picker.directive';
+import { DatepickerCellController } from '../services/cell-controller';
 
 @Directive({
 	selector: '[appDatepicker]'
@@ -55,8 +56,8 @@ export class DatepickerDirective extends PickerDirective {
 
 		if (this.selectedDate !== this.datepicker.selectedDate) {
 			this.selectedDate = this.datepicker.selectedDate;
-			this.setInputValue(this.elementRef.nativeElement, this.selectedDate.toString());
-			if (this.selectedDate.toString() !== '') {
+			this.setInputValue(this.elementRef.nativeElement, this.selectedDate.toLocaleDateString());
+			if (this.selectedDate.toLocaleDateString() !== '') {
 				this.hidePicker();
 			}
 		}
