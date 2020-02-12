@@ -1,7 +1,6 @@
 import { ComponentFactoryResolver, Directive, ElementRef, ViewContainerRef } from '@angular/core';
 import { DatepickerComponent } from '../datepicker/datepicker.component';
 import { PickerDirective } from './picker.directive';
-import { DatepickerCellController } from '../services/cell-controller';
 
 @Directive({
 	selector: '[appDatepicker]'
