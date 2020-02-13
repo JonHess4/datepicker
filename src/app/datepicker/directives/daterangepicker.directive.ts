@@ -3,6 +3,10 @@ import { DatepickerComponent } from '../datepicker/datepicker.component';
 import { DaterangepickerCellController } from '../services/cell-controller';
 import { PickerDirective } from './picker.directive';
 
+/**
+ * creates, attaches, and controls the visibility of the daterangepicker and populates the values of the inputs it is connected to
+ */
+
 @Directive({
 	selector: '[appDaterangepicker]'
 })
@@ -19,8 +23,8 @@ export class DaterangepickerDirective extends PickerDirective {
 	private leftPickerElem: HTMLElement;
 	private rightPickerElem: HTMLElement;
 
-	private leftSelectedDate: Date = this.daterangepickerCellController.firstDate;
-	private rightSelectedDate: Date = this.daterangepickerCellController.secondDate;
+	private leftSelectedDate: Date = this.daterangepickerCellController.startDate;
+	private rightSelectedDate: Date = this.daterangepickerCellController.endDate;
 
 	private leftInput: HTMLInputElement = this.elementRef.nativeElement;
 	private rightInput: HTMLInputElement = document.getElementById(this.secondInput) as HTMLInputElement;
@@ -31,10 +35,9 @@ export class DaterangepickerDirective extends PickerDirective {
 		viewContainerRef: ViewContainerRef
 	) {
 		super(elementRef, componentFactoryResolver, viewContainerRef);
-		this.init();
 	}
 
-	private init(): void {
+	ngOnInit(): void {
 
 		this.setParentElement(this.elementRef.nativeElement);
 
@@ -56,13 +59,24 @@ export class DaterangepickerDirective extends PickerDirective {
 		this.rightSelectedDate = this.rightPicker.selectedDate;
 
 		this.hidePicker();
+
+		this.rightInput = document.getElementById(this.secondInput) as HTMLInputElement;
 	}
 
 	protected onEnter(targetElement: HTMLElement): void {
 		super.onEnter(targetElement);
+
+		this.setInputValues(this.daterangepickerCellController.startDate, this.daterangepickerCellController.endDate);
 	}
 
 	protected onClick(targetElement: HTMLElement): void {
 		super.onClick(targetElement);
+
+		this.setInputValues(this.daterangepickerCellController.startDate, this.daterangepickerCellController.endDate);
+	}
+
+	private setInputValues(startDate: Date, endDate: Date): void {
+		this.leftInput.value = startDate ? startDate.toLocaleDateString() : '';
+		this.rightInput.value = endDate ? endDate.toLocaleDateString() : '';
 	}
 }
