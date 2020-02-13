@@ -1,6 +1,6 @@
 import { ComponentFactoryResolver, Directive, ElementRef, Input, ViewContainerRef } from '@angular/core';
 import { DatepickerComponent } from '../datepicker/datepicker.component';
-import { DaterangepickerCellController } from '../services/cell-controller';
+import { DaterangepickerDateCellStyler } from '../services/date-cell-styler';
 import { PickerDirective } from './picker.directive';
 
 @Directive({
@@ -10,7 +10,7 @@ export class DaterangepickerDirective extends PickerDirective {
 
 	@Input() secondInput: string;
 
-	private daterangepickerCellController: DaterangepickerCellController = new DaterangepickerCellController();
+	private daterangepickerDateCellStyler: DaterangepickerDateCellStyler = new DaterangepickerDateCellStyler();
 
 	// the datepicker component associated with this input form
 	private leftPicker: DatepickerComponent;
@@ -30,6 +30,7 @@ export class DaterangepickerDirective extends PickerDirective {
 		super(elementRef, componentFactoryResolver, viewContainerRef);
 	}
 
+	// tslint:disable-next-line: use-lifecycle-interface
 	ngOnInit(): void {
 
 		this.setParentElement(this.elementRef.nativeElement);
@@ -37,8 +38,8 @@ export class DaterangepickerDirective extends PickerDirective {
 		this.leftPicker = this.generatePickerComponent();
 		this.rightPicker = this.generatePickerComponent();
 
-		this.leftPicker.cellController = this.daterangepickerCellController;
-		this.rightPicker.cellController = this.daterangepickerCellController;
+		this.leftPicker.dateCellStyler = this.daterangepickerDateCellStyler;
+		this.rightPicker.dateCellStyler = this.daterangepickerDateCellStyler;
 
 		this.leftPickerElem = this.leftPicker.elementRef.nativeElement;
 		this.rightPickerElem = this.rightPicker.elementRef.nativeElement;
@@ -56,13 +57,13 @@ export class DaterangepickerDirective extends PickerDirective {
 	protected onEnter(targetElement: HTMLElement): void {
 		super.onEnter(targetElement);
 
-		this.setInputValues(this.daterangepickerCellController.startDate, this.daterangepickerCellController.endDate);
+		this.setInputValues(this.daterangepickerDateCellStyler.startDate, this.daterangepickerDateCellStyler.endDate);
 	}
 
 	protected onClick(targetElement: HTMLElement): void {
 		super.onClick(targetElement);
 
-		this.setInputValues(this.daterangepickerCellController.startDate, this.daterangepickerCellController.endDate);
+		this.setInputValues(this.daterangepickerDateCellStyler.startDate, this.daterangepickerDateCellStyler.endDate);
 	}
 
 	private setInputValues(startDate: Date, endDate: Date): void {

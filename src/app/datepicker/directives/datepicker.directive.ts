@@ -22,6 +22,7 @@ export class DatepickerDirective extends PickerDirective {
 		super(elementRef, componentFactoryResolver, viewContainerRef);
 	}
 
+	// tslint:disable-next-line: use-lifecycle-interface
 	ngOnInit(): void {
 
 		this.setParentElement(this.elementRef.nativeElement);
@@ -42,7 +43,7 @@ export class DatepickerDirective extends PickerDirective {
 
 		if (this.selectedDate !== this.datepicker.selectedDate) {
 			this.selectedDate = this.datepicker.selectedDate;
-			this.setInputValue(this.elementRef.nativeElement, this.selectedDate.toString());
+			this.elementRef.nativeElement.value = this.selectedDate ? this.selectedDate.toLocaleDateString() : '';
 			if (this.selectedDate.toString() !== '') {
 				this.hidePicker();
 			}
@@ -54,7 +55,7 @@ export class DatepickerDirective extends PickerDirective {
 
 		if (this.selectedDate !== this.datepicker.selectedDate) {
 			this.selectedDate = this.datepicker.selectedDate;
-			this.setInputValue(this.elementRef.nativeElement, this.selectedDate.toLocaleDateString());
+			this.elementRef.nativeElement.value = this.selectedDate ? this.selectedDate.toLocaleDateString() : '';
 			if (this.selectedDate.toLocaleDateString() !== '') {
 				this.hidePicker();
 			}

@@ -1,8 +1,8 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
-import { ICalendarCell } from '../models/calendar-cell';
+import { ICalendarCell, IDateCell } from '../models/calendar-cell';
 import { ICalendarMenu } from '../models/calendar-menu';
 import { CalendarCellService } from '../services/calendar-cell.service';
-import { CellController, DatepickerCellController } from '../services/cell-controller';
+import { DateCellStyler, DatepickerDateCellStyler } from '../services/date-cell-styler';
 
 @Component({
 	selector: 'app-datepicker',
@@ -11,15 +11,19 @@ import { CellController, DatepickerCellController } from '../services/cell-contr
 })
 export class DatepickerComponent implements OnInit {
 
+	// this key is used to retrieve the correct data from calendarCellService
 	public set key(newKey: number) { this._key = newKey; }
 	private _key: number = Math.floor(Math.random() * 10000);
 
-	public set cellController(newCellController: CellController) { this._cellController = newCellController; }
-	private _cellController: CellController = new DatepickerCellController();
+	// the dateCellStylist is used to 
+	public set dateCellStyler(newDateCellStyler: DateCellStyler) { this._dateCellStyler = newDateCellStyler; }
+	private _dateCellStyler: DateCellStyler = new DatepickerDateCellStyler();
 
 	public get selectedDate(): Date { return this._selectedDate; }
-	private _selectedDate: Date = null;
+	private _selectedDate: Date;
 
+	private get currentDisplaytype(): string { return this.calendarMenu.type; }
+	private set currentDisplaytype(newType: string) { this.calendarMenu.type = newType; }
 	private calendarMenu: ICalendarMenu;
 
 	private calendarCells: ICalendarCell[];
@@ -63,12 +67,6 @@ export class DatepickerComponent implements OnInit {
 	 * start property setters
 	 */
 
-	private setCalendarMenuProperties(type: string, monthName: string, year: number): void {
-		this.calendarMenu.type = type;
-		this.calendarMenu.monthName = monthName;
-		this.calendarMenu.year = year;
-	}
-
 	private setCalendarCells(month: number, year: number): void {
 		if (month) {
 			this.calendarCells = this.calendarCellService.getDateCells(this._key, month, year);
@@ -94,19 +92,19 @@ export class DatepickerComponent implements OnInit {
 	 */
 
 	private onDisplayToggle(newDisplay: string): void {
-		if (this.calendarMenu.type === 'day') {
-			this.calendarMenu.type = 'year';
+		if (this.currentDisplaytype === 'day') {
+			this.currentDisplaytype = 'year';
 			this.setCalendarCells(null, this.trackerYear);
-		} else if (this.calendarMenu.type === 'year') {
-			this.calendarMenu.type = 'day';
+		} else if (this.currentDisplaytype === 'year') {
+			this.currentDisplaytype = 'day';
 			this.setCalendarCells(this.trackerDate.getMonth(), this.trackerDate.getFullYear());
 		}
 	}
 
 	private onPagination(numPages: number): void {
-		if (this.calendarMenu.type === 'day') {
+		if (this.currentDisplaytype === 'day') {
 			this.pageMonth(numPages);
-		} else if (this.calendarMenu.type === 'year') {
+		} else if (this.currentDisplaytype === 'year') {
 			this.pageYears(numPages);
 		}
 	}
@@ -160,14 +158,13 @@ export class DatepickerComponent implements OnInit {
 	}
 
 	private onCellSelected(selectedCell: ICalendarCell): void {
-		if (this.calendarMenu.type === 'day') {
-			this._cellController.onDateCellSelected(selectedCell, this._selectedDate);
+		if (this.currentDisplaytype === 'day') {
+			this._dateCellStyler.onDateCellSelected(selectedCell as IDateCell);
 			this._selectedDate = new Date(this.trackerDate.getFullYear(), this.trackerDate.getMonth(), selectedCell.value);
-		} else if (this.calendarMenu.type === 'year') {
+		} else if (this.currentDisplaytype === 'year') {
 			this.trackerDate.setFullYear(selectedCell.value);
-			// this._cellController.onYearCellSelected(selectedCell);
 			this.setCalendarCells(this.trackerDate.getMonth(), this.trackerDate.getFullYear());
-			this.calendarMenu.type = 'day';
+			this.currentDisplaytype = 'day';
 			this.calendarMenu.year = this.trackerDate.getFullYear();
 		}
 	}
@@ -187,7 +184,7 @@ export class DatepickerComponent implements OnInit {
 		map.set('left', -1);
 		map.set('right', 1);
 
-		if (this.calendarMenu.type === 'day') {
+		if (this.currentDisplaytype === 'day') {
 			map.set('up', -7);
 			map.set('down', 7);
 			distance = map.get(direction);
@@ -199,7 +196,7 @@ export class DatepickerComponent implements OnInit {
 				// this.focusTabableItem(index + distance - monthOffset);
 			}
 
-		} else if (this.calendarMenu.type === 'year') {
+		} else if (this.currentDisplaytype === 'year') {
 			map.set('up', -4);
 			map.set('down', 4);
 			distance = map.get(direction);

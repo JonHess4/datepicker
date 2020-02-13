@@ -59,10 +59,6 @@ export abstract class PickerDirective implements OnInit{
 		this.pickerContainer.appendChild(pickerElem);
 	}
 
-	protected setInputValue(input: HTMLInputElement, newValue: string): void {
-		input.value = newValue;
-	}
-
 	@HostListener('focus')
 	protected onFocus(): void {
 		this.showPicker();
