@@ -15,12 +15,9 @@ export class DatepickerComponent implements OnInit {
 	public set key(newKey: number) { this._key = newKey; }
 	private _key: number = Math.floor(Math.random() * 10000);
 
-	// the dateCellStylist is used to 
+	// the dateCellStyler is used to set the styling properties of IDateCell objects
 	public set dateCellStyler(newDateCellStyler: DateCellStyler) { this._dateCellStyler = newDateCellStyler; }
 	private _dateCellStyler: DateCellStyler = new DatepickerDateCellStyler();
-
-	public get selectedDate(): Date { return this._selectedDate; }
-	private _selectedDate: Date;
 
 	private get currentDisplaytype(): string { return this.calendarMenu.type; }
 	private set currentDisplaytype(newType: string) { this.calendarMenu.type = newType; }
@@ -30,6 +27,9 @@ export class DatepickerComponent implements OnInit {
 
 	private trackerDate: Date;
 	private trackerYear: number;
+
+	private tabableDate: ICalendarCell;
+	private tabableYear: ICalendarCell;
 
 	constructor(
 		private calendarCellService: CalendarCellService,
@@ -61,13 +61,18 @@ export class DatepickerComponent implements OnInit {
 		todayCalendarYearCells[0].isToday = true;
 		const monthOffset: number = this.calendarCellService.getMonthOffset(today.getMonth(), today.getFullYear());
 		todayCalendarDateCells[today.getDate() + monthOffset - 1].isToday = true;
+
+		this.tabableDate = todayCalendarDateCells[today.getDate() + monthOffset - 1];
+		this.tabableDate.tabIndex = 0;
+		this.tabableYear = todayCalendarYearCells[0];
+		this.tabableYear.tabIndex = 0;
 	}
 
 	/**
 	 * start property setters
 	 */
 
-	private setCalendarCells(month: number, year: number): void {
+	private setCalendarCells(year: number, month?: number): void {
 		if (month) {
 			this.calendarCells = this.calendarCellService.getDateCells(this._key, month, year);
 		} else {
@@ -75,16 +80,20 @@ export class DatepickerComponent implements OnInit {
 		}
 	}
 
+	private updateTabableDate(newTabableDate: ICalendarCell): void {
+		this.tabableDate.tabIndex = -1;
+		this.tabableDate = newTabableDate;
+		this.tabableDate.tabIndex = 0;
+	}
+
+	private updateTabableYear(newTabableYear: ICalendarCell): void {
+		this.tabableYear.tabIndex = -1;
+		this.tabableYear = newTabableYear;
+		this.tabableYear.tabIndex = 0;
+	}
+
 	/**
 	 * end property setters
-	 */
-
-	/**
-	 * start logic methods
-	 */
-
-	/**
-	 * end logic methods
 	 */
 
 	/**
@@ -94,10 +103,10 @@ export class DatepickerComponent implements OnInit {
 	private onDisplayToggle(newDisplay: string): void {
 		if (this.currentDisplaytype === 'day') {
 			this.currentDisplaytype = 'year';
-			this.setCalendarCells(null, this.trackerYear);
+			this.setCalendarCells(this.trackerYear);
 		} else if (this.currentDisplaytype === 'year') {
 			this.currentDisplaytype = 'day';
-			this.setCalendarCells(this.trackerDate.getMonth(), this.trackerDate.getFullYear());
+			this.setCalendarCells(this.trackerDate.getFullYear(), this.trackerDate.getMonth());
 		}
 	}
 
@@ -137,9 +146,11 @@ export class DatepickerComponent implements OnInit {
 			while (newSelectedYearValue - this.trackerYear < 0) {
 				this.trackerYear -= 28;
 			}
-			// const yearCells: ICalendarCell[] = this.calendarCellService.getYearCells(this._key, this.trackerYear);
+
 			this.trackerDate.setFullYear(newSelectedYearValue);
-			// this.setTabableYear(this.selectedYear);
+
+			const yearCells: ICalendarCell[] = this.calendarCellService.getYearCells(this._key, this.trackerYear);
+			this.updateTabableYear(yearCells[this.trackerDate.getFullYear() - this.trackerYear]);
 		}
 
 		this.calendarMenu.monthName = '' + this.trackerDate.getMonth();
@@ -147,25 +158,26 @@ export class DatepickerComponent implements OnInit {
 		this.calendarCells = this.calendarCellService.getDateCells(this._key, this.trackerDate.getMonth(), this.trackerDate.getFullYear());
 
 		const monthOffset: number = this.calendarCellService.getMonthOffset(this.trackerDate.getMonth(), this.trackerDate.getFullYear());
-		// this.setTabableDate(this.displayItems[Math.min(this.displayItems.length - 1, monthOffset + this.tabableDate.value - 1)]);
+		this.updateTabableDate(this.calendarCells[Math.min(this.calendarCells.length - 1, monthOffset + this.tabableDate.value - 1)]);
 	}
 
 	private pageYears(numPages: number): void {
 		this.trackerYear += numPages * 28;
-		// const index: number = this.calendarCells.indexOf(this.tabableYear);
+		const index: number = this.calendarCells.indexOf(this.tabableYear);
 		this.calendarCells = this.calendarCellService.getYearCells(this._key, this.trackerYear);
-		// this.setTabableYear(this.displayItems[index]);
+		this.updateTabableYear(this.calendarCells[index]);
 	}
 
 	private onCellSelected(selectedCell: ICalendarCell): void {
 		if (this.currentDisplaytype === 'day') {
 			this._dateCellStyler.onDateCellSelected(selectedCell as IDateCell);
-			this._selectedDate = new Date(this.trackerDate.getFullYear(), this.trackerDate.getMonth(), selectedCell.value);
+			this.updateTabableDate(selectedCell);
 		} else if (this.currentDisplaytype === 'year') {
 			this.trackerDate.setFullYear(selectedCell.value);
-			this.setCalendarCells(this.trackerDate.getMonth(), this.trackerDate.getFullYear());
+			this.setCalendarCells(this.trackerDate.getFullYear(), this.trackerDate.getMonth());
 			this.currentDisplaytype = 'day';
 			this.calendarMenu.year = this.trackerDate.getFullYear();
+			this.updateTabableYear(selectedCell);
 		}
 	}
 
@@ -188,30 +200,30 @@ export class DatepickerComponent implements OnInit {
 			map.set('up', -7);
 			map.set('down', 7);
 			distance = map.get(direction);
-			// index = this.calendarCells.indexOf(this.tabableDate);
+			index = this.calendarCells.indexOf(this.tabableDate);
 
 			if (this.calendarCells[index + distance]) {
-				// this.setTabableDate(this.calendarCells[index + distance]);
+				this.updateTabableDate(this.calendarCells[index + distance]);
 				const monthOffset: number = this.calendarCellService.getMonthOffset(this.trackerDate.getMonth(), this.trackerDate.getFullYear());
-				// this.focusTabableItem(index + distance - monthOffset);
+				this.focusTabableItem(index + distance - monthOffset);
 			}
 
 		} else if (this.currentDisplaytype === 'year') {
 			map.set('up', -4);
 			map.set('down', 4);
 			distance = map.get(direction);
-			// index = this.calendarCells.indexOf(this.tabableYear);
+			index = this.calendarCells.indexOf(this.tabableYear);
 
 			if (this.calendarCells[index + distance]) {
-				// this.setTabableYear(this.calendarCells[index + distance]);
+				this.updateTabableYear(this.calendarCells[index + distance]);
 				this.focusTabableItem(index + distance);
 			}
 		}
 	}
 
 	private focusTabableItem(index: number): void {
-		const displayItems: HTMLElement[] = this.elementRef.nativeElement.getElementsByClassName('display-item');
-		displayItems[index].focus();
+		const calendarCells: HTMLElement[] = this.elementRef.nativeElement.getElementsByClassName('circle');
+		calendarCells[index].focus();
 	}
 
 	/**

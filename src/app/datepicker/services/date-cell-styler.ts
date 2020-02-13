@@ -9,6 +9,7 @@ export interface DateCellStyler {
 
 export class DatepickerDateCellStyler implements DateCellStyler {
 
+	public get selectedDate(): Date { return this.selectedDateCell ? this.selectedDateCell.date : null; }
 	private selectedDateCell: IDateCell;
 
 	constructor() {}
