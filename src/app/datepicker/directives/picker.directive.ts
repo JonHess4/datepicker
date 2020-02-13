@@ -1,18 +1,23 @@
-import { ComponentFactory, ComponentFactoryResolver, ComponentRef, ElementRef, HostListener, Type, ViewContainerRef } from '@angular/core';
+// tslint:disable-next-line: max-line-length
+import { ComponentFactory, ComponentFactoryResolver, ComponentRef, ElementRef, HostListener, OnInit, Type, ViewContainerRef } from '@angular/core';
 import { DatepickerComponent } from '../datepicker/datepicker.component';
 
-export abstract class PickerDirective {
+export abstract class PickerDirective implements OnInit{
 
 	// a reference to the parent element of this input form that contains both this input form and the pickerContainer
 	protected parentElement: HTMLElement;
 	// the element to put the datepicker(s) in and control their visibility on the screen
 	protected pickerContainer: HTMLElement;
 
+	private readonly key: number = Math.floor(Math.random() * 10000);
+
 	constructor(
 		protected elementRef: ElementRef,
 		protected componentFactoryResolver: ComponentFactoryResolver,
 		protected viewContainerRef: ViewContainerRef
 	) { }
+
+	abstract ngOnInit(): void;
 
 	protected setParentElement(childElement: HTMLInputElement): void {
 		// a parent element is required for this directive to work
@@ -37,6 +42,7 @@ export abstract class PickerDirective {
 			= this.componentFactoryResolver.resolveComponentFactory(datepickerComponent);
 		// this.viewContainerRef.clear();
 		const componentRef: ComponentRef<DatepickerComponent> = this.viewContainerRef.createComponent(componentFactory);
+		componentRef.instance.key = this.key;
 		return componentRef.instance;
 	}
 
@@ -53,10 +59,6 @@ export abstract class PickerDirective {
 		this.pickerContainer.appendChild(pickerElem);
 	}
 
-	protected setInputValue(input: HTMLInputElement, newValue: string): void {
-		input.value = newValue;
-	}
-
 	@HostListener('focus')
 	protected onFocus(): void {
 		this.showPicker();
@@ -64,14 +66,14 @@ export abstract class PickerDirective {
 
 	@HostListener('document:keydown.enter', ['$event.target'])
 	protected onEnter(targetElement: HTMLElement): void {
-		if (this.pickerContainer.style.visibility === 'visible' && this.elementRef.nativeElement === targetElement) {
+		if (this.pickerContainer.classList.contains('show') && this.elementRef.nativeElement === targetElement) {
 			this.hidePicker();
 		}
 	}
 
 	@HostListener('document:click', ['$event.target'])
 	protected onClick(targetElement: HTMLElement): void {
-		if (!this.parentElement.contains(targetElement) && !targetElement.classList.contains('year-item')) {
+		if (!this.parentElement.contains(targetElement) && !targetElement.classList.contains('circle')) {
 			this.hidePicker();
 		} else if (this.elementRef.nativeElement === targetElement) {
 			this.showPicker();
@@ -80,6 +82,7 @@ export abstract class PickerDirective {
 
 	// This closes datepicker if the user tabs out of the container.
 	@HostListener('document:keyup.tab')
+	@HostListener('document:keyup.shift.tab')
 	protected onTab(): void {
 		if (!this.parentElement.contains(document.activeElement)) {
 			this.hidePicker();

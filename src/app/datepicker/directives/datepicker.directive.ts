@@ -1,5 +1,6 @@
 import { ComponentFactoryResolver, Directive, ElementRef, ViewContainerRef } from '@angular/core';
 import { DatepickerComponent } from '../datepicker/datepicker.component';
+import { DatepickerDateCellStyler } from '../services/date-cell-styler';
 import { PickerDirective } from './picker.directive';
 
 @Directive({
@@ -11,8 +12,8 @@ export class DatepickerDirective extends PickerDirective {
 	private datepicker: DatepickerComponent;
 	// reference to the datepicker element
 	private pickerElem: HTMLElement;
-	// the currently selected Date
-	private selectedDate: Date;
+
+	private datepickerDateCellStyler: DatepickerDateCellStyler = new DatepickerDateCellStyler();
 
 	constructor(
 		elementRef: ElementRef,
@@ -20,10 +21,10 @@ export class DatepickerDirective extends PickerDirective {
 		viewContainerRef: ViewContainerRef
 	) {
 		super(elementRef, componentFactoryResolver, viewContainerRef);
-		this.init();
 	}
 
-	private init(): void {
+	// tslint:disable-next-line: use-lifecycle-interface
+	ngOnInit(): void {
 
 		this.setParentElement(this.elementRef.nativeElement);
 
@@ -33,30 +34,28 @@ export class DatepickerDirective extends PickerDirective {
 		this.generatePickerContainer();
 		this.appendPickerComponent(this.pickerElem);
 
-		this.selectedDate = this.datepicker.selectedDate;
-
 		this.hidePicker();
+
+		this.datepicker.dateCellStyler = this.datepickerDateCellStyler;
 	}
 
 	protected onEnter(targetElement: HTMLElement): void {
 		super.onEnter(targetElement);
 
-		if (this.pickerElem.contains(targetElement) && this.selectedDate !== this.datepicker.selectedDate) {
-			this.selectedDate = this.datepicker.selectedDate;
-			this.setInputValue(this.elementRef.nativeElement, this.selectedDate.toString());
-			if (this.selectedDate.toString() !== '') {
-				this.hidePicker();
-			}
-		}
+		this.updateInputValue(targetElement);
 	}
 
 	protected onClick(targetElement: HTMLElement): void {
 		super.onClick(targetElement);
 
-		if (this.selectedDate !== this.datepicker.selectedDate) {
-			this.selectedDate = this.datepicker.selectedDate;
-			this.setInputValue(this.elementRef.nativeElement, this.selectedDate.toString());
-			if (this.selectedDate.toString() !== '') {
+		this.updateInputValue(targetElement);
+	}
+
+	private updateInputValue(targetElement: HTMLElement): void {
+		if (this.pickerElem.contains(targetElement) && targetElement.classList.contains('circle')) {
+			const selectedDate: Date = this.datepickerDateCellStyler.selectedDate;
+			this.elementRef.nativeElement.value = selectedDate ? selectedDate.toLocaleDateString() : '';
+			if (this.elementRef.nativeElement.value !== '') {
 				this.hidePicker();
 			}
 		}

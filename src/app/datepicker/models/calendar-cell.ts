@@ -3,6 +3,10 @@ export interface ICalendarCell {
 	isSelected: boolean;
 	isToday: boolean;
 	tabIndex: number;
+}
+
+export interface IDateCell extends ICalendarCell {
+	date: Date;
 	fillBoxLeft: boolean;
 	fillBoxRight: boolean;
 	fillCircleLeft: boolean;
