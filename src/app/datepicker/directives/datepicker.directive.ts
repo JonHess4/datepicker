@@ -41,7 +41,7 @@ export class DatepickerDirective extends PickerDirective {
 	protected onEnter(targetElement: HTMLElement): void {
 		super.onEnter(targetElement);
 
-		if (this.pickerElem.contains(targetElement) && this.selectedDate !== this.datepicker.selectedDate) {
+		if (this.selectedDate !== this.datepicker.selectedDate) {
 			this.selectedDate = this.datepicker.selectedDate;
 			this.setInputValue(this.elementRef.nativeElement, this.selectedDate.toString());
 			if (this.selectedDate.toString() !== '') {

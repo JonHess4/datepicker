@@ -65,16 +65,16 @@ export abstract class PickerDirective {
 		this.showPicker();
 	}
 
-	@HostListener('document:keydown.enter', ['$event.target'])
+	@HostListener('keydown.enter', ['$event.target'])
 	protected onEnter(targetElement: HTMLElement): void {
-		if (this.pickerContainer.classList.contains('show') && this.elementRef.nativeElement === targetElement) {
+		if (this.pickerContainer.classList.contains('show')) {
 			this.hidePicker();
 		}
 	}
 
 	@HostListener('document:click', ['$event.target'])
 	protected onClick(targetElement: HTMLElement): void {
-		if (!this.parentElement.contains(targetElement) && !targetElement.classList.contains('year-item')) {
+		if (!this.parentElement.contains(targetElement) && !targetElement.classList.contains('circle')) {
 			this.hidePicker();
 		} else if (this.elementRef.nativeElement === targetElement) {
 			this.showPicker();
