@@ -2,10 +2,6 @@ import { ComponentFactoryResolver, Directive, ElementRef, ViewContainerRef } fro
 import { DatepickerComponent } from '../datepicker/datepicker.component';
 import { PickerDirective } from './picker.directive';
 
-/**
- * creates, attaches, and controls the visibility of the datepicker and populates the value of the input it is connected to
- */
-
 @Directive({
 	selector: '[appDatepicker]'
 })
@@ -24,9 +20,11 @@ export class DatepickerDirective extends PickerDirective {
 		viewContainerRef: ViewContainerRef
 	) {
 		super(elementRef, componentFactoryResolver, viewContainerRef);
+		this.init();
 	}
 
-	ngOnInit(): void {
+	private init(): void {
+
 		this.setParentElement(this.elementRef.nativeElement);
 
 		this.datepicker = this.generatePickerComponent();
@@ -45,8 +43,8 @@ export class DatepickerDirective extends PickerDirective {
 
 		if (this.selectedDate !== this.datepicker.selectedDate) {
 			this.selectedDate = this.datepicker.selectedDate;
-			this.setInputValue(this.elementRef.nativeElement, this.selectedDate.toLocaleDateString());
-			if (this.selectedDate.toLocaleDateString() !== '') {
+			this.setInputValue(this.elementRef.nativeElement, this.selectedDate.toString());
+			if (this.selectedDate.toString() !== '') {
 				this.hidePicker();
 			}
 		}

@@ -27,19 +27,6 @@ export class DatepickerComponent implements OnInit {
 	private trackerDate: Date;
 	private trackerYear: number;
 
-	private set tabableDate(newTabableDate: ICalendarCell) {
-		this._tabableDate.tabIndex = -1;
-		this._tabableDate = newTabableDate;
-		this._tabableDate.tabIndex = 0;
-	}
-	private _tabableDate: ICalendarCell;
-	private set tabableYear(newTabableYear: ICalendarCell) {
-		this._tabableYear.tabIndex = -1;
-		this._tabableYear = newTabableYear;
-		this._tabableYear.tabIndex = 0;
-	}
-	private _tabableYear: ICalendarCell;
-
 	constructor(
 		private calendarCellService: CalendarCellService,
 		public elementRef: ElementRef
@@ -68,12 +55,8 @@ export class DatepickerComponent implements OnInit {
 		const todayCalendarDateCells: ICalendarCell[] = this.calendarCellService.getDateCells(this._key, today.getMonth(), today.getFullYear());
 		const todayCalendarYearCells: ICalendarCell[] = this.calendarCellService.getYearCells(this._key, today.getFullYear());
 		todayCalendarYearCells[0].isToday = true;
-		todayCalendarYearCells[0].tabIndex = 0;
-		this._tabableYear = todayCalendarYearCells[0];
 		const monthOffset: number = this.calendarCellService.getMonthOffset(today.getMonth(), today.getFullYear());
 		todayCalendarDateCells[today.getDate() + monthOffset - 1].isToday = true;
-		todayCalendarDateCells[today.getDate() + monthOffset - 1].tabIndex = 0;
-		this._tabableDate = todayCalendarDateCells[today.getDate() + monthOffset - 1];
 	}
 
 	/**
@@ -96,6 +79,14 @@ export class DatepickerComponent implements OnInit {
 
 	/**
 	 * end property setters
+	 */
+
+	/**
+	 * start logic methods
+	 */
+
+	/**
+	 * end logic methods
 	 */
 
 	/**
@@ -148,10 +139,9 @@ export class DatepickerComponent implements OnInit {
 			while (newSelectedYearValue - this.trackerYear < 0) {
 				this.trackerYear -= 28;
 			}
+			// const yearCells: ICalendarCell[] = this.calendarCellService.getYearCells(this._key, this.trackerYear);
 			this.trackerDate.setFullYear(newSelectedYearValue);
-
-			const yearCells: ICalendarCell[] = this.calendarCellService.getYearCells(this._key, this.trackerYear);
-			this.tabableYear = yearCells[this.trackerDate.getFullYear() - this.trackerYear];
+			// this.setTabableYear(this.selectedYear);
 		}
 
 		this.calendarMenu.monthName = '' + this.trackerDate.getMonth();
@@ -159,21 +149,20 @@ export class DatepickerComponent implements OnInit {
 		this.calendarCells = this.calendarCellService.getDateCells(this._key, this.trackerDate.getMonth(), this.trackerDate.getFullYear());
 
 		const monthOffset: number = this.calendarCellService.getMonthOffset(this.trackerDate.getMonth(), this.trackerDate.getFullYear());
-		console.log(this.tabableDate);
-		this.tabableDate = this.calendarCells[Math.min(this.calendarCells.length - 1, monthOffset + this._tabableDate.value - 1)];
+		// this.setTabableDate(this.displayItems[Math.min(this.displayItems.length - 1, monthOffset + this.tabableDate.value - 1)]);
 	}
 
 	private pageYears(numPages: number): void {
 		this.trackerYear += numPages * 28;
-		const index: number = this.calendarCells.indexOf(this.tabableYear);
+		// const index: number = this.calendarCells.indexOf(this.tabableYear);
 		this.calendarCells = this.calendarCellService.getYearCells(this._key, this.trackerYear);
-		this.tabableYear = this.calendarCells[index];
+		// this.setTabableYear(this.displayItems[index]);
 	}
 
 	private onCellSelected(selectedCell: ICalendarCell): void {
 		if (this.calendarMenu.type === 'day') {
-			this._selectedDate = new Date(this.trackerDate.getFullYear(), this.trackerDate.getMonth(), selectedCell.value);
 			this._cellController.onDateCellSelected(selectedCell, this._selectedDate);
+			this._selectedDate = new Date(this.trackerDate.getFullYear(), this.trackerDate.getMonth(), selectedCell.value);
 		} else if (this.calendarMenu.type === 'year') {
 			this.trackerDate.setFullYear(selectedCell.value);
 			this._cellController.onYearCellSelected(selectedCell);
@@ -202,29 +191,29 @@ export class DatepickerComponent implements OnInit {
 			map.set('up', -7);
 			map.set('down', 7);
 			distance = map.get(direction);
-			index = this.calendarCells.indexOf(this._tabableDate);
+			// index = this.calendarCells.indexOf(this.tabableDate);
 
 			if (this.calendarCells[index + distance]) {
-				this.tabableDate = this.calendarCells[index + distance];
+				// this.setTabableDate(this.calendarCells[index + distance]);
 				const monthOffset: number = this.calendarCellService.getMonthOffset(this.trackerDate.getMonth(), this.trackerDate.getFullYear());
-				this.focusTabableCell(index + distance - monthOffset);
+				// this.focusTabableItem(index + distance - monthOffset);
 			}
 
 		} else if (this.calendarMenu.type === 'year') {
 			map.set('up', -4);
 			map.set('down', 4);
 			distance = map.get(direction);
-			index = this.calendarCells.indexOf(this._tabableYear);
+			// index = this.calendarCells.indexOf(this.tabableYear);
 
 			if (this.calendarCells[index + distance]) {
-				this.tabableYear = this.calendarCells[index + distance];
-				this.focusTabableCell(index + distance);
+				// this.setTabableYear(this.calendarCells[index + distance]);
+				this.focusTabableItem(index + distance);
 			}
 		}
 	}
 
-	private focusTabableCell(index: number): void {
-		const displayItems: HTMLElement[] = this.elementRef.nativeElement.getElementsByClassName('circle');
+	private focusTabableItem(index: number): void {
+		const displayItems: HTMLElement[] = this.elementRef.nativeElement.getElementsByClassName('display-item');
 		displayItems[index].focus();
 	}
 

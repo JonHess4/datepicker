@@ -39,10 +39,10 @@ export class DatepickerCellController implements CellController {
 
 export class DaterangepickerCellController implements CellController {
 
-	public get startDate(): Date { return this._startDate; }
-	private _startDate: Date;
-	public get endDate(): Date { return this._endDate; }
-	private _endDate: Date;
+	public get firstDate(): Date { return this.firstSelectedDate; }
+	private firstSelectedDate: Date;
+	public get secondDate(): Date { return this.secondSelectedDate; }
+	private secondSelectedDate: Date;
 
 	private firstSelectedDateCell: ICalendarCell;
 	private secondSelectedDateCell: ICalendarCell;
@@ -68,29 +68,14 @@ export class DaterangepickerCellController implements CellController {
 			this.secondSelectedDateCell = null;
 		}
 
-		if (!this._startDate) {
-			this._startDate = newSelectedDate;
-		} else if (!this._endDate) {
-			if (this._startDate > newSelectedDate) {
-				this._endDate = this._startDate;
-				this._startDate = newSelectedDate;
-			} else {
-				this._endDate = newSelectedDate;
-			}
-			this.highlightBetweenSelected();
+		if (!this.firstSelectedDate) {
+			this.firstSelectedDate = newSelectedDate;
+		} else if (!this.secondSelectedDate) {
+			this.secondSelectedDate = newSelectedDate;
 		} else {
-			this.unhighlightBetweenSelected();
-			this._startDate = newSelectedDate;
-			this._endDate = null;
+			this.firstSelectedDate = newSelectedDate;
+			this.secondSelectedDate = null;
 		}
-	}
-
-	private highlightBetweenSelected(): void {
-		
-	}
-
-	private unhighlightBetweenSelected(): void {
-
 	}
 
 	public onYearCellSelected(newSelectedYearCell: ICalendarCell): void {
