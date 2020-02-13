@@ -5,9 +5,6 @@ import { ICalendarCell } from '../models/calendar-cell';
 
 export interface CellController {
 	onDateCellSelected(newSelectedDateCell: ICalendarCell, newSelectedDate: Date): void;
-
-	/** year shoulde be picker specific */
-	// onYearCellSelected(newSelectedYearCell: ICalendarCell): void;
 }
 
 export class DatepickerCellController implements CellController {
@@ -15,8 +12,6 @@ export class DatepickerCellController implements CellController {
 	private selectedDate: Date;
 
 	private selectedDateCell: ICalendarCell;
-
-	// private selectedYearCell: ICalendarCell;
 
 	constructor() {}
 
@@ -29,15 +24,6 @@ export class DatepickerCellController implements CellController {
 
 		this.selectedDate = newSelectedDate;
 	}
-
-	/** year should be picker specific */
-	// public onYearCellSelected(newSelectedYearCell: ICalendarCell): void {
-	// 	newSelectedYearCell.isSelected = true;
-
-	// 	if (this.selectedYearCell) { this.selectedYearCell.isSelected = false; }
-
-	// 	this.selectedYearCell = (this.selectedYearCell === newSelectedYearCell ? null : newSelectedYearCell);
-	// }
 }
 
 export class DaterangepickerCellController implements CellController {
@@ -49,9 +35,6 @@ export class DaterangepickerCellController implements CellController {
 
 	private firstSelectedDateCell: ICalendarCell;
 	private secondSelectedDateCell: ICalendarCell;
-
-	// private firstSelectedYearCell: ICalendarCell;
-	// private secondSelectedYearCell: ICalendarCell;
 
 	constructor() {}
 
@@ -85,21 +68,4 @@ export class DaterangepickerCellController implements CellController {
 			this._endDate = null;
 		}
 	}
-
-	/** year should be picker specific */
-	// public onYearCellSelected(newSelectedYearCell: ICalendarCell): void {
-	// 	if (!this.firstSelectedYearCell) {
-	// 		this.firstSelectedYearCell = newSelectedYearCell;
-	// 		this.firstSelectedYearCell.isSelected = true;
-	// 	} else if (!this.secondSelectedYearCell) {
-	// 		this.secondSelectedYearCell = newSelectedYearCell;
-	// 		this.secondSelectedYearCell.isSelected = true;
-	// 	} else {
-	// 		this.firstSelectedYearCell.isSelected = false;
-	// 		this.firstSelectedYearCell = newSelectedYearCell;
-	// 		this.firstSelectedYearCell.isSelected = true;
-	// 		this.secondSelectedYearCell.isSelected = false;
-	// 		this.secondSelectedYearCell = null;
-	// 	}
-	// }
 }
