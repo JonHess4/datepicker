@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ICalendarCell } from '../models/calendar-cell';
+import { ICalendarCell, IDateCell } from '../models/calendar-cell';
 
 /**
  * this service creates and holds the calendarCells.
@@ -30,18 +30,18 @@ export class CalendarCellService {
 		return lastDateOfMonth.getDate();
 	}
 
-	public getDateCells(pickerKey: number, month: number, year: number): ICalendarCell[] {
+	public getDateCells(pickerKey: number, month: number, year: number): IDateCell[] {
 
-		let dateCells: ICalendarCell[];
+		let dateCells: IDateCell[];
 		const key: string = pickerKey + '-' + month + '-' + year;
 
 		if (this.calendarCells.has(key)) {
-			dateCells = this.calendarCells.get(key);
+			dateCells = this.calendarCells.get(key) as IDateCell[];
 
 		} else {
 			const monthOffset: number = this.getMonthOffset(month, year);
 			const numDaysInMonth: number = this.getNumDaysInMonth(new Date(year, month, 1));
-			dateCells = this.createCalendarCells(key, 1, monthOffset, numDaysInMonth);
+			dateCells = this.createDateCells(pickerKey, month, year, monthOffset, numDaysInMonth);
 		}
 
 		return dateCells;
@@ -60,21 +60,23 @@ export class CalendarCellService {
 			yearCells = this.calendarCells.get(key);
 
 		} else {
-			yearCells = this.createCalendarCells(key, year, 0, 28);
+			yearCells = this.createYearCells(key, year);
 		}
 		return yearCells;
 	}
 
-	private createCalendarCells(key: string, startingValue: number, offset: number, range: number): ICalendarCell[] {
-		const calendarCells: ICalendarCell[] = [];
+	private createDateCells(keyPref: number, month: number, year: number, offset: number, range: number): IDateCell[] {
+		const dateCells: IDateCell[] = [];
+		const key: string = keyPref + '-' + month + '-' + year;
 
 		for (let i: number = 0; i < offset; i++) {
-			calendarCells.push(null);
+			dateCells.push(null);
 		}
 
 		for (let i: number = 0; i < range; i++) {
-			const calendarCell: ICalendarCell = {
-				value: startingValue + i,
+			const dateCell: IDateCell = {
+				date: new Date(year, month, i + 1),
+				value: i + 1,
 				isSelected: false,
 				isToday: false,
 				tabIndex: -1,
@@ -87,11 +89,28 @@ export class CalendarCellService {
 				outlineCircleLeft: false,
 				outlineCircleRight: false
 			};
-			calendarCells.push(calendarCell);
+			dateCells.push(dateCell);
 		}
 
-		this.calendarCells.set(key, calendarCells);
-		return calendarCells;
+		this.calendarCells.set(key, dateCells);
+		return dateCells;
+	}
+
+	private createYearCells(key: string, startingValue: number): ICalendarCell[] {
+		const yearCells: ICalendarCell[] = [];
+
+		for (let i: number = 0; i < 28; i++) {
+			const yearCell: ICalendarCell = {
+				value: startingValue + i,
+				isSelected: false,
+				isToday: false,
+				tabIndex: -1
+			};
+			yearCells.push(yearCell);
+		}
+
+		this.calendarCells.set(key, yearCells);
+		return yearCells;
 	}
 
 }
