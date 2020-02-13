@@ -19,11 +19,8 @@ export class DaterangepickerDirective extends PickerDirective {
 	private leftPickerElem: HTMLElement;
 	private rightPickerElem: HTMLElement;
 
-	private leftSelectedDate: Date = this.daterangepickerCellController.firstDate;
-	private rightSelectedDate: Date = this.daterangepickerCellController.secondDate;
-
 	private leftInput: HTMLInputElement = this.elementRef.nativeElement;
-	private rightInput: HTMLInputElement = document.getElementById(this.secondInput) as HTMLInputElement;
+	private rightInput: HTMLInputElement;
 
 	constructor(
 		elementRef: ElementRef,
@@ -31,10 +28,9 @@ export class DaterangepickerDirective extends PickerDirective {
 		viewContainerRef: ViewContainerRef
 	) {
 		super(elementRef, componentFactoryResolver, viewContainerRef);
-		this.init();
 	}
 
-	private init(): void {
+	ngOnInit(): void {
 
 		this.setParentElement(this.elementRef.nativeElement);
 
@@ -52,17 +48,25 @@ export class DaterangepickerDirective extends PickerDirective {
 		this.appendPickerComponent(this.leftPickerElem);
 		this.appendPickerComponent(this.rightPickerElem);
 
-		this.leftSelectedDate = this.leftPicker.selectedDate;
-		this.rightSelectedDate = this.rightPicker.selectedDate;
-
 		this.hidePicker();
+
+		this.rightInput = document.getElementById(this.secondInput) as HTMLInputElement;
 	}
 
 	protected onEnter(targetElement: HTMLElement): void {
 		super.onEnter(targetElement);
+
+		this.setInputValues(this.daterangepickerCellController.startDate, this.daterangepickerCellController.endDate);
 	}
 
 	protected onClick(targetElement: HTMLElement): void {
 		super.onClick(targetElement);
+
+		this.setInputValues(this.daterangepickerCellController.startDate, this.daterangepickerCellController.endDate);
+	}
+
+	private setInputValues(startDate: Date, endDate: Date): void {
+		this.leftInput.value = startDate ? startDate.toLocaleDateString() : '';
+		this.rightInput.value = endDate ? endDate.toLocaleDateString() : '';
 	}
 }

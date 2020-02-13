@@ -165,7 +165,7 @@ export class DatepickerComponent implements OnInit {
 			this._selectedDate = new Date(this.trackerDate.getFullYear(), this.trackerDate.getMonth(), selectedCell.value);
 		} else if (this.calendarMenu.type === 'year') {
 			this.trackerDate.setFullYear(selectedCell.value);
-			this._cellController.onYearCellSelected(selectedCell);
+			// this._cellController.onYearCellSelected(selectedCell);
 			this.setCalendarCells(this.trackerDate.getMonth(), this.trackerDate.getFullYear());
 			this.calendarMenu.type = 'day';
 			this.calendarMenu.year = this.trackerDate.getFullYear();

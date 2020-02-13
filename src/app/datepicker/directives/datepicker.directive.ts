@@ -20,10 +20,9 @@ export class DatepickerDirective extends PickerDirective {
 		viewContainerRef: ViewContainerRef
 	) {
 		super(elementRef, componentFactoryResolver, viewContainerRef);
-		this.init();
 	}
 
-	private init(): void {
+	ngOnInit(): void {
 
 		this.setParentElement(this.elementRef.nativeElement);
 

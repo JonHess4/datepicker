@@ -5,7 +5,9 @@ import { ICalendarCell } from '../models/calendar-cell';
 
 export interface CellController {
 	onDateCellSelected(newSelectedDateCell: ICalendarCell, newSelectedDate: Date): void;
-	onYearCellSelected(newSelectedYearCell: ICalendarCell): void;
+
+	/** year shoulde be picker specific */
+	// onYearCellSelected(newSelectedYearCell: ICalendarCell): void;
 }
 
 export class DatepickerCellController implements CellController {
@@ -14,7 +16,7 @@ export class DatepickerCellController implements CellController {
 
 	private selectedDateCell: ICalendarCell;
 
-	private selectedYearCell: ICalendarCell;
+	// private selectedYearCell: ICalendarCell;
 
 	constructor() {}
 
@@ -28,27 +30,28 @@ export class DatepickerCellController implements CellController {
 		this.selectedDate = newSelectedDate;
 	}
 
-	public onYearCellSelected(newSelectedYearCell: ICalendarCell): void {
-		newSelectedYearCell.isSelected = true;
+	/** year should be picker specific */
+	// public onYearCellSelected(newSelectedYearCell: ICalendarCell): void {
+	// 	newSelectedYearCell.isSelected = true;
 
-		if (this.selectedYearCell) { this.selectedYearCell.isSelected = false; }
+	// 	if (this.selectedYearCell) { this.selectedYearCell.isSelected = false; }
 
-		this.selectedYearCell = (this.selectedYearCell === newSelectedYearCell ? null : newSelectedYearCell);
-	}
+	// 	this.selectedYearCell = (this.selectedYearCell === newSelectedYearCell ? null : newSelectedYearCell);
+	// }
 }
 
 export class DaterangepickerCellController implements CellController {
 
-	public get firstDate(): Date { return this.firstSelectedDate; }
-	private firstSelectedDate: Date;
-	public get secondDate(): Date { return this.secondSelectedDate; }
-	private secondSelectedDate: Date;
+	public get startDate(): Date { return this._startDate; }
+	private _startDate: Date;
+	public get endDate(): Date { return this._endDate; }
+	private _endDate: Date;
 
 	private firstSelectedDateCell: ICalendarCell;
 	private secondSelectedDateCell: ICalendarCell;
 
-	private firstSelectedYearCell: ICalendarCell;
-	private secondSelectedYearCell: ICalendarCell;
+	// private firstSelectedYearCell: ICalendarCell;
+	// private secondSelectedYearCell: ICalendarCell;
 
 	constructor() {}
 
@@ -68,29 +71,35 @@ export class DaterangepickerCellController implements CellController {
 			this.secondSelectedDateCell = null;
 		}
 
-		if (!this.firstSelectedDate) {
-			this.firstSelectedDate = newSelectedDate;
-		} else if (!this.secondSelectedDate) {
-			this.secondSelectedDate = newSelectedDate;
+		if (!this._startDate) {
+			this._startDate = newSelectedDate;
+		} else if (!this._endDate) {
+			if (this.startDate > newSelectedDate) {
+				this._endDate = this._startDate;
+				this._startDate = newSelectedDate;
+			} else {
+				this._endDate = newSelectedDate;
+			}
 		} else {
-			this.firstSelectedDate = newSelectedDate;
-			this.secondSelectedDate = null;
+			this._startDate = newSelectedDate;
+			this._endDate = null;
 		}
 	}
 
-	public onYearCellSelected(newSelectedYearCell: ICalendarCell): void {
-		if (!this.firstSelectedYearCell) {
-			this.firstSelectedYearCell = newSelectedYearCell;
-			this.firstSelectedYearCell.isSelected = true;
-		} else if (!this.secondSelectedYearCell) {
-			this.secondSelectedYearCell = newSelectedYearCell;
-			this.secondSelectedYearCell.isSelected = true;
-		} else {
-			this.firstSelectedYearCell.isSelected = false;
-			this.firstSelectedYearCell = newSelectedYearCell;
-			this.firstSelectedYearCell.isSelected = true;
-			this.secondSelectedYearCell.isSelected = false;
-			this.secondSelectedYearCell = null;
-		}
-	}
+	/** year should be picker specific */
+	// public onYearCellSelected(newSelectedYearCell: ICalendarCell): void {
+	// 	if (!this.firstSelectedYearCell) {
+	// 		this.firstSelectedYearCell = newSelectedYearCell;
+	// 		this.firstSelectedYearCell.isSelected = true;
+	// 	} else if (!this.secondSelectedYearCell) {
+	// 		this.secondSelectedYearCell = newSelectedYearCell;
+	// 		this.secondSelectedYearCell.isSelected = true;
+	// 	} else {
+	// 		this.firstSelectedYearCell.isSelected = false;
+	// 		this.firstSelectedYearCell = newSelectedYearCell;
+	// 		this.firstSelectedYearCell.isSelected = true;
+	// 		this.secondSelectedYearCell.isSelected = false;
+	// 		this.secondSelectedYearCell = null;
+	// 	}
+	// }
 }
