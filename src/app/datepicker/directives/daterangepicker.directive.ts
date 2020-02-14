@@ -16,9 +16,6 @@ export class DaterangepickerDirective extends PickerDirective {
 	// reference to the datepicker element
 	private leftPickerElem: HTMLElement;
 	private rightPickerElem: HTMLElement;
-	//
-	private leftTrackerDate: Date;
-	private rightTrackerDate: Date;
 
 	private leftInput: HTMLInputElement;
 	private rightInput: HTMLInputElement;
@@ -55,9 +52,6 @@ export class DaterangepickerDirective extends PickerDirective {
 
 		this.leftInput = this.elementRef.nativeElement;
 		this.rightInput = document.getElementById(this.secondInput) as HTMLInputElement;
-
-		this.leftTrackerDate = this.leftPicker.trackerDate;
-		this.rightTrackerDate = this.rightPicker.trackerDate;
 
 		this.hidePicker();
 	}

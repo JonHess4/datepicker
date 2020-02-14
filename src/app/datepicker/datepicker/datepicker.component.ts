@@ -43,46 +43,44 @@ export class DatepickerComponent implements OnInit {
 
 		const today: Date = new Date();
 
-		this.mCalendarMenu = {
-			type: 'day',
-			monthName: '' + today.getMonth(),
-			year: today.getFullYear()
-		};
-
-		this.mCalendarCells = this.getDateCells(today.getFullYear(), today.getMonth());
-
 		this.mTrackerDate = new Date(today.getFullYear(), today.getMonth(), 1);
 		this.mTrackerYear = today.getFullYear();
 
-		this.markToday();
+		this.mCalendarMenu = { type: 'day', monthName: '' + today.getMonth(), year: today.getFullYear() };
+
+		this.mCalendarCells = this.getCalendarCells();
+
+		this.markToday(today);
 	}
 
-	private markToday(): void {
-		const today: Date = new Date();
-		const todayCalendarDateCells: ICalendarCell[] = this.calendarCellService.getDateCells(this.mKey, today.getMonth(), today.getFullYear());
-		const todayCalendarYearCells: ICalendarCell[] = this.calendarCellService.getYearCells(this.mKey, today.getFullYear());
+	private markToday(today: Date): void {
+		// date cell stuff
+		const dateCells: ICalendarCell[] = this.calendarCellService.getDateCells(this.mKey, today.getMonth(), today.getFullYear());
 
-		todayCalendarYearCells[0].isToday = true;
 		const monthOffset: number = this.calendarCellService.getMonthOffset(today.getMonth(), today.getFullYear());
-		todayCalendarDateCells[today.getDate() + monthOffset - 1].isToday = true;
+		dateCells[today.getDate() + monthOffset - 1].isToday = true;
 
-		this.mTabableDate = todayCalendarDateCells[today.getDate() + monthOffset - 1];
+		this.mTabableDate = dateCells[today.getDate() + monthOffset - 1];
 		this.mTabableDate.tabIndex = 0;
-		this.mTabableYear = todayCalendarYearCells[0];
+
+		// year cell stuff
+		const yearCells: ICalendarCell[] = this.calendarCellService.getYearCells(this.mKey, today.getFullYear());
+
+		yearCells[0].isToday = true;
+
+		this.mTabableYear = yearCells[0];
 		this.mTabableYear.tabIndex = 0;
 	}
 
-	/**
-	 * start property setters
-	 */
-
-	 private getDateCells(month: number, year: number): ICalendarCell[] {
-		 return this.calendarCellService.getDateCells(this.mKey, month, year);
-	 }
-
-	 private getYearCells(year: number): ICalendarCell[] {
-		 return this.calendarCellService.getYearCells(this.mKey, year);
-	 }
+	private getCalendarCells(): ICalendarCell[] {
+		let calendarCells: ICalendarCell[] = null;
+		if (this.mCurrentDisplayType === 'day') {
+			calendarCells = this.calendarCellService.getDateCells(this.mKey, this.mTrackerDate.getMonth(), this.mTrackerDate.getFullYear());
+		} else if (this.mCurrentDisplayType === 'year') {
+			calendarCells = this.calendarCellService.getYearCells(this.mKey, this.mTrackerYear);
+		}
+		return calendarCells;
+	}
 
 	private updateTabableDate(newTabableDate: ICalendarCell): void {
 		this.mTabableDate.tabIndex = -1;
@@ -97,21 +95,12 @@ export class DatepickerComponent implements OnInit {
 	}
 
 	/**
-	 * end property setters
-	 */
-
-	/**
 	 * start child event emitter methods
 	 */
 
-	private onDisplayToggle(newDisplay: string): void {
-		if (this.mCurrentDisplayType === 'day') {
-			this.mCurrentDisplayType = 'year';
-			this.getYearCells(this.mTrackerYear);
-		} else if (this.mCurrentDisplayType === 'year') {
-			this.mCurrentDisplayType = 'day';
-			this.getDateCells(this.mTrackerDate.getMonth(), this.mTrackerDate.getFullYear());
-		}
+	private toggleDisplay(newDisplay: string): void {
+		this.mCurrentDisplayType = newDisplay;
+		this.mCalendarCells = this.getCalendarCells();
 	}
 
 	private onPagination(numPages: number): void {
@@ -133,16 +122,15 @@ export class DatepickerComponent implements OnInit {
 		// the year that we will be paging to
 		let newTrackerDateYear: number;
 
-		numYears = Math.floor(Math.abs(numPages + this.trackerDate.getMonth()) / 12);
-		if ((numPages % 12) + this.trackerDate.getMonth() < 0) {
-			numYears += 1;
-		}
-		newTrackerDateYear = this.trackerDate.getFullYear() + (numYears * direction);
+		numYears = Math.floor(Math.abs(numPages + this.mTrackerDate.getMonth()) / 12);
+		numYears += (((numPages % 12) + this.mTrackerDate.getMonth() < 0) ? 1 : 0);
 
-		newTrackerDateMonth = ((numPages % 12) + this.trackerDate.getMonth() + 12) % 12;
+		newTrackerDateYear = this.mTrackerDate.getFullYear() + (numYears * direction);
+
+		newTrackerDateMonth = ((numPages % 12) + this.mTrackerDate.getMonth() + 12) % 12;
 		this.trackerDate.setMonth(newTrackerDateMonth);
 
-		if (this.trackerDate.getFullYear() !== newTrackerDateYear) {
+		if (this.mTrackerDate.getFullYear() !== newTrackerDateYear) {
 			this.trackerDate.setFullYear(newTrackerDateYear);
 
 			while (newTrackerDateYear - this.mTrackerYear >= 28) {
@@ -152,22 +140,22 @@ export class DatepickerComponent implements OnInit {
 				this.mTrackerYear -= 28;
 			}
 
-			const yearCells: ICalendarCell[] = this.getYearCells(this.mTrackerYear);
+			const yearCells: ICalendarCell[] = this.calendarCellService.getYearCells(this.mKey, this.mTrackerYear);
 			this.updateTabableYear(yearCells[this.mTrackerDate.getFullYear() - this.mTrackerYear]);
 		}
 
-		this.mCalendarMenu.monthName = '' + this.trackerDate.getMonth();
-		this.mCalendarMenu.year = this.trackerDate.getFullYear();
-		this.mCalendarCells = this.getDateCells(this.trackerDate.getMonth(), this.trackerDate.getFullYear());
+		this.mCalendarMenu.monthName = '' + this.mTrackerDate.getMonth();
+		this.mCalendarMenu.year = this.mTrackerDate.getFullYear();
+		this.mCalendarCells = this.getCalendarCells();
 
-		const monthOffset: number = this.calendarCellService.getMonthOffset(this.trackerDate.getMonth(), this.trackerDate.getFullYear());
+		const monthOffset: number = this.calendarCellService.getMonthOffset(this.mTrackerDate.getMonth(), this.mTrackerDate.getFullYear());
 		this.updateTabableDate(this.mCalendarCells[Math.min(this.mCalendarCells.length - 1, monthOffset + this.mTabableDate.value - 1)]);
 	}
 
 	private pageYears(numPages: number): void {
 		this.mTrackerYear += numPages * 28;
 		const index: number = this.mCalendarCells.indexOf(this.mTabableYear);
-		this.mCalendarCells = this.getYearCells(this.mTrackerYear);
+		this.mCalendarCells = this.getCalendarCells();
 		this.updateTabableYear(this.mCalendarCells[index]);
 	}
 
@@ -177,8 +165,8 @@ export class DatepickerComponent implements OnInit {
 			this.updateTabableDate(selectedCell);
 		} else if (this.mCurrentDisplayType === 'year') {
 			this.trackerDate.setFullYear(selectedCell.value);
-			this.onDisplayToggle('day');
-			this.mCalendarMenu.year = this.trackerDate.getFullYear();
+			this.mCalendarMenu.year = this.mTrackerDate.getFullYear();
+			this.toggleDisplay('day');
 			this.updateTabableYear(selectedCell);
 		}
 	}
@@ -206,7 +194,7 @@ export class DatepickerComponent implements OnInit {
 
 			if (this.mCalendarCells[index + distance]) {
 				this.updateTabableDate(this.mCalendarCells[index + distance]);
-				const monthOffset: number = this.calendarCellService.getMonthOffset(this.trackerDate.getMonth(), this.trackerDate.getFullYear());
+				const monthOffset: number = this.calendarCellService.getMonthOffset(this.mTrackerDate.getMonth(), this.mTrackerDate.getFullYear());
 				this.focusTabableItem(index + distance - monthOffset);
 			}
 
