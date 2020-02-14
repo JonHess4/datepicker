@@ -1,16 +1,16 @@
-<div id="datepicker">
+<span id="datepicker">
 
 	<app-calendar-menu
-		[calendarMenu]="calendarMenu"
+		[calendarMenu]="mCalendarMenu"
 		(displayToggle)="onDisplayToggle($event);"
 		(pagination)="onPagination($event)">
 	</app-calendar-menu>
 
-	<div class="calendar-cell-grid" [ngClass]="{
-		'date-cell-grid' : calendarMenu.type === 'day',
-		'year-cell-grid' : calendarMenu.type === 'year'
+	<span class="calendar-cell-grid" [ngClass]="{
+		'date-cell-grid' : mCurrentDisplayType === 'day',
+		'year-cell-grid' : mCurrentDisplayType === 'year'
 	}">
-		<div *ngFor="let calendarCell of calendarCells">
+		<span *ngFor="let calendarCell of mCalendarCells">
 			<app-calendar-cell
 				[calendarCell]="calendarCell"
 				(selectedCell)="onCellSelected($event);"
@@ -18,7 +18,7 @@
 				(mousedOutCell)="onMouseOutCell($event);"
 				(direction)="onMove($event);">
 			</app-calendar-cell>
-		</div>
-	</div>
+		</span>
+	</span>
 
-</div>
+</span>

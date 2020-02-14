@@ -32,6 +32,7 @@ svg {
 .day-label-grid {
 	display: grid;
 	grid-template-columns: $dp-32 $dp-32 $dp-32 $dp-32 $dp-32 $dp-32 $dp-32;
+	grid-template-rows: $dp-32;
 	padding: 0px $dp-16 0px $dp-16;
 	font-size: $day-label-font-size;
 	color: $day-label-font-color;

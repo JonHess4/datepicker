@@ -1,8 +1,9 @@
 // tslint:disable-next-line: max-line-length
 import { ComponentFactory, ComponentFactoryResolver, ComponentRef, ElementRef, HostListener, OnInit, Type, ViewContainerRef } from '@angular/core';
 import { DatepickerComponent } from '../datepicker/datepicker.component';
+import { SelectedDateResolver } from '../services/selected-date-resolver';
 
-export abstract class PickerDirective implements OnInit{
+export abstract class PickerDirective implements OnInit {
 
 	// a reference to the parent element of this input form that contains both this input form and the pickerContainer
 	protected parentElement: HTMLElement;
@@ -10,6 +11,8 @@ export abstract class PickerDirective implements OnInit{
 	protected pickerContainer: HTMLElement;
 
 	private readonly key: number = Math.floor(Math.random() * 10000);
+
+	protected selectedDateResolver: SelectedDateResolver;
 
 	constructor(
 		protected elementRef: ElementRef,
@@ -53,6 +56,9 @@ export abstract class PickerDirective implements OnInit{
 		this.pickerContainer.style.top = '100%';
 		this.pickerContainer.style.left = '0%';
 		this.pickerContainer.style.zIndex = '9999';
+		this.pickerContainer.style.borderRadius = '5px';
+		this.pickerContainer.style.boxShadow = '1px 1px 5px grey';
+		this.pickerContainer.style.backgroundColor = 'white';
 	}
 
 	protected appendPickerComponent(pickerElem: HTMLElement): void {
@@ -69,6 +75,10 @@ export abstract class PickerDirective implements OnInit{
 		if (this.pickerContainer.classList.contains('show') && this.elementRef.nativeElement === targetElement) {
 			this.hidePicker();
 		}
+
+		if (this.pickerContainer.contains(targetElement) && targetElement.classList.contains('circle')) {
+			this.updateInput();
+		}
 	}
 
 	@HostListener('document:click', ['$event.target'])
@@ -78,7 +88,13 @@ export abstract class PickerDirective implements OnInit{
 		} else if (this.elementRef.nativeElement === targetElement) {
 			this.showPicker();
 		}
+
+		if (this.pickerContainer.contains(targetElement) && targetElement.classList.contains('circle')) {
+			this.updateInput();
+		}
 	}
+
+	protected abstract updateInput(): void;
 
 	// This closes datepicker if the user tabs out of the container.
 	@HostListener('document:keyup.tab')
