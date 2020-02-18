@@ -10,7 +10,7 @@ export abstract class PickerDirective implements OnInit {
 	// the element to put the datepicker(s) in and control their visibility on the screen
 	protected pickerContainer: HTMLElement;
 
-	private readonly key: number = Math.floor(Math.random() * 10000);
+	protected readonly key: number = Math.floor(Math.random() * 10000);
 
 	protected selectedDateResolver: SelectedDateResolver;
 

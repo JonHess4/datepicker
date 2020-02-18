@@ -1,7 +1,6 @@
 import { ICalendarCell, IDateCell } from '../models/calendar-cell';
 
-// pseudo service, we do not want it to be a singleton
-// this service is in charge of flipping the boolean values of the calendar cells and should be the only place they are flipped
+// each time a date is selected, this resolves the styling and holds the selected Date(s)
 
 export interface SelectedDateResolver {
 	onDateCellSelected(newSelectedDateCell: ICalendarCell): void;

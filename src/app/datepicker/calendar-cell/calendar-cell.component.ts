@@ -16,8 +16,7 @@ export class CalendarCellComponent implements OnInit {
 
 	constructor() { }
 
-	ngOnInit(): void {
-	}
+	ngOnInit(): void {}
 
 	private onSelect(event: UIEvent, calendarCell: ICalendarCell): void {
 		if (event instanceof KeyboardEvent && event.key === 'Enter') {
