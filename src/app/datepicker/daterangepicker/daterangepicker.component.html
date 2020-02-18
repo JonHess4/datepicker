@@ -1,1 +1,55 @@
-<p>daterangepicker works!</p>
+<div id="daterangepicker">
+
+	<app-daterenagepicker-menu
+		[daterangepickerMenu]="mPickerMenu"
+		(leftDisplayEmitter)="setDisplay(mPickerMenu.leftMenu, $event);"
+		(rightDisplayemitter)="setRightDisplay(mPickerMenu.rightMenu, $event);"
+		(leftPaginationEmitter)="onLeftPagination($event);"
+		(rightPaginationEmitter)="onRightPagination($event);">
+	</app-daterangepicker-menu>
+
+	<div class="dateCells" id="leftDateCells" *ngIf="mLeftDisplay === 'day'">
+		<span *ngFor="let dateCell of leftDateCells">
+			<app-calendar-cell
+				[calendarCell]="dateCell"
+				(selectEmitter)="onDateSelected($event);"
+				(hoverEmitter)="onDateHover($event);"
+				(unhoverEmitter)="onDateUnhover($event);"
+				(traversalEmitter)="onDateTraversalLeft($event);"
+				></app-calendar-cell>
+		</span>
+	</div>
+
+	<div class="yearCells" id="leftYearCells" *ngIf="mLeftDisplay === 'year'">
+		<span *ngFor="let yearCell of leftYearCells">
+			<app-calendar-cell
+				[calendarCell]="yearCell"
+				(selectEmitter)="onYearSelectedLeft($event);"
+				(traversalEmitter)="onYearTraversalLeft($event);"
+				></app-calendar-cell>
+		</span>
+	</div>
+
+	<div class="dateCells" id="rightDateCells"*ngIf="mRightDisplay === 'day'">
+		<span *ngFor="let dateCell of rightDateCells">
+			<app-calendar-cell
+				[calendarCell]="dateCell"
+				(selectEmitter)="onDateSelected($event);"
+				(hoverEmitter)="onDateHover($event);"
+				(unhoverEmitter)="onDateUnhover($event);"
+				(traversalEmitter)="onDateTraversalRight($event);"
+				></app-calendar-cell>
+		</span>
+	</div>
+
+	<div class="yearCells" id="rightYearCells" *ngIf="mRightDisplay === 'year'">
+		<span *ngFor="let yearCell of rightYearCells">
+			<app-calendar-cell
+				[calendarCell]="yearCell"
+				(selectEmitter)="onYearSelectedRight($event);"
+				(traversalEmitter)="onYearTraversalRight($event);"
+				></app-calendar-cell>
+		</span>
+	</div>
+
+</div>

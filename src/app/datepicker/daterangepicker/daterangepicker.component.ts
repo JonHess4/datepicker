@@ -35,6 +35,8 @@ export class DaterangepickerComponent extends PickerComponent implements OnInit 
 	private startDate: Date;
 	private endDate: Date;
 
+	private hoveredDateCell: IDateCell;
+
 	constructor(
 		pickerCellService: PickerCellService,
 		elementRef: ElementRef
@@ -46,24 +48,50 @@ export class DaterangepickerComponent extends PickerComponent implements OnInit 
 		super.ngOnInit();
 	}
 
-	setLeftDisplay(newDisplay: string): void {}
+	private onPaginationLeft(): void {
 
-	setRightDisplay(newDisplay: string): void {}
+	}
 
-	onPaginationLeft(): void {}
+	private onPaginationRight(): void {
 
-	onPaginationRight(): void {}
+	}
 
-	protected onDateSelected(): void {}
+	//
 
-	onDateHovered(): void {}
+	private onDateHover(newHoveredDateCell: IDateCell): void {
+		this.hoveredDateCell = newHoveredDateCell;
+	}
 
-	onDateUnhovered(): void {}
+	private onDateUnhover(): void {
+		this.hoveredDateCell = null;
+	}
 
-	onLeftYearSelected(): void {}
+	protected onDateSelected(): void {
 
-	onRightYearSelected(): void {}
+	}
 
-	onCellTraversal(): void {}
+	private onYearSelectedLeft(): void {
+
+	}
+
+	private onYearSelectedRight(): void {
+
+	}
+
+	private onDateTraversalLeft(): void {
+
+	}
+
+	private onDateTraversalRight(): void {
+
+	}
+
+	private onYearTraversalLeft(): void {
+
+	}
+
+	private onYearTraversalRight(): void {
+
+	}
 
 }

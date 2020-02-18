@@ -9,10 +9,10 @@ import { ICalendarCell } from '../models/picker-cell';
 export class CalendarCellComponent implements OnInit {
 
 	@Input() calendarCell: ICalendarCell;
-	@Output() selectedCell: EventEmitter<ICalendarCell> = new EventEmitter<ICalendarCell>();
-	@Output() mousedOverCell: EventEmitter<ICalendarCell> = new EventEmitter<ICalendarCell>();
-	@Output() mousedOutCell: EventEmitter<ICalendarCell> = new EventEmitter<ICalendarCell>();
-	@Output() direction: EventEmitter<string> = new EventEmitter<string>();
+	@Output() selectEmitter: EventEmitter<ICalendarCell> = new EventEmitter<ICalendarCell>();
+	@Output() hoverEmitter: EventEmitter<ICalendarCell> = new EventEmitter<ICalendarCell>();
+	@Output() unhoverEmitter: EventEmitter<ICalendarCell> = new EventEmitter<ICalendarCell>();
+	@Output() traversalEmitter: EventEmitter<string> = new EventEmitter<string>();
 
 	constructor() { }
 
@@ -22,19 +22,19 @@ export class CalendarCellComponent implements OnInit {
 		if (event instanceof KeyboardEvent && event.key === 'Enter') {
 			event.preventDefault();
 		}
-		this.selectedCell.emit(calendarCell);
+		this.selectEmitter.emit(calendarCell);
 	}
 
-	private onMouseenter(event: UIEvent, calendarCell: ICalendarCell): void {
-		this.mousedOverCell.emit(calendarCell);
+	private onHover(event: UIEvent, calendarCell: ICalendarCell): void {
+		this.hoverEmitter.emit(calendarCell);
 	}
 
-	private onMouseleave(event: UIEvent, calendarCell: ICalendarCell): void {
-		this.mousedOutCell.emit(calendarCell);
+	private onUnhover(event: UIEvent, calendarCell: ICalendarCell): void {
+		this.unhoverEmitter.emit(calendarCell);
 	}
 
-	private onMove(direction: string): void {
-		this.direction.emit(direction);
+	private onTraversal(direction: string): void {
+		this.traversalEmitter.emit(direction);
 	}
 
 }
