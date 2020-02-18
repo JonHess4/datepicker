@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CalendarMenuComponent } from './calendar-menu.component';
+import { DaterangepickerComponent } from './daterangepicker.component';
 
-describe('CalendarMenuComponent', () => {
-  let component: CalendarMenuComponent;
-  let fixture: ComponentFixture<CalendarMenuComponent>;
+describe('DaterangepickerComponent', () => {
+  let component: DaterangepickerComponent;
+  let fixture: ComponentFixture<DaterangepickerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CalendarMenuComponent ]
+      declarations: [ DaterangepickerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CalendarMenuComponent);
+    fixture = TestBed.createComponent(DaterangepickerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

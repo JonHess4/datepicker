@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output  } from '@angular/core';
-import { ICalendarCell } from '../models/calendar-cell';
+import { ICalendarCell } from '../models/picker-cell';
 
 @Component({
 	selector: 'app-calendar-cell',

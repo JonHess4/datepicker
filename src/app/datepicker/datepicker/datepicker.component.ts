@@ -1,7 +1,8 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
-import { ICalendarCell, IDateCell } from '../models/calendar-cell';
-import { ICalendarMenu } from '../models/calendar-menu';
-import { CalendarCellService } from '../services/calendar-cell.service';
+import { ICalendarCell, IDateCell } from '../models/picker-cell';
+import { ICalendarMenu } from '../models/picker-menu';
+import { PickerComponent } from '../picker.component';
+import { CalendarCellService } from '../services/picker-cell.service';
 import { DatepickerSelectedDateResolver, SelectedDateResolver } from '../services/selected-date-resolver';
 
 @Component({
@@ -9,7 +10,7 @@ import { DatepickerSelectedDateResolver, SelectedDateResolver } from '../service
 	templateUrl: './datepicker.component.html',
 	styleUrls: ['./datepicker.component.scss']
 })
-export class DatepickerComponent implements OnInit {
+export class DatepickerComponent extends PickerComponent implements OnInit {
 
 	// this key is used to retrieve the correct data from calendarCellService
 	public set key(newKey: number) { this.mKey = newKey; }
@@ -35,9 +36,11 @@ export class DatepickerComponent implements OnInit {
 	private mTabableYear: ICalendarCell;
 
 	constructor(
-		private calendarCellService: CalendarCellService,
-		public elementRef: ElementRef
-	) { }
+		calendarCellService: CalendarCellService,
+		elementRef: ElementRef
+	) {
+		super(calendarCellService elementRef);
+	}
 
 	ngOnInit(): void {
 

@@ -1,8 +1,7 @@
 import { ComponentFactoryResolver, Directive, ElementRef, Input, ViewContainerRef } from '@angular/core';
 import { DatepickerComponent } from '../datepicker/datepicker.component';
-import { IDateCell } from '../models/calendar-cell';
-import { CalendarCellService } from '../services/calendar-cell.service';
-import { DaterangepickerSelectedDateResolver } from '../services/selected-date-resolver';
+import { IDateCell } from '../models/picker-cell';
+import { CalendarCellService } from '../services/picker-cell.service';
 import { PickerDirective } from './picker.directive';
 
 @Directive({
@@ -21,8 +20,6 @@ export class DaterangepickerDirective extends PickerDirective {
 
 	private leftInput: HTMLInputElement;
 	private rightInput: HTMLInputElement;
-
-	protected selectedDateResolver: DaterangepickerSelectedDateResolver;
 
 	private oldStartDate: Date;
 	private oldEndDate: Date;
@@ -43,10 +40,6 @@ export class DaterangepickerDirective extends PickerDirective {
 
 		this.leftPicker = this.generatePickerComponent();
 		this.rightPicker = this.generatePickerComponent();
-
-		this.selectedDateResolver = new DaterangepickerSelectedDateResolver();
-		this.leftPicker.selectedDateResolver = this.selectedDateResolver;
-		this.rightPicker.selectedDateResolver = this.selectedDateResolver;
 
 		this.leftPickerElem = this.leftPicker.elementRef.nativeElement;
 		this.rightPickerElem = this.rightPicker.elementRef.nativeElement;

@@ -1,7 +1,6 @@
 // tslint:disable-next-line: max-line-length
 import { ComponentFactory, ComponentFactoryResolver, ComponentRef, ElementRef, HostListener, OnInit, Type, ViewContainerRef } from '@angular/core';
 import { DatepickerComponent } from '../datepicker/datepicker.component';
-import { SelectedDateResolver } from '../services/selected-date-resolver';
 
 export abstract class PickerDirective implements OnInit {
 
@@ -12,7 +11,6 @@ export abstract class PickerDirective implements OnInit {
 
 	protected readonly key: number = Math.floor(Math.random() * 10000);
 
-	protected selectedDateResolver: SelectedDateResolver;
 
 	constructor(
 		protected elementRef: ElementRef,

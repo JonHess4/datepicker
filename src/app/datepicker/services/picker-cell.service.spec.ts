@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CalendarCellService } from './calendar-cell.service';
+import { CalendarCellService } from './picker-cell.service';
 
 describe('CalendarCellService', () => {
 	beforeEach(() => TestBed.configureTestingModule({}));

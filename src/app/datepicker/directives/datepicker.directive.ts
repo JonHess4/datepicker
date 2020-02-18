@@ -1,6 +1,5 @@
 import { ComponentFactoryResolver, Directive, ElementRef, ViewContainerRef } from '@angular/core';
 import { DatepickerComponent } from '../datepicker/datepicker.component';
-import { DatepickerSelectedDateResolver } from '../services/selected-date-resolver';
 import { PickerDirective } from './picker.directive';
 
 @Directive({
@@ -12,8 +11,6 @@ export class DatepickerDirective extends PickerDirective {
 	private datepicker: DatepickerComponent;
 	// reference to the datepicker element
 	private pickerElem: HTMLElement;
-
-	protected selectedDateResolver: DatepickerSelectedDateResolver;
 
 	constructor(
 		elementRef: ElementRef,
@@ -35,9 +32,6 @@ export class DatepickerDirective extends PickerDirective {
 		this.appendPickerComponent(this.pickerElem);
 
 		this.hidePicker();
-
-		this.selectedDateResolver = new DatepickerSelectedDateResolver();
-		this.datepicker.selectedDateResolver = this.selectedDateResolver;
 	}
 
 	protected onEnter(targetElement: HTMLElement): void {
