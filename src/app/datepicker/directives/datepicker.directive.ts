@@ -1,6 +1,6 @@
 import { ComponentFactoryResolver, Directive, ElementRef, ViewContainerRef } from '@angular/core';
 import { DatepickerComponent } from '../datepicker/datepicker.component';
-import { DatepickerDateCellStyler } from '../services/date-cell-styler';
+import { DatepickerSelectedDateResolver } from '../services/selected-date-resolver';
 import { PickerDirective } from './picker.directive';
 
 @Directive({
@@ -13,7 +13,7 @@ export class DatepickerDirective extends PickerDirective {
 	// reference to the datepicker element
 	private pickerElem: HTMLElement;
 
-	private datepickerDateCellStyler: DatepickerDateCellStyler = new DatepickerDateCellStyler();
+	protected selectedDateResolver: DatepickerSelectedDateResolver;
 
 	constructor(
 		elementRef: ElementRef,
@@ -36,28 +36,23 @@ export class DatepickerDirective extends PickerDirective {
 
 		this.hidePicker();
 
-		this.datepicker.dateCellStyler = this.datepickerDateCellStyler;
+		this.selectedDateResolver = new DatepickerSelectedDateResolver();
+		this.datepicker.selectedDateResolver = this.selectedDateResolver;
 	}
 
 	protected onEnter(targetElement: HTMLElement): void {
 		super.onEnter(targetElement);
-
-		this.updateInputValue(targetElement);
 	}
 
 	protected onClick(targetElement: HTMLElement): void {
 		super.onClick(targetElement);
-
-		this.updateInputValue(targetElement);
 	}
 
-	private updateInputValue(targetElement: HTMLElement): void {
-		if (this.pickerElem.contains(targetElement) && targetElement.classList.contains('circle')) {
-			const selectedDate: Date = this.datepickerDateCellStyler.selectedDate;
-			this.elementRef.nativeElement.value = selectedDate ? selectedDate.toLocaleDateString() : '';
-			if (this.elementRef.nativeElement.value !== '') {
-				this.hidePicker();
-			}
+	protected updateInput(): void {
+		const selectedDate: Date = this.selectedDateResolver.selectedDate;
+		this.elementRef.nativeElement.value = (selectedDate ? selectedDate.toLocaleDateString() : '');
+		if (selectedDate) {
+			this.hidePicker();
 		}
 	}
 }
