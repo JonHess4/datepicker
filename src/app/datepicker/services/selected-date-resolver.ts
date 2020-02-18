@@ -1,13 +1,12 @@
-import { IDateCell } from '../models/calendar-cell';
+import { ICalendarCell, IDateCell } from '../models/calendar-cell';
 
-// pseudo service, we do not want it to be a singleton
-// this service is in charge of flipping the boolean values of the calendar cells and should be the only place they are flipped
+// each time a date is selected, this resolves the styling and holds the selected Date(s)
 
-export interface DateCellStyler {
-	onDateCellSelected(newSelectedDateCell: IDateCell): void;
+export interface SelectedDateResolver {
+	onDateCellSelected(newSelectedDateCell: ICalendarCell): void;
 }
 
-export class DatepickerDateCellStyler implements DateCellStyler {
+export class DatepickerSelectedDateResolver implements SelectedDateResolver {
 
 	public get selectedDate(): Date { return this.selectedDateCell ? this.selectedDateCell.date : null; }
 	private selectedDateCell: IDateCell;
@@ -23,7 +22,7 @@ export class DatepickerDateCellStyler implements DateCellStyler {
 	}
 }
 
-export class DaterangepickerDateCellStyler implements DateCellStyler {
+export class DaterangepickerSelectedDateResolver implements SelectedDateResolver {
 
 	public get startDate(): Date { return this.startDateCell ? this.startDateCell.date : null; }
 	public get endDate(): Date { return this.endDateCell ? this.endDateCell.date : null; }

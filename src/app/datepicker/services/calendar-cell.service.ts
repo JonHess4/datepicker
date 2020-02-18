@@ -25,7 +25,7 @@ export class CalendarCellService {
 		return monthOffset;
 	}
 
-	private getNumDaysInMonth(date: Date): number {
+	public getNumDaysInMonth(date: Date): number {
 		const lastDateOfMonth: Date = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 		return lastDateOfMonth.getDate();
 	}
