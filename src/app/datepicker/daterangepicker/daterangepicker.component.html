@@ -1,37 +1,53 @@
 <div id="daterangepicker">
 
-	<app-daterenagepicker-menu
-		[daterangepickerMenu]="mPickerMenu"
-		(leftDisplayEmitter)="setDisplay(mPickerMenu.leftMenu, $event);"
-		(rightDisplayemitter)="setRightDisplay(mPickerMenu.rightMenu, $event);"
-		(leftPaginationEmitter)="onLeftPagination($event);"
-		(rightPaginationEmitter)="onRightPagination($event);">
-	</app-daterangepicker-menu>
+	<span class="menu">
+		<app-daterangepicker-menu
+			[daterangepickerMenu]="mPickerMenu"
+			(leftDisplayEmitter)="setDisplay(mPickerMenu.leftMenu, $event);"
+			(rightDisplayEmitter)="setDisplay(mPickerMenu.rightMenu, $event);"
+			(leftPaginationEmitter)="onPaginationLeft($event);"
+			(rightPaginationEmitter)="onPaginationRight($event);">
+		</app-daterangepicker-menu>
+	</span>
 
-	<div class="dateCells" id="leftDateCells" *ngIf="mLeftDisplay === 'day'">
-		<span *ngFor="let dateCell of leftDateCells">
+	<div class="calendar-cell-grid date-cell-grid left" [ngClass]="[mLeftDisplay === 'day' ? 'show' : 'hide']">
+		<span>S</span>
+		<span>M</span>
+		<span>T</span>
+		<span>W</span>
+		<span>T</span>
+		<span>F</span>
+		<span>S</span>
+		<span *ngFor="let dateCell of mLeftDateCells">
 			<app-calendar-cell
 				[calendarCell]="dateCell"
 				(selectEmitter)="onDateSelected($event);"
 				(hoverEmitter)="onDateHover($event);"
 				(unhoverEmitter)="onDateUnhover($event);"
-				(traversalEmitter)="onDateTraversalLeft($event);"
+				(traversalEmitter)="onDateTraversal($event);"
 				></app-calendar-cell>
 		</span>
 	</div>
 
-	<div class="yearCells" id="leftYearCells" *ngIf="mLeftDisplay === 'year'">
-		<span *ngFor="let yearCell of leftYearCells">
+	<div class="calendar-cell-grid year-cell-grid left" [ngClass]="[mLeftDisplay === 'year' ? 'show' : 'hide']">
+		<span *ngFor="let yearCell of mLeftYearCells">
 			<app-calendar-cell
 				[calendarCell]="yearCell"
 				(selectEmitter)="onYearSelectedLeft($event);"
-				(traversalEmitter)="onYearTraversalLeft($event);"
+				(traversalEmitter)="onYearTraversal($event);"
 				></app-calendar-cell>
 		</span>
 	</div>
 
-	<div class="dateCells" id="rightDateCells"*ngIf="mRightDisplay === 'day'">
-		<span *ngFor="let dateCell of rightDateCells">
+	<div class="calendar-cell-grid date-cell-grid right" [ngClass]="[mRightDisplay === 'day' ? 'show' : 'hide']">
+		<span>S</span>
+		<span>M</span>
+		<span>T</span>
+		<span>W</span>
+		<span>T</span>
+		<span>F</span>
+		<span>S</span>
+		<span *ngFor="let dateCell of mRightDateCells">
 			<app-calendar-cell
 				[calendarCell]="dateCell"
 				(selectEmitter)="onDateSelected($event);"
@@ -42,12 +58,12 @@
 		</span>
 	</div>
 
-	<div class="yearCells" id="rightYearCells" *ngIf="mRightDisplay === 'year'">
-		<span *ngFor="let yearCell of rightYearCells">
+	<div class="calendar-cell-grid year-cell-grid right" [ngClass]="[mRightDisplay === 'year' ? 'show' : 'hide']">
+		<span *ngFor="let yearCell of mRightYearCells">
 			<app-calendar-cell
 				[calendarCell]="yearCell"
 				(selectEmitter)="onYearSelectedRight($event);"
-				(traversalEmitter)="onYearTraversalRight($event);"
+				(traversalEmitter)="onYearTraversal($event);"
 				></app-calendar-cell>
 		</span>
 	</div>

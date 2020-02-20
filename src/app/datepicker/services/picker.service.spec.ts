@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CalendarCellService } from './picker-cell.service';
+import { PickerService } from './picker.service';
 
 describe('CalendarCellService', () => {
 	beforeEach(() => TestBed.configureTestingModule({}));
 
 	it('should be created', () => {
-		const service: CalendarCellService = TestBed.get(CalendarCellService);
+		const service: PickerService = TestBed.get(PickerService);
 		expect(service).toBeTruthy();
 	});
 });

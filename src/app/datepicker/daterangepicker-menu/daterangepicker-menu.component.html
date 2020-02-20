@@ -1,0 +1,31 @@
+<div class="daterangepicker-menu-grid">
+
+	<!-- left arrow -->
+	<span class="leftArrow" (click)="onPagination(-1);" (keydown.enter)="onPagination(-1);">
+		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" tabindex="0">
+			<path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+			<path d="M0 0h24v24H0z" fill="none" />
+		</svg>
+	</span>
+
+	<!-- left side label -->
+	<span class="leftMonthYear">
+		<span (click)="onDisplayChangeLeft('month')" (keydown.enter)="onDisplayChangeLeft('month')" tabindex="0">{{daterangepickerMenu.leftMenu.month}} </span>
+		<span (click)="onDisplayChangeLeft('year')" (keydown.enter)="onDisplayChangeLeft('year')" tabindex="0">{{daterangepickerMenu.leftMenu.year}}</span>
+	</span>
+
+	<!-- right side label -->
+	<span class="rightMonthYear">
+		<span (click)="onDisplayChangeRight('month')" (keydown.enter)="onDisplayChangeRight('month')" tabindex="0">{{daterangepickerMenu.rightMenu.month}} </span>
+		<span (click)="onDisplayChangeRight('year')" (keydown.enter)="onDisplayChangeRight('year')" tabindex="0">{{daterangepickerMenu.rightMenu.year}}</span>
+	</span>
+
+	<!-- right arrow -->
+	<span class="rightArrow" (click)="onPaginationRight(1);" (keydown.enter)="onPaginationRight(1);">
+		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" tabindex="0">
+			<path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+			<path d="M0 0h24v24H0z" fill="none" />
+		</svg>
+	</span>
+
+</div>

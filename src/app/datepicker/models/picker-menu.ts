@@ -3,7 +3,7 @@ export interface IPickerMenu {}
 
 export interface IDatepickerMenu extends IPickerMenu {
 	display: string;
-	month: number;
+	month: string;
 	year: number;
 }
 

@@ -11,7 +11,6 @@ export abstract class PickerDirective implements OnInit {
 
 	protected readonly key: number = Math.floor(Math.random() * 10000);
 
-
 	constructor(
 		protected elementRef: ElementRef,
 		protected componentFactoryResolver: ComponentFactoryResolver,
@@ -43,7 +42,6 @@ export abstract class PickerDirective implements OnInit {
 			= this.componentFactoryResolver.resolveComponentFactory(datepickerComponent);
 		// this.viewContainerRef.clear();
 		const componentRef: ComponentRef<DatepickerComponent> = this.viewContainerRef.createComponent(componentFactory);
-		componentRef.instance.key = this.key;
 		return componentRef.instance;
 	}
 
@@ -81,7 +79,7 @@ export abstract class PickerDirective implements OnInit {
 
 	@HostListener('document:click', ['$event.target'])
 	protected onClick(targetElement: HTMLElement): void {
-		if (!this.parentElement.contains(targetElement) && !targetElement.classList.contains('circle')) {
+		if (!this.parentElement.contains(targetElement)) {
 			this.hidePicker();
 		} else if (this.elementRef.nativeElement === targetElement) {
 			this.showPicker();

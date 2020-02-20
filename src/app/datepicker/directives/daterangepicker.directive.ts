@@ -1,7 +1,6 @@
 import { ComponentFactoryResolver, Directive, ElementRef, Input, ViewContainerRef } from '@angular/core';
 import { DatepickerComponent } from '../datepicker/datepicker.component';
 import { IDateCell } from '../models/picker-cell';
-import { CalendarCellService } from '../services/picker-cell.service';
 import { PickerDirective } from './picker.directive';
 
 @Directive({
@@ -27,8 +26,7 @@ export class DaterangepickerDirective extends PickerDirective {
 	constructor(
 		elementRef: ElementRef,
 		componentFactoryResolver: ComponentFactoryResolver,
-		viewContainerRef: ViewContainerRef,
-		private calendarCellService: CalendarCellService
+		viewContainerRef: ViewContainerRef
 	) {
 		super(elementRef, componentFactoryResolver, viewContainerRef);
 	}
@@ -59,71 +57,13 @@ export class DaterangepickerDirective extends PickerDirective {
 
 	protected onEnter(targetElement: HTMLElement): void {
 		super.onEnter(targetElement);
-
-		this.keepOrder();
 	}
 
 	protected onClick(targetElement: HTMLElement): void {
 		super.onClick(targetElement);
-
-		this.keepOrder();
-	}
-
-	private keepOrder(): void {
-		if (this.leftPicker.trackerDate >= this.rightPicker.trackerDate) {
-			const year: number = this.leftPicker.trackerDate.getFullYear();
-			const month: number = this.leftPicker.trackerDate.getMonth() + 1;
-			this.rightPicker.trackerDate = new Date(year, month, 1);
-			this.rightPicker.update();
-		}
 	}
 
 	protected updateInput(): void {
-		const startDate: Date = this.selectedDateResolver.startDate;
-		const endDate: Date = this.selectedDateResolver.endDate;
-		this.leftInput.value = startDate ? startDate.toLocaleDateString() : '';
-		this.rightInput.value = endDate ? endDate.toLocaleDateString() : '';
-
-		let earlierDate: Date;
-		let laterDate: Date;
-
-		if (this.oldStartDate && this.oldStartDate < startDate) {
-			earlierDate = this.cloneDate(this.oldStartDate);
-		} else {
-			earlierDate = this.cloneDate(startDate);
-		}
-		this.oldStartDate = this.cloneDate(startDate);
-
-		if (this.oldEndDate && this.oldEndDate > endDate) {
-			laterDate = this.cloneDate(this.oldEndDate);
-		} else if (endDate) {
-			laterDate = this.cloneDate(endDate);
-		} else if (this.oldEndDate) {
-			laterDate = this.cloneDate(this.oldEndDate);
-		}
-
-		if (endDate) {
-			this.oldEndDate = this.cloneDate(endDate);
-		}
-
-		const trackerDate: Date = this.cloneDate(earlierDate);
-		trackerDate.setDate(1);
-		let dateCells: IDateCell[];
-		let dateCell: IDateCell;
-		let monthOffset: number;
-		let numDaysInMonth: number;
-
-		while (trackerDate <= laterDate) {
-			dateCells = this.calendarCellService.getDateCells(this.key, trackerDate.getMonth(), trackerDate.getFullYear());
-			monthOffset = this.calendarCellService.getMonthOffset(trackerDate.getMonth(), trackerDate.getFullYear());
-			numDaysInMonth = this.calendarCellService.getNumDaysInMonth(trackerDate);
-			for (let i: number = monthOffset; i < numDaysInMonth + monthOffset; i++ ) {
-				dateCell = dateCells[i];
-				dateCell.fillBoxLeft = (dateCell.date > startDate && dateCell.date <= endDate);
-				dateCell.fillBoxRight = (dateCell.date >= startDate && dateCell.date < endDate);
-			}
-			trackerDate.setMonth(trackerDate.getMonth() + 1);
-		}
 	}
 
 	private cloneDate(date: Date): Date {

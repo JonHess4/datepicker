@@ -1,5 +1,6 @@
 export interface ICalendarCell {
 	value: number;
+	displayValue: any;
 	isSelected: boolean;
 	isToday: boolean;
 	tabIndex: number;

@@ -12,6 +12,8 @@ export class DatepickerDirective extends PickerDirective {
 	// reference to the datepicker element
 	private pickerElem: HTMLElement;
 
+	private oldDate: Date;
+
 	constructor(
 		elementRef: ElementRef,
 		componentFactoryResolver: ComponentFactoryResolver,
@@ -43,10 +45,14 @@ export class DatepickerDirective extends PickerDirective {
 	}
 
 	protected updateInput(): void {
-		const selectedDate: Date = this.selectedDateResolver.selectedDate;
-		this.elementRef.nativeElement.value = (selectedDate ? selectedDate.toLocaleDateString() : '');
-		if (selectedDate) {
+		const selectedDate: Date = this.datepicker.selectedDate;
+		if (this.oldDate !== selectedDate && selectedDate) {
+			this.oldDate = selectedDate;
+			this.elementRef.nativeElement.value = selectedDate.toLocaleDateString();
 			this.hidePicker();
+		} else if (!selectedDate) {
+			this.elementRef.nativeElement.value = null;
+			this.oldDate = null;
 		}
 	}
 }

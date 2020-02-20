@@ -9,9 +9,16 @@ import { ICalendarCell, IDateCell } from '../models/picker-cell';
 @Injectable({
 	providedIn: 'root'
 })
-export class PickerCellService {
+export class PickerService {
 
 	private calendarCells: Map<string, ICalendarCell[]> = new Map<string, ICalendarCell[]>();
+
+	public readonly monthNames: string[] = [
+		'January', 'February', 'March', 'April', 'May', 'June',
+		'July', 'August', 'September', 'October', 'November', 'December'
+	];
+
+	private monthCells: ICalendarCell[] = this.createMonthCells();
 
 	constructor() {}
 
@@ -30,9 +37,10 @@ export class PickerCellService {
 		return lastDateOfMonth.getDate();
 	}
 
-	public getDateCells(pickerKey: number, month: number, year: number): IDateCell[] {
-
+	public getDateCells(pickerKey: number, date: Date): IDateCell[] {
 		let dateCells: IDateCell[];
+		const month: number = date.getMonth();
+		const year: number = date.getFullYear();
 		const key: string = this.generateKey(pickerKey, year, month);
 
 		if (this.calendarCells.has(key)) {
@@ -47,8 +55,12 @@ export class PickerCellService {
 		return dateCells;
 	}
 
+	public getMonthName(index: number): string {
+		return this.monthNames[index];
+	}
+
 	public getMonthCells(): ICalendarCell[] {
-		return null;
+		return this.monthCells;
 	}
 
 	public getYearCells(pickerKey: number, year: number): ICalendarCell[] {
@@ -77,6 +89,7 @@ export class PickerCellService {
 			const dateCell: IDateCell = {
 				date: new Date(year, month, i + 1),
 				value: i + 1,
+				displayValue: i + 1,
 				isSelected: false,
 				isToday: false,
 				tabIndex: -1
@@ -88,12 +101,29 @@ export class PickerCellService {
 		return dateCells;
 	}
 
+	private createMonthCells(): ICalendarCell[] {
+		const monthCells: ICalendarCell[] = [];
+		let i: number = 0;
+		this.monthNames.forEach((name: string): void => {
+			const monthCell: ICalendarCell = {
+				value: i++,
+				displayValue: name.substr(0, 3),
+				isSelected: false,
+				isToday: false,
+				tabIndex: -1
+			};
+			monthCells.push(monthCell);
+		});
+		return monthCells;
+	}
+
 	private createYearCells(key: string, startingValue: number): ICalendarCell[] {
 		const yearCells: ICalendarCell[] = [];
 
 		for (let i: number = 0; i < 28; i++) {
 			const yearCell: ICalendarCell = {
 				value: startingValue + i,
+				displayValue: startingValue + i,
 				isSelected: false,
 				isToday: false,
 				tabIndex: -1

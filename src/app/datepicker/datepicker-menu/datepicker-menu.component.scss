@@ -1,6 +1,6 @@
 @import '../datepicker-styles.scss';
 
-.calendarMenu-grid {
+.datepickerMenu-grid {
 	display: grid;
 	grid-template-rows: $dp-16 $dp-24 $dp-12;
 	grid-template-columns: $dp-24 min-content $dp-4 $dp-24 auto $dp-24 $dp-24 $dp-24 $dp-8;
@@ -27,16 +27,4 @@ svg {
 
 .upDownArrow, .leftArrow, .rightArrow {
 	cursor: pointer;
-}
-
-.day-label-grid {
-	display: grid;
-	grid-template-columns: $dp-32 $dp-32 $dp-32 $dp-32 $dp-32 $dp-32 $dp-32;
-	grid-template-rows: $dp-32;
-	padding: 0px $dp-16 0px $dp-16;
-	font-size: $day-label-font-size;
-	color: $day-label-font-color;
-	cursor: default;
-	justify-items: center;
-	align-items: center;
 }

@@ -1,15 +1,16 @@
-<div class="calendarMenu-grid">
+<div class="datepickerMenu-grid">
 	<span class="monthYear">
-		{{calendarMenu.monthName + ' ' + calendarMenu.year}}
+		<span>{{datepickerMenu.month}} </span>
+		<span>{{datepickerMenu.year}}</span>
 	</span>
 	<span class="upDownArrow" tabindex="0" (click)="toggleDisplay()" (keydown.enter)='toggleDisplay()'>
-		<span [ngClass]="[calendarMenu.type === 'day' ? 'showDis' : 'hideDis']">
+		<span [ngClass]="[datepickerMenu.display === 'day' ? 'showDis' : 'hideDis']">
 			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
 				<path d="M7 10l5 5 5-5z" />
 				<path d="M0 0h24v24H0z" fill="none" />
 			</svg>
 		</span>
-		<span [ngClass]="[calendarMenu.type === 'year' ? 'showDis' : 'hideDis']">
+		<span [ngClass]="[datepickerMenu.display === 'year' ? 'showDis' : 'hideDis']">
 			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
 				<path fill="none" d="M0 0h24v24H0V0z" />
 				<path d="M7 14l5-5 5 5H7z" />
@@ -28,14 +29,4 @@
 			<path d="M0 0h24v24H0z" fill="none" />
 		</svg>
 	</span>
-</div>
-
-<div class="day-label-grid" *ngIf="calendarMenu.type === 'day'">
-	<span>S</span>
-	<span>M</span>
-	<span>T</span>
-	<span>W</span>
-	<span>T</span>
-	<span>F</span>
-	<span>S</span>
 </div>

@@ -1,23 +1,35 @@
 <span id="datepicker">
 
-	<app-calendar-menu
-		[calendarMenu]="mCalendarMenu"
-		(displayToggle)="toggleDisplay($event);"
+	<app-datepicker-menu
+		[datepickerMenu]="mPickerMenu"
+		(displayToggle)="setDisplay(mPickerMenu, $event);"
 		(pagination)="onPagination($event)">
-	</app-calendar-menu>
+	</app-datepicker-menu>
 
-	<span class="calendar-cell-grid" [ngClass]="{
-		'date-cell-grid' : mCurrentDisplayType === 'day',
-		'year-cell-grid' : mCurrentDisplayType === 'year'
-	}">
-		<span *ngFor="let calendarCell of mCalendarCells">
+	<span class="calendar-cell-grid date-cell-grid" [ngClass]="[mPickerMenu.display === 'day' ? 'showDis' : 'hideDis']">
+		<span>S</span>
+		<span>M</span>
+		<span>T</span>
+		<span>W</span>
+		<span>T</span>
+		<span>F</span>
+		<span>S</span>
+		<span *ngFor="let dateCell of mDateCells">
 			<app-calendar-cell
-				[calendarCell]="calendarCell"
-				(selectedCell)="onCellSelected($event);"
-				(mousedOverCell)="onMouseOverCell($event);"
-				(mousedOutCell)="onMouseOutCell($event);"
-				(direction)="onMove($event);">
-			</app-calendar-cell>
+				[calendarCell]="dateCell"
+				(selectEmitter)="onDateSelected($event);"
+				(traversalEmitter)="onDateTraversal($event);"
+			></app-calendar-cell>
+		</span>
+	</span>
+
+	<span class="calendar-cell-grid year-cell-grid" [ngClass]="[mPickerMenu.display === 'year' ? 'showDis' : 'hideDis']">
+		<span *ngFor="let yearCell of mYearCells">
+			<app-calendar-cell
+				[calendarCell]="yearCell"
+				(selectEmitter)="onYearSelected($event);"
+				(traversalEmitter)="onYearTraversal($event);"
+			></app-calendar-cell>
 		</span>
 	</span>
 

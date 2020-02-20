@@ -12,12 +12,12 @@
 		[ngClass]="{ 'selected' : calendarCell.isSelected, 'today' : calendarCell.isToday }"
 		[tabindex]="calendarCell.tabIndex"
 		(click)="onSelect($event, calendarCell);" (keydown.enter)="onSelect($event, calendarCell);"
-		(mouseenter)="onMouseenter($event, calendarCell);" (mouseleave)="onMouseleave($event, calendarCell);"
-		(keydown.arrowup)="onMove('up')"
-		(keydown.arrowleft)="onMove('left')"
-		(keydown.arrowdown)="onMove('down')"
-		(keydown.arrowright)="onMove('right')">
-		{{calendarCell.value}}
+		(mouseenter)="onHover($event, calendarCell);" (mouseleave)="onUnhover($event, calendarCell);"
+		(keydown.arrowup)="onTraversal('up')"
+		(keydown.arrowleft)="onTraversal('left')"
+		(keydown.arrowdown)="onTraversal('down')"
+		(keydown.arrowright)="onTraversal('right')">
+		{{calendarCell.displayValue}}
 	</span>
 	
 </span>
