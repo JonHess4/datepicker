@@ -4,10 +4,6 @@
 
 	<span class="right-block" [ngClass]="{ 'highlight' : fillBoxRight, 'outline-top-bot' : outlineBoxRight }"></span>
 
-	<span class="circle-left" [ngClass]="{ 'highlight' : fillCircleLeft, 'outline-circle-left' : outlineCircleLeft }"></span>
-
-	<span class="circle-right" [ngClass]="{ 'highlight' : fillCircleRight, 'outline-circle-right' : outlineCircleRight }"></span>
-
 	<span class="circle"
 		[ngClass]="{ 'selected' : calendarCell.isSelected, 'today' : calendarCell.isToday }"
 		[tabindex]="calendarCell.tabIndex"

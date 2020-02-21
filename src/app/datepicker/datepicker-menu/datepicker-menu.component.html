@@ -1,7 +1,7 @@
 <div class="datepickerMenu-grid">
 	<span class="monthYear">
 		<span>{{datepickerMenu.month}} </span>
-		<span>{{datepickerMenu.year}}</span>
+		<span  tabindex="0" (click)="toggleDisplay()" (keydown.enter)='toggleDisplay()'>{{datepickerMenu.year}}</span>
 	</span>
 	<span class="upDownArrow" tabindex="0" (click)="toggleDisplay()" (keydown.enter)='toggleDisplay()'>
 		<span [ngClass]="[datepickerMenu.display === 'day' ? 'showDis' : 'hideDis']">
