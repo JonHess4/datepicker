@@ -1,13 +1,9 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
-import { ICalendarCell, IDateCell } from '../models/picker-cell';
-import { IDatepickerMenu, IPickerMenu } from '../models/picker-menu';
-import { PickerService } from '../services/picker.service';
+import { ElementRef, OnInit } from '@angular/core';
+import { ICalendarCell, IDateCell } from './models/picker-cell';
+import { IDatepickerMenu, IPickerMenu } from './models/picker-menu';
+import { PickerService } from './services/picker.service';
 
-@Component({
-	// selector: 'app-picker',
-	template: ''
-})
-export class PickerComponent implements OnInit {
+export abstract class PickerComponent implements OnInit {
 
 	// this key is used to retrieve the correct data from pickerCellService
 	protected readonly mKey: number = Math.floor(Math.random() * 10000);
@@ -56,9 +52,9 @@ export class PickerComponent implements OnInit {
 		this.mTabableYear.tabIndex = 0;
 	}
 
-	protected onDateSelected(dateCell: IDateCell): void {}
+	protected abstract onDateSelected(dateCell: IDateCell): void;
 
-	protected onDateTraversal(direction: string): void { }
+	protected onDateTraversal(direction: string): void {}
 
-	protected onYearTraversal(direction: string): void { }
+	protected onYearTraversal(direction: string): void {}
 }

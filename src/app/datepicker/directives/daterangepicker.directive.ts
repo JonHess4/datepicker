@@ -1,6 +1,5 @@
-import { ComponentFactoryResolver, Directive, ElementRef, Input, ViewContainerRef } from '@angular/core';
-import { DatepickerComponent } from '../datepicker/datepicker.component';
-import { IDateCell } from '../models/picker-cell';
+import { ComponentFactory, ComponentFactoryResolver, ComponentRef, Directive, ElementRef, Input, Type, ViewContainerRef } from '@angular/core';
+import { DaterangepickerComponent } from '../daterangepicker/daterangepicker.component';
 import { PickerDirective } from './picker.directive';
 
 @Directive({
@@ -11,11 +10,7 @@ export class DaterangepickerDirective extends PickerDirective {
 	@Input() secondInput: string;
 
 	// the datepicker component associated with this input form
-	private leftPicker: DatepickerComponent;
-	private rightPicker: DatepickerComponent;
-	// reference to the datepicker element
-	private leftPickerElem: HTMLElement;
-	private rightPickerElem: HTMLElement;
+	protected pickerComponent: DaterangepickerComponent;
 
 	private leftInput: HTMLInputElement;
 	private rightInput: HTMLInputElement;
@@ -36,16 +31,13 @@ export class DaterangepickerDirective extends PickerDirective {
 
 		this.setParentElement(this.elementRef.nativeElement);
 
-		this.leftPicker = this.generatePickerComponent();
-		this.rightPicker = this.generatePickerComponent();
+		this.pickerComponent = this.generatePickerComponent();
 
-		this.leftPickerElem = this.leftPicker.elementRef.nativeElement;
-		this.rightPickerElem = this.rightPicker.elementRef.nativeElement;
+		this.pickerElement = this.pickerComponent.elementRef.nativeElement;
 
 		this.generatePickerContainer();
 
-		this.appendPickerComponent(this.leftPickerElem);
-		this.appendPickerComponent(this.rightPickerElem);
+		this.appendPickerComponent(this.pickerElement);
 
 		this.leftInput = this.elementRef.nativeElement;
 		this.rightInput = document.getElementById(this.secondInput) as HTMLInputElement;
@@ -53,6 +45,16 @@ export class DaterangepickerDirective extends PickerDirective {
 		this.rightInput.addEventListener('focus', this.showPicker.bind(this));
 
 		this.hidePicker();
+	}
+
+	protected generatePickerComponent(): DaterangepickerComponent {
+		// using the componentFactoryResolver to create, attach, and gain a reference to a datepicker component
+		const daterangepickerComponent: Type<DaterangepickerComponent> = DaterangepickerComponent;
+		const componentFactory: ComponentFactory<DaterangepickerComponent>
+			= this.componentFactoryResolver.resolveComponentFactory(daterangepickerComponent);
+		// this.viewContainerRef.clear();
+		const componentRef: ComponentRef<DaterangepickerComponent> = this.viewContainerRef.createComponent(componentFactory);
+		return componentRef.instance;
 	}
 
 	protected onEnter(targetElement: HTMLElement): void {

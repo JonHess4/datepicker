@@ -19,23 +19,26 @@
 		<span>F</span>
 		<span>S</span>
 		<span *ngFor="let dateCell of mLeftDateCells">
-			<app-calendar-cell
+			<app-cell-daterangepicker
 				[calendarCell]="dateCell"
+				[startDate]="startDateCell ? startDateCell.date : null"
+				[endDate]="endDateCell ? endDateCell.date : null"
+				[hoveredDate]="hoveredDateCell ? hoveredDateCell.date : null"
 				(selectEmitter)="onDateSelected($event);"
 				(hoverEmitter)="onDateHover($event);"
 				(unhoverEmitter)="onDateUnhover($event);"
 				(traversalEmitter)="onDateTraversal($event);"
-				></app-calendar-cell>
+				></app-cell-daterangepicker>
 		</span>
 	</div>
 
 	<div class="calendar-cell-grid year-cell-grid left" [ngClass]="[mLeftDisplay === 'year' ? 'show' : 'hide']">
 		<span *ngFor="let yearCell of mLeftYearCells">
-			<app-calendar-cell
+			<app-cell-picker
 				[calendarCell]="yearCell"
 				(selectEmitter)="onYearSelectedLeft($event);"
 				(traversalEmitter)="onYearTraversal($event);"
-				></app-calendar-cell>
+				></app-cell-picker>
 		</span>
 	</div>
 
@@ -48,23 +51,26 @@
 		<span>F</span>
 		<span>S</span>
 		<span *ngFor="let dateCell of mRightDateCells">
-			<app-calendar-cell
+			<app-cell-daterangepicker
 				[calendarCell]="dateCell"
+				[startDate]="startDateCell ? startDateCell.date : null"
+				[endDate]="endDateCell ? endDateCell.date : null"
+				[hoveredDate]="hoveredDateCell ? hoveredDateCell.date : null"
 				(selectEmitter)="onDateSelected($event);"
 				(hoverEmitter)="onDateHover($event);"
 				(unhoverEmitter)="onDateUnhover($event);"
 				(traversalEmitter)="onDateTraversalRight($event);"
-				></app-calendar-cell>
+				></app-cell-daterangepicker>
 		</span>
 	</div>
 
 	<div class="calendar-cell-grid year-cell-grid right" [ngClass]="[mRightDisplay === 'year' ? 'show' : 'hide']">
 		<span *ngFor="let yearCell of mRightYearCells">
-			<app-calendar-cell
+			<app-cell-picker
 				[calendarCell]="yearCell"
 				(selectEmitter)="onYearSelectedRight($event);"
 				(traversalEmitter)="onYearTraversal($event);"
-				></app-calendar-cell>
+				></app-cell-picker>
 		</span>
 	</div>
 

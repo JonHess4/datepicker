@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { ICalendarCell, IDateCell } from '../models/picker-cell';
 import { IDatepickerMenu } from '../models/picker-menu';
-import { PickerComponent } from '../picker/picker.component';
+import { PickerComponent } from '../picker.component';
 import { PickerService } from '../services/picker.service';
 
 @Component({

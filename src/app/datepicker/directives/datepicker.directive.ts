@@ -1,4 +1,4 @@
-import { ComponentFactoryResolver, Directive, ElementRef, ViewContainerRef } from '@angular/core';
+import { ComponentFactory, ComponentFactoryResolver, ComponentRef, Directive, ElementRef, Type, ViewContainerRef } from '@angular/core';
 import { DatepickerComponent } from '../datepicker/datepicker.component';
 import { PickerDirective } from './picker.directive';
 
@@ -34,6 +34,16 @@ export class DatepickerDirective extends PickerDirective {
 		this.appendPickerComponent(this.pickerElem);
 
 		this.hidePicker();
+	}
+
+	protected generatePickerComponent(): DatepickerComponent {
+		// using the componentFactoryResolver to create, attach, and gain a reference to a datepicker component
+		const datepickerComponent: Type<DatepickerComponent> = DatepickerComponent;
+		const componentFactory: ComponentFactory<DatepickerComponent>
+			= this.componentFactoryResolver.resolveComponentFactory(datepickerComponent);
+		// this.viewContainerRef.clear();
+		const componentRef: ComponentRef<DatepickerComponent> = this.viewContainerRef.createComponent(componentFactory);
+		return componentRef.instance;
 	}
 
 	protected onEnter(targetElement: HTMLElement): void {

@@ -15,21 +15,21 @@
 		<span>F</span>
 		<span>S</span>
 		<span *ngFor="let dateCell of mDateCells">
-			<app-calendar-cell
+			<app-cell-picker
 				[calendarCell]="dateCell"
 				(selectEmitter)="onDateSelected($event);"
 				(traversalEmitter)="onDateTraversal($event);"
-			></app-calendar-cell>
+			></app-cell-picker>
 		</span>
 	</span>
 
 	<span class="calendar-cell-grid year-cell-grid" [ngClass]="[mPickerMenu.display === 'year' ? 'showDis' : 'hideDis']">
 		<span *ngFor="let yearCell of mYearCells">
-			<app-calendar-cell
+			<app-cell-picker
 				[calendarCell]="yearCell"
 				(selectEmitter)="onYearSelected($event);"
 				(traversalEmitter)="onYearTraversal($event);"
-			></app-calendar-cell>
+			></app-cell-picker>
 		</span>
 	</span>
 
