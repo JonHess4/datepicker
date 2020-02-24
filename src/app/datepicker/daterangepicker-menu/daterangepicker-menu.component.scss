@@ -3,11 +3,11 @@
 .daterangepicker-menu-grid {
 	display: grid;
 	grid-template-rows: $dp-16 $dp-24 $dp-12;
-	grid-template-columns: $dp-16 $dp-24 auto min-content auto $dp-24 $dp-32 $dp-24 auto min-content auto $dp-24 $dp-16;
+	grid-template-columns: $dp-16 $dp-24 $dp-168 $dp-24 $dp-32 $dp-24 $dp-168 $dp-24 $dp-16;
 	grid-template-areas: 
-		'. . . . . . . . . . . . .'
-		'. leftArrow . leftMonthYear . . . . . rightMonthYear . rightArrow .'
-		'. . . . . . . . . . . . .';
+		'. . . . . . . . .'
+		'. leftArrow leftMonthYear . . . rightMonthYear rightArrow .'
+		'. . . . . . . . .';
 	color: $menu-font-color;
 	white-space: nowrap; // this keeps monthYear on the same line
 	justify-items: center;

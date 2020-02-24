@@ -18,11 +18,11 @@ export class DatepickerComponent extends PickerComponent implements OnInit {
 	private mDateCells: IDateCell[];
 	private mYearCells: ICalendarCell[];
 
-	private mTrackerDate: Date;
-	private mTrackerYear: number;
+	// private mTrackerDate: Date;
+	// private mTrackerYear: number;
 
-	private mSelectedDate: IDateCell;
-	public get selectedDate(): Date { return (this.mSelectedDate ? this.mSelectedDate.date : null); }
+	private mSelectedDateCell: IDateCell;
+	public get selectedDate(): Date { return (this.mSelectedDateCell ? this.mSelectedDateCell.date : null); }
 
 	constructor(
 		pickerService: PickerService,
@@ -51,14 +51,14 @@ export class DatepickerComponent extends PickerComponent implements OnInit {
 	}
 
 	private updateSelectedDate(newSelectedDate: IDateCell): void {
-		if (this.mSelectedDate) {
-			this.mSelectedDate.isSelected = false;
+		if (this.mSelectedDateCell) {
+			this.mSelectedDateCell.isSelected = false;
 		}
-		if (this.mSelectedDate !== newSelectedDate) {
-			this.mSelectedDate = newSelectedDate;
-			this.mSelectedDate.isSelected = true;
+		if (this.mSelectedDateCell !== newSelectedDate) {
+			this.mSelectedDateCell = newSelectedDate;
+			this.mSelectedDateCell.isSelected = true;
 		} else {
-			this.mSelectedDate = null;
+			this.mSelectedDateCell = null;
 		}
 	}
 
@@ -133,20 +133,20 @@ export class DatepickerComponent extends PickerComponent implements OnInit {
 	}
 
 	protected onDateTraversal(direction: string): void {
-		let index: number;
-		let distance: number;
+
 		const map: Map<string, number> = new Map<string, number>();
 		map.set('left', -1);
 		map.set('right', 1);
 		map.set('up', -7);
 		map.set('down', 7);
-		distance = map.get(direction);
-		index = this.mDateCells.indexOf(this.mTabableDate);
+
+		const distance: number = map.get(direction);
+		const index: number = this.mDateCells.indexOf(this.mTabableDate);
 
 		if (this.mDateCells[index + distance]) {
 			this.updateTabableDate(this.mDateCells[index + distance]);
 			const monthOffset: number = this.pickerService.getMonthOffset(this.mTrackerDate.getMonth(), this.mTrackerDate.getFullYear());
-			this.focusTabableItem(index + distance - monthOffset);
+			this.focusTabableCell(index + distance - monthOffset);
 		}
 	}
 
@@ -164,11 +164,11 @@ export class DatepickerComponent extends PickerComponent implements OnInit {
 		if (this.mYearCells[index + distance]) {
 			this.updateTabableYear(this.mYearCells[index + distance]);
 			const offset: number = this.pickerService.getMonthOffset(this.mTrackerDate.getMonth(), this.mTrackerDate.getFullYear())
-			this.focusTabableItem(index + distance + this.mDateCells.length - offset);
+			this.focusTabableCell(index + distance + this.mDateCells.length - offset);
 		}
 	}
 
-	private focusTabableItem(index: number): void {
+	private focusTabableCell(index: number): void {
 		const mCalendarCells: HTMLElement[] = this.elementRef.nativeElement.getElementsByClassName('circle');
 		mCalendarCells[index].focus();
 	}

@@ -14,6 +14,9 @@ export abstract class PickerComponent implements OnInit {
 	protected mTabableDate: IDateCell;
 	protected mTabableYear: ICalendarCell;
 
+	protected mTrackerDate: Date;
+	protected mTrackerYear: number;
+
 	constructor(
 		protected pickerService: PickerService,
 		public elementRef: ElementRef
@@ -21,6 +24,8 @@ export abstract class PickerComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.markToday();
+		this.mTrackerDate = new Date();
+		this.mTrackerDate.setDate(1);
 	}
 
 	private markToday(): void {
@@ -54,7 +59,7 @@ export abstract class PickerComponent implements OnInit {
 
 	protected abstract onDateSelected(dateCell: IDateCell): void;
 
-	protected onDateTraversal(direction: string): void {}
+	protected abstract onDateTraversal(direction: string): void;
 
-	protected onYearTraversal(direction: string): void {}
+	protected abstract onYearTraversal(direction: string): void;
 }

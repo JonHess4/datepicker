@@ -42,9 +42,15 @@ export class DaterangepickerDirective extends PickerDirective {
 		this.leftInput = this.elementRef.nativeElement;
 		this.rightInput = document.getElementById(this.secondInput) as HTMLInputElement;
 
-		this.rightInput.addEventListener('focus', this.showPicker.bind(this));
+		this.rightInput.addEventListener('focus', this.onSecondInputFocus.bind(this));
+		this.rightInput.addEventListener('keydown.enter', this.hidePicker.bind(this));
 
 		this.hidePicker();
+	}
+
+	private onSecondInputFocus(): void {
+		this.showPicker();
+		this.pickerComponent.focusedInput = 2;
 	}
 
 	protected generatePickerComponent(): DaterangepickerComponent {
@@ -57,6 +63,11 @@ export class DaterangepickerDirective extends PickerDirective {
 		return componentRef.instance;
 	}
 
+	protected onFocus(): void {
+		super.onFocus();
+		this.pickerComponent.focusedInput = 1;
+	}
+
 	protected onEnter(targetElement: HTMLElement): void {
 		super.onEnter(targetElement);
 	}
@@ -65,7 +76,11 @@ export class DaterangepickerDirective extends PickerDirective {
 		super.onClick(targetElement);
 	}
 
-	protected updateInput(): void {
+	protected updateInput(targetElement: HTMLElement): void {
+		if (this.pickerElement.contains(targetElement) && targetElement.classList.contains('circle')) {
+			this.leftInput.value = (this.pickerComponent.startDate ? this.pickerComponent.startDate.toLocaleDateString() : null);
+			this.rightInput.value = (this.pickerComponent.endDate ? this.pickerComponent.endDate.toLocaleDateString() : null);
+		}
 	}
 
 	private cloneDate(date: Date): Date {

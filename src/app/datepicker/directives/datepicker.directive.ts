@@ -54,7 +54,7 @@ export class DatepickerDirective extends PickerDirective {
 		super.onClick(targetElement);
 	}
 
-	protected updateInput(): void {
+	protected updateInput(targetElement: HTMLElement): void {
 		const selectedDate: Date = this.datepicker.selectedDate;
 		if (this.oldDate !== selectedDate && selectedDate) {
 			this.oldDate = selectedDate;

@@ -11,6 +11,9 @@ import { PickerService } from '../services/picker.service';
 })
 export class DaterangepickerComponent extends PickerComponent implements OnInit {
 
+	private mFocusedInput: number;
+	public set focusedInput(newInput: number) { this.mFocusedInput = newInput; }
+
 	protected mPickerMenu: IDaterangepickerMenu;
 	private get mLeftDisplay(): string { return this.mPickerMenu.leftMenu.display; }
 	private set mLeftDisplay(newDisplay: string) { this.mPickerMenu.leftMenu.display = newDisplay; }
@@ -27,10 +30,12 @@ export class DaterangepickerComponent extends PickerComponent implements OnInit 
 	private mLeftTrackerYear: number;
 	private mRightTrackerYear: number;
 
-	private startDateCell: IDateCell;
-	private endDateCell: IDateCell;
+	private mStartDateCell: IDateCell;
+	private mEndDateCell: IDateCell;
+	public get startDate(): Date { return (this.mStartDateCell ? this.mStartDateCell.date : null); }
+	public get endDate(): Date { return (this.mEndDateCell ? this.mEndDateCell.date : null); }
 
-	private hoveredDateCell: IDateCell;
+	private mHoveredDateCell: IDateCell;
 
 	constructor(
 		pickerService: PickerService,
@@ -40,6 +45,7 @@ export class DaterangepickerComponent extends PickerComponent implements OnInit 
 	}
 
 	ngOnInit(): void {
+
 		super.ngOnInit();
 
 		const today: Date = new Date();
@@ -71,62 +77,159 @@ export class DaterangepickerComponent extends PickerComponent implements OnInit 
 
 		const offset: number = this.pickerService.getMonthOffset(this.mLeftTrackerDate.getMonth(), this.mLeftTrackerDate.getFullYear());
 		this.mTabableDate = this.mLeftDateCells[offset + today.getDate() - 1];
+		this.mTabableDate.tabIndex = 0;
 		this.mTabableYear = this.mLeftYearCells[0];
+		this.mTabableYear.tabIndex = 0;
+	}
+
+	private updateStartDateCell(newCell: IDateCell): void {
+		if (this.mStartDateCell && !(this.mStartDateCell === this.mEndDateCell)) {
+			this.mStartDateCell.isSelected = false;
+		}
+		this.mStartDateCell = newCell;
+		if (this.mStartDateCell) {
+			this.mStartDateCell.isSelected = true;
+		}
+	}
+
+	private updateEndDateCell(newCell: IDateCell): void {
+		if (this.mEndDateCell && !(this.mStartDateCell === this.mEndDateCell)) {
+			this.mEndDateCell.isSelected = false;
+		}
+		this.mEndDateCell = newCell;
+		if (this.mEndDateCell) {
+			this.mEndDateCell.isSelected = true;
+		}
+	}
+
+	private pushLeftCalendar(): void {
+		this.mLeftTrackerDate.setFullYear(this.mRightTrackerDate.getFullYear());
+		this.mLeftTrackerDate.setMonth(this.mRightTrackerDate.getMonth() - 1);
+		this.mLeftDateCells = this.pickerService.getDateCells(this.mKey, this.mLeftTrackerDate);
+		this.mPickerMenu.leftMenu.month = this.pickerService.getMonthName(this.mLeftTrackerDate.getMonth());
+		this.mPickerMenu.leftMenu.year = this.mLeftTrackerDate.getFullYear();
+	}
+
+	private pushRightCalendar(): void {
+		this.mRightTrackerDate.setFullYear(this.mLeftTrackerDate.getFullYear());
+		this.mRightTrackerDate.setMonth(this.mLeftTrackerDate.getMonth() + 1);
+		this.mRightDateCells = this.pickerService.getDateCells(this.mKey, this.mRightTrackerDate);
+		this.mPickerMenu.rightMenu.month = this.pickerService.getMonthName(this.mRightTrackerDate.getMonth());
+		this.mPickerMenu.rightMenu.year = this.mRightTrackerDate.getFullYear();
 	}
 
 	private onPaginationLeft(numPages: number): void {
-		console.log('Paging left side: ' + numPages);
+		if (this.mLeftDisplay === 'day') {
+			this.pageMonth(numPages);
+		} else if (this.mLeftDisplay === 'year') {
+			this.pageYears(numPages);
+		}
 	}
 
 	private onPaginationRight(numPages: number): void {
-		console.log('Pagin right side: ' + numPages);
+		if (this.mRightDisplay === 'day') {
+			this.pageMonth(numPages);
+		} else if (this.mRightDisplay === 'year') {
+			this.pageYears(numPages);
+		}
+	}
+
+	private pageMonth(numPages: number): void {
+		// positive 1 if forward, negative one if backwards
+		const direction: number = Math.abs(numPages) / numPages;
+		// number of years the paging will span
+		let numYears: number;
+		// the month we will be paging to
+		let newTrackerDateMonth: number;
+		// the year that we will be paging to
+		let newTrackerDateYear: number;
+
+		numYears = Math.floor(Math.abs(numPages + this.mLeftTrackerDate.getMonth()) / 12);
+		numYears += (((numPages % 12) + this.mLeftTrackerDate.getMonth() < 0) ? 1 : 0);
+
+		newTrackerDateYear = this.mLeftTrackerDate.getFullYear() + (numYears * direction);
+
+		newTrackerDateMonth = ((numPages % 12) + this.mLeftTrackerDate.getMonth() + 12) % 12;
+		this.mLeftTrackerDate.setMonth(newTrackerDateMonth);
+
+		if (this.mLeftTrackerDate.getFullYear() !== newTrackerDateYear) {
+			this.mLeftTrackerDate.setFullYear(newTrackerDateYear);
+
+			while (newTrackerDateYear - this.mLeftTrackerYear >= 28) {
+				this.mLeftTrackerYear += 28;
+			}
+			while (newTrackerDateYear - this.mLeftTrackerYear < 0) {
+				this.mLeftTrackerYear -= 28;
+			}
+
+			const yearCells: ICalendarCell[] = this.pickerService.getYearCells(this.mKey, this.mLeftTrackerYear);
+			this.updateTabableYear(yearCells[this.mLeftTrackerDate.getFullYear() - this.mLeftTrackerYear]);
+		}
+
+		this.mPickerMenu.leftMenu.month = this.pickerService.getMonthName(this.mLeftTrackerDate.getMonth());
+		this.mPickerMenu.leftMenu.year = this.mLeftTrackerDate.getFullYear();
+
+		this.mLeftDateCells = this.pickerService.getDateCells(this.mKey, this.mLeftTrackerDate);
+
+		const monthOffset: number = this.pickerService.getMonthOffset(this.mLeftTrackerDate.getMonth(), this.mLeftTrackerDate.getFullYear());
+		this.updateTabableDate(this.mLeftDateCells[Math.min(this.mLeftDateCells.length - 1, monthOffset + this.mTabableDate.value - 1)]);
+
+		this.pushRightCalendar();
+
+	}
+
+	private pageYears(numPages: number): void {
+
 	}
 
 	//
 
 	private onDateHover(newHoveredDateCell: IDateCell): void {
-		this.hoveredDateCell = newHoveredDateCell;
+		this.mHoveredDateCell = newHoveredDateCell;
 	}
 
 	private onDateUnhover(): void {
-		this.hoveredDateCell = null;
+		this.mHoveredDateCell = null;
 	}
 
-	protected onDateSelected(dateCell: IDateCell): void {
-		if (this.startDateCell === dateCell) {
-			this.startDateCell.isSelected = false;
-			this.startDateCell = this.endDateCell;
-			this.endDateCell = null;
-		} else if (this.endDateCell === dateCell) {
-			this.endDateCell.isSelected = false;
-			this.endDateCell = null;
-		} else if (!this.startDateCell) {
-			this.startDateCell = dateCell;
-			this.startDateCell.isSelected = true;
-		} else if (!this.endDateCell) {
-			if (this.startDateCell.date > dateCell.date) {
-				this.endDateCell = this.startDateCell;
-				this.startDateCell = dateCell;
-				this.startDateCell.isSelected = true;
-			} else {
-				this.endDateCell = dateCell;
-				this.endDateCell.isSelected = true;
-			}
-		} else if (this.startDateCell.date > dateCell.date) {
-			this.startDateCell.isSelected = false;
-			this.startDateCell = dateCell;
-			this.startDateCell.isSelected = true;
-		} else if (this.endDateCell.date < dateCell.date) {
-			this.endDateCell.isSelected = false;
-			this.endDateCell = dateCell;
-			this.endDateCell.isSelected = true;
-		} else {
-			this.startDateCell.isSelected = false;
-			this.startDateCell = dateCell;
-			this.startDateCell.isSelected = true;
-			this.endDateCell.isSelected = false;
-			this.endDateCell = null;
+	protected onDateSelected(newCell: IDateCell): void {
+
+		let newStartDateCell: IDateCell;
+		let newEndDateCell: IDateCell;
+
+		const tp: IDateCell[] = [];
+		tp.push(newCell);
+		if (this.mStartDateCell) {
+			tp.push(this.mStartDateCell);
+			tp.push(this.mEndDateCell);
 		}
+
+		tp.sort((a: IDateCell, b: IDateCell) => (a.date > b.date) ? 1 : -1);
+
+		if (this.mStartDateCell === this.mEndDateCell && this.mEndDateCell === newCell) {
+			newStartDateCell = null;
+			newEndDateCell = null;
+		} else if (this.mStartDateCell === newCell) {
+			newStartDateCell = this.mEndDateCell;
+			newEndDateCell = this.mEndDateCell;
+		} else if (this.mEndDateCell === newCell) {
+			newStartDateCell = this.mStartDateCell;
+			newEndDateCell = this.mStartDateCell;
+		} else if (tp.indexOf(newCell) === 1 && tp[2]) {
+			if (this.mFocusedInput === 1) {
+				newStartDateCell = newCell;
+				newEndDateCell = this.mEndDateCell;
+			} else if (this.mFocusedInput === 2) {
+				newStartDateCell = this.mStartDateCell;
+				newEndDateCell = newCell;
+			}
+		} else {
+			newStartDateCell = tp[0];
+			newEndDateCell = tp[tp.length - 1];
+		}
+
+		this.updateStartDateCell(newStartDateCell);
+		this.updateEndDateCell(newEndDateCell);
 	}
 
 	private onYearSelectedLeft(yearCell: ICalendarCell): void {
@@ -135,11 +238,7 @@ export class DaterangepickerComponent extends PickerComponent implements OnInit 
 		this.mLeftDateCells = this.pickerService.getDateCells(this.mKey, this.mLeftTrackerDate);
 		this.mLeftDisplay = 'day';
 		if (this.mLeftTrackerDate >= this.mRightTrackerDate) {
-			this.mRightTrackerDate.setFullYear(this.mLeftTrackerDate.getFullYear());
-			this.mRightTrackerDate.setMonth(this.mLeftTrackerDate.getMonth() + 1);
-			this.mRightDateCells = this.pickerService.getDateCells(this.mKey, this.mRightTrackerDate);
-			this.mPickerMenu.rightMenu.month = this.pickerService.getMonthName(this.mRightTrackerDate.getMonth());
-			this.mPickerMenu.rightMenu.year = this.mRightTrackerDate.getFullYear();
+			this.pushRightCalendar();
 		}
 	}
 
@@ -149,12 +248,14 @@ export class DaterangepickerComponent extends PickerComponent implements OnInit 
 		this.mRightDateCells = this.pickerService.getDateCells(this.mKey, this.mRightTrackerDate);
 		this.mRightDisplay = 'day';
 		if (this.mLeftTrackerDate >= this.mRightTrackerDate) {
-			this.mLeftTrackerDate.setFullYear(this.mRightTrackerDate.getFullYear());
-			this.mLeftTrackerDate.setMonth(this.mRightTrackerDate.getMonth() - 1);
-			this.mLeftDateCells = this.pickerService.getDateCells(this.mKey, this.mLeftTrackerDate);
-			this.mPickerMenu.leftMenu.month = this.pickerService.getMonthName(this.mLeftTrackerDate.getMonth());
-			this.mPickerMenu.leftMenu.year = this.mLeftTrackerDate.getFullYear();
+			this.pushLeftCalendar();
 		}
 	}
 
+	protected onDateTraversal(direction: string): void {
+		console.log('Traversing Date');
+	}
+	protected onYearTraversal(direction: string): void {
+		console.log('Traversing Year');
+	}
 }

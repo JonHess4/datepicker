@@ -21,9 +21,9 @@
 		<span *ngFor="let dateCell of mLeftDateCells">
 			<app-cell-daterangepicker
 				[calendarCell]="dateCell"
-				[startDate]="startDateCell ? startDateCell.date : null"
-				[endDate]="endDateCell ? endDateCell.date : null"
-				[hoveredDate]="hoveredDateCell ? hoveredDateCell.date : null"
+				[startDate]="mStartDateCell ? mStartDateCell.date : null"
+				[endDate]="mEndDateCell ? mEndDateCell.date : null"
+				[hoveredDate]="mHoveredDateCell ? mHoveredDateCell.date : null"
 				(selectEmitter)="onDateSelected($event);"
 				(hoverEmitter)="onDateHover($event);"
 				(unhoverEmitter)="onDateUnhover($event);"
@@ -53,13 +53,13 @@
 		<span *ngFor="let dateCell of mRightDateCells">
 			<app-cell-daterangepicker
 				[calendarCell]="dateCell"
-				[startDate]="startDateCell ? startDateCell.date : null"
-				[endDate]="endDateCell ? endDateCell.date : null"
-				[hoveredDate]="hoveredDateCell ? hoveredDateCell.date : null"
+				[startDate]="mStartDateCell ? mStartDateCell.date : null"
+				[endDate]="mEndDateCell ? mEndDateCell.date : null"
+				[hoveredDate]="mHoveredDateCell ? mHoveredDateCell.date : null"
 				(selectEmitter)="onDateSelected($event);"
 				(hoverEmitter)="onDateHover($event);"
 				(unhoverEmitter)="onDateUnhover($event);"
-				(traversalEmitter)="onDateTraversalRight($event);"
+				(traversalEmitter)="onDateTraversal($event);"
 				></app-cell-daterangepicker>
 		</span>
 	</div>

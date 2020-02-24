@@ -1,6 +1,5 @@
 // tslint:disable-next-line: max-line-length
-import { ComponentFactory, ComponentFactoryResolver, ComponentRef, ElementRef, HostListener, OnInit, Type, ViewContainerRef } from '@angular/core';
-import { DatepickerComponent } from '../datepicker/datepicker.component';
+import { ComponentFactoryResolver, ElementRef, HostListener, OnInit, ViewContainerRef } from '@angular/core';
 import { PickerComponent } from '../picker.component';
 
 export abstract class PickerDirective implements OnInit {
@@ -70,7 +69,7 @@ export abstract class PickerDirective implements OnInit {
 		}
 
 		if (this.pickerContainer.contains(targetElement) && targetElement.classList.contains('circle')) {
-			this.updateInput();
+			this.updateInput(targetElement);
 		}
 	}
 
@@ -83,11 +82,11 @@ export abstract class PickerDirective implements OnInit {
 		}
 
 		if (this.pickerContainer.contains(targetElement) && targetElement.classList.contains('circle')) {
-			this.updateInput();
+			this.updateInput(targetElement);
 		}
 	}
 
-	protected abstract updateInput(): void;
+	protected abstract updateInput(targetElement: HTMLElement): void;
 
 	// This closes datepicker if the user tabs out of the container.
 	@HostListener('document:keyup.tab')
