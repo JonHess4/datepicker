@@ -1,11 +1,20 @@
 @import '../datepicker-styles.scss';
 
-#datepicker {
-	display: inline-block;
+#daterangepicker {
+	display: grid;
+	grid-template-rows: auto auto auto;
+	grid-template-columns: auto auto;
+	grid-template-areas:
+		"menu menu"
+		" left right ";
 	width: min-content;
 	border-radius: $picker-border-radius;
 	color: $picker-font-color;
 }
+
+.menu { grid-area: menu; }
+.left { grid-area: left; }
+.right { grid-area: right; }
 
 .calendar-cell-grid {
 	display: grid;

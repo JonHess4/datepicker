@@ -1,0 +1,31 @@
+@import '../datepicker-styles.scss';
+
+.daterangepicker-menu-grid {
+	display: grid;
+	grid-template-rows: $dp-16 $dp-24 $dp-12;
+	grid-template-columns: $dp-16 $dp-24 $dp-168 $dp-24 $dp-32 $dp-24 $dp-168 $dp-24 $dp-16;
+	grid-template-areas: 
+		'. . . . . . . . .'
+		'. leftArrow leftMonthYear . . . rightMonthYear rightArrow .'
+		'. . . . . . . . .';
+	color: $menu-font-color;
+	white-space: nowrap; // this keeps monthYear on the same line
+	justify-items: center;
+	align-items: center;
+}
+
+.leftMonthYear { grid-area: leftMonthYear; font-size: $menu-font-size; }
+.rightMonthYear { grid-area: rightMonthYear; font-size: $menu-font-size; }
+.leftArrow { grid-area: leftArrow; }
+.rightArrow { grid-area: rightArrow; }
+
+svg {
+	// fill: $svg-color;
+	// width: 90%;
+	// height: 90%;
+}
+
+.upDownArrow, .leftArrow, .rightArrow {
+	cursor: pointer;
+}
+
