@@ -40,16 +40,8 @@ export class DaterangepickerComponent extends PickerComponent implements OnInit 
 		const today: Date = new Date();
 
 		this.mPickerMenu = {
-			leftMenu: {
-				display: 'day',
-				month: this.pickerService.getMonthName(today.getMonth()),
-				year: today.getFullYear()
-			},
-			rightMenu: {
-				display: 'day',
-				month: this.pickerService.getMonthName(today.getMonth() + 1),
-				year: today.getFullYear()
-			}
+			leftMenu: { display: 'day', month: this.pickerService.getMonthName(today.getMonth()), year: today.getFullYear() },
+			rightMenu: { display: 'day', month: this.pickerService.getMonthName(today.getMonth() + 1), year: today.getFullYear() }
 		};
 
 		this.mLeftDateCells = this.pickerService.getDateCells(this.mKey, this.mTrackerDate);
@@ -163,7 +155,21 @@ export class DaterangepickerComponent extends PickerComponent implements OnInit 
 	}
 
 	protected onDateTraversal(direction: string): void {
-		console.log('Traversing Date');
+
+		const map: Map<string, number> = new Map<string, number>();
+		map.set('left', -1);
+		map.set('right', 1);
+		map.set('up', -7);
+		map.set('down', 7);
+
+		const distance: number = map.get(direction);
+		const index: number = this.mLeftDateCells.indexOf(this.mTabableDate);
+
+		if (this.mLeftDateCells[index + distance]) {
+			this.updateTabableDate(this.mLeftDateCells[index + distance]);
+			const monthOffset: number = this.pickerService.getMonthOffset(this.mTrackerDate.getMonth(), this.mTrackerDate.getFullYear());
+			this.focusTabableCell(index + distance - monthOffset);
+		}
 	}
 	protected onYearTraversal(direction: string): void {
 		console.error('unreachable method reached');

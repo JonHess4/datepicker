@@ -65,5 +65,4 @@ export class CellDaterangepickerComponent extends CellPickerComponent implements
 	private onUnhover(event: UIEvent, calendarCell: IDateCell): void {
 		this.unhoverEmitter.emit(calendarCell);
 	}
-
 }

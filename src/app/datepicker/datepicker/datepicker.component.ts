@@ -18,9 +18,6 @@ export class DatepickerComponent extends PickerComponent implements OnInit {
 	private mDateCells: IDateCell[];
 	private mYearCells: ICalendarCell[];
 
-	// private mTrackerDate: Date;
-	// private mTrackerYear: number;
-
 	private mSelectedDateCell: IDateCell;
 	public get selectedDate(): Date { return (this.mSelectedDateCell ? this.mSelectedDateCell.date : null); }
 
@@ -38,9 +35,7 @@ export class DatepickerComponent extends PickerComponent implements OnInit {
 
 		this.mPickerMenu = { display: 'day', month: this.pickerService.getMonthName(today.getMonth()), year: today.getFullYear() };
 
-		this.mTrackerDate = new Date(today.getFullYear(), today.getMonth(), 1);
 		this.mDateCells = this.pickerService.getDateCells(this.mKey, this.mTrackerDate);
-		this.mTrackerYear = today.getFullYear();
 		this.mYearCells = this.pickerService.getYearCells(this.mKey, this.mTrackerYear);
 
 		const offset: number = this.pickerService.getMonthOffset(this.mTrackerDate.getMonth(), this.mTrackerDate.getFullYear());
@@ -136,11 +131,6 @@ export class DatepickerComponent extends PickerComponent implements OnInit {
 			const offset: number = this.pickerService.getMonthOffset(this.mTrackerDate.getMonth(), this.mTrackerDate.getFullYear())
 			this.focusTabableCell(index + distance + this.mDateCells.length - offset);
 		}
-	}
-
-	private focusTabableCell(index: number): void {
-		const mCalendarCells: HTMLElement[] = this.elementRef.nativeElement.getElementsByClassName('circle');
-		mCalendarCells[index].focus();
 	}
 
 }

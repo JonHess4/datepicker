@@ -99,4 +99,9 @@ export abstract class PickerComponent implements OnInit {
 	protected abstract onDateTraversal(direction: string): void;
 
 	protected abstract onYearTraversal(direction: string): void;
+
+	protected focusTabableCell(index: number): void {
+		const mCalendarCells: HTMLElement[] = this.elementRef.nativeElement.getElementsByClassName('circle');
+		mCalendarCells[index].focus();
+	}
 }
