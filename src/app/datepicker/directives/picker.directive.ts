@@ -1,8 +1,11 @@
 // tslint:disable-next-line: max-line-length
-import { ComponentFactoryResolver, ElementRef, HostListener, OnInit, ViewContainerRef } from '@angular/core';
+import { ComponentFactoryResolver, ElementRef, HostListener, Input, OnInit, ViewContainerRef } from '@angular/core';
 import { PickerComponent } from '../picker.component';
 
 export abstract class PickerDirective implements OnInit {
+
+	@Input() min: any;
+	@Input () max: any;
 
 	// a reference to the parent element of this input form that contains both this input form and the pickerContainer
 	protected parentElement: HTMLElement;
