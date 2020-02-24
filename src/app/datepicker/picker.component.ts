@@ -26,6 +26,7 @@ export abstract class PickerComponent implements OnInit {
 		this.markToday();
 		this.mTrackerDate = new Date();
 		this.mTrackerDate.setDate(1);
+		this.mTrackerYear = this.mTrackerDate.getFullYear();
 	}
 
 	private markToday(): void {
@@ -55,6 +56,40 @@ export abstract class PickerComponent implements OnInit {
 		this.mTabableYear.tabIndex = -1;
 		this.mTabableYear = newTabableYear;
 		this.mTabableYear.tabIndex = 0;
+	}
+
+	protected pageMonth(numPages: number): void {
+		// positive 1 if forward, negative one if backwards
+		const direction: number = Math.abs(numPages) / numPages;
+		// number of years the paging will span
+		let numYears: number;
+		// the month we will be paging to
+		let newTrackerDateMonth: number;
+		// the year that we will be paging to
+		let newTrackerDateYear: number;
+
+		numYears = Math.floor(Math.abs(numPages + this.mTrackerDate.getMonth()) / 12);
+		numYears += (((numPages % 12) + this.mTrackerDate.getMonth() < 0) ? 1 : 0);
+
+		newTrackerDateYear = this.mTrackerDate.getFullYear() + (numYears * direction);
+
+		newTrackerDateMonth = ((numPages % 12) + this.mTrackerDate.getMonth() + 12) % 12;
+		this.mTrackerDate.setMonth(newTrackerDateMonth);
+
+		if (this.mTrackerDate.getFullYear() !== newTrackerDateYear) {
+			this.mTrackerDate.setFullYear(newTrackerDateYear);
+
+			while (newTrackerDateYear - this.mTrackerYear >= 28) {
+				this.mTrackerYear += 28;
+			}
+			while (newTrackerDateYear - this.mTrackerYear < 0) {
+				this.mTrackerYear -= 28;
+			}
+
+			const yearCells: ICalendarCell[] = this.pickerService.getYearCells(this.mKey, this.mTrackerYear);
+			this.updateTabableYear(yearCells[this.mTrackerDate.getFullYear() - this.mTrackerYear]);
+		}
+
 	}
 
 	protected abstract onDateSelected(dateCell: IDateCell): void;
