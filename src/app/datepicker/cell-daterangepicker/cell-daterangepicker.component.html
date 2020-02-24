@@ -1,0 +1,19 @@
+<span *ngIf="calendarCell" class="picker-item-grid" [ngClass]="[calendarCell.value <= 31 ? 'day-grid' : 'year-grid']">
+
+	<span class="left-block" [ngClass]="{ 'highlight' : fillBoxLeft, 'outline-top-bot' : outlineBoxLeft }"></span>
+
+	<span class="right-block" [ngClass]="{ 'highlight' : fillBoxRight, 'outline-top-bot' : outlineBoxRight }"></span>
+
+	<span class="circle"
+		[ngClass]="{ 'selected' : calendarCell.isSelected, 'today' : calendarCell.isToday }"
+		[tabindex]="calendarCell.tabIndex"
+		(click)="onSelect($event, calendarCell);" (keydown.enter)="onSelect($event, calendarCell);"
+		(mouseenter)="onHover($event, calendarCell);" (mouseleave)="onUnhover($event, calendarCell);"
+		(keydown.arrowup)="onTraversal('up')"
+		(keydown.arrowleft)="onTraversal('left')"
+		(keydown.arrowdown)="onTraversal('down')"
+		(keydown.arrowright)="onTraversal('right')">
+		{{calendarCell.displayValue}}
+	</span>
+	
+</span>

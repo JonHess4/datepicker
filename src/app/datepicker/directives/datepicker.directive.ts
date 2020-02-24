@@ -1,6 +1,5 @@
-import { ComponentFactoryResolver, Directive, ElementRef, ViewContainerRef } from '@angular/core';
+import { ComponentFactory, ComponentFactoryResolver, ComponentRef, Directive, ElementRef, Type, ViewContainerRef } from '@angular/core';
 import { DatepickerComponent } from '../datepicker/datepicker.component';
-import { DatepickerSelectedDateResolver } from '../services/selected-date-resolver';
 import { PickerDirective } from './picker.directive';
 
 @Directive({
@@ -13,7 +12,7 @@ export class DatepickerDirective extends PickerDirective {
 	// reference to the datepicker element
 	private pickerElem: HTMLElement;
 
-	protected selectedDateResolver: DatepickerSelectedDateResolver;
+	private oldDate: Date;
 
 	constructor(
 		elementRef: ElementRef,
@@ -35,9 +34,16 @@ export class DatepickerDirective extends PickerDirective {
 		this.appendPickerComponent(this.pickerElem);
 
 		this.hidePicker();
+	}
 
-		this.selectedDateResolver = new DatepickerSelectedDateResolver();
-		this.datepicker.selectedDateResolver = this.selectedDateResolver;
+	protected generatePickerComponent(): DatepickerComponent {
+		// using the componentFactoryResolver to create, attach, and gain a reference to a datepicker component
+		const datepickerComponent: Type<DatepickerComponent> = DatepickerComponent;
+		const componentFactory: ComponentFactory<DatepickerComponent>
+			= this.componentFactoryResolver.resolveComponentFactory(datepickerComponent);
+		// this.viewContainerRef.clear();
+		const componentRef: ComponentRef<DatepickerComponent> = this.viewContainerRef.createComponent(componentFactory);
+		return componentRef.instance;
 	}
 
 	protected onEnter(targetElement: HTMLElement): void {
@@ -48,11 +54,15 @@ export class DatepickerDirective extends PickerDirective {
 		super.onClick(targetElement);
 	}
 
-	protected updateInput(): void {
-		const selectedDate: Date = this.selectedDateResolver.selectedDate;
-		this.elementRef.nativeElement.value = (selectedDate ? selectedDate.toLocaleDateString() : '');
-		if (selectedDate) {
+	protected updateInput(targetElement: HTMLElement): void {
+		const selectedDate: Date = this.datepicker.selectedDate;
+		if (this.oldDate !== selectedDate && selectedDate) {
+			this.oldDate = selectedDate;
+			this.elementRef.nativeElement.value = selectedDate.toLocaleDateString();
 			this.hidePicker();
+		} else if (!selectedDate) {
+			this.elementRef.nativeElement.value = null;
+			this.oldDate = null;
 		}
 	}
 }

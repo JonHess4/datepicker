@@ -1,7 +1,6 @@
 // tslint:disable-next-line: max-line-length
-import { ComponentFactory, ComponentFactoryResolver, ComponentRef, ElementRef, HostListener, OnInit, Type, ViewContainerRef } from '@angular/core';
-import { DatepickerComponent } from '../datepicker/datepicker.component';
-import { SelectedDateResolver } from '../services/selected-date-resolver';
+import { ComponentFactoryResolver, ElementRef, HostListener, OnInit, ViewContainerRef } from '@angular/core';
+import { PickerComponent } from '../picker.component';
 
 export abstract class PickerDirective implements OnInit {
 
@@ -10,9 +9,11 @@ export abstract class PickerDirective implements OnInit {
 	// the element to put the datepicker(s) in and control their visibility on the screen
 	protected pickerContainer: HTMLElement;
 
-	protected readonly key: number = Math.floor(Math.random() * 10000);
+	protected pickerComponent: PickerComponent;
 
-	protected selectedDateResolver: SelectedDateResolver;
+	protected pickerElement: HTMLElement;
+
+	protected readonly key: number = Math.floor(Math.random() * 10000);
 
 	constructor(
 		protected elementRef: ElementRef,
@@ -38,16 +39,7 @@ export abstract class PickerDirective implements OnInit {
 		}
 	}
 
-	protected generatePickerComponent(): DatepickerComponent {
-		// using the componentFactoryResolver to create, attach, and gain a reference to a datepicker component
-		const datepickerComponent: Type<DatepickerComponent> = DatepickerComponent;
-		const componentFactory: ComponentFactory<DatepickerComponent>
-			= this.componentFactoryResolver.resolveComponentFactory(datepickerComponent);
-		// this.viewContainerRef.clear();
-		const componentRef: ComponentRef<DatepickerComponent> = this.viewContainerRef.createComponent(componentFactory);
-		componentRef.instance.key = this.key;
-		return componentRef.instance;
-	}
+	protected abstract generatePickerComponent(): PickerComponent;
 
 	protected generatePickerContainer(): void {
 		this.pickerContainer = document.createElement('div');
@@ -77,24 +69,24 @@ export abstract class PickerDirective implements OnInit {
 		}
 
 		if (this.pickerContainer.contains(targetElement) && targetElement.classList.contains('circle')) {
-			this.updateInput();
+			this.updateInput(targetElement);
 		}
 	}
 
 	@HostListener('document:click', ['$event.target'])
 	protected onClick(targetElement: HTMLElement): void {
-		if (!this.parentElement.contains(targetElement) && !targetElement.classList.contains('circle')) {
+		if (!this.parentElement.contains(targetElement)) {
 			this.hidePicker();
 		} else if (this.elementRef.nativeElement === targetElement) {
 			this.showPicker();
 		}
 
 		if (this.pickerContainer.contains(targetElement) && targetElement.classList.contains('circle')) {
-			this.updateInput();
+			this.updateInput(targetElement);
 		}
 	}
 
-	protected abstract updateInput(): void;
+	protected abstract updateInput(targetElement: HTMLElement): void;
 
 	// This closes datepicker if the user tabs out of the container.
 	@HostListener('document:keyup.tab')

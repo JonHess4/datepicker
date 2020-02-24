@@ -1,0 +1,38 @@
+@import '../datepicker-styles.scss';
+
+.picker-item-grid {
+	display: grid;
+	grid-template-rows: $dp-2 $dp-28 $dp-2;
+}
+
+.day-grid {
+	grid-template-columns: $dp-2 ($dp-28 / 2) ($dp-28 / 2) $dp-2;
+	width: $dp-32;
+}
+
+.year-grid {
+	grid-template-columns: $dp-2 ($dp-52 / 2) ($dp-52 / 2) $dp-2;
+	width: $dp-56;
+}
+
+.circle {
+	grid-column: 2 / 4;
+	grid-row: 2 / 3;
+	border-radius: $cell-border-radius;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.circle:hover {
+	border: 1px solid $cell-hover-color;
+}
+
+.today {
+	border: 1px solid $cell-today-color !important;
+}
+
+.selected {
+	color: $cell-selected-text-color;
+	background-color: $cell-selected-background-color !important;
+}
