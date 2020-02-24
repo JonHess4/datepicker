@@ -53,7 +53,9 @@ export abstract class PickerComponent implements OnInit {
 	}
 
 	protected updateTabableYear(newTabableYear: ICalendarCell): void {
-		this.mTabableYear.tabIndex = -1;
+		if (this.mTabableYear) {
+			this.mTabableYear.tabIndex = -1;
+		}
 		this.mTabableYear = newTabableYear;
 		this.mTabableYear.tabIndex = 0;
 	}
