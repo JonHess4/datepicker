@@ -53,7 +53,9 @@ export abstract class PickerComponent implements OnInit {
 	}
 
 	protected updateTabableYear(newTabableYear: ICalendarCell): void {
-		this.mTabableYear.tabIndex = -1;
+		if (this.mTabableYear) {
+			this.mTabableYear.tabIndex = -1;
+		}
 		this.mTabableYear = newTabableYear;
 		this.mTabableYear.tabIndex = 0;
 	}
@@ -97,4 +99,9 @@ export abstract class PickerComponent implements OnInit {
 	protected abstract onDateTraversal(direction: string): void;
 
 	protected abstract onYearTraversal(direction: string): void;
+
+	protected focusTabableCell(index: number): void {
+		const mCalendarCells: HTMLElement[] = this.elementRef.nativeElement.getElementsByClassName('circle');
+		mCalendarCells[index].focus();
+	}
 }
