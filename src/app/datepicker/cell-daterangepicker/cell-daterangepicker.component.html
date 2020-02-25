@@ -5,7 +5,7 @@
 	<span class="right-block" [ngClass]="{ 'highlight' : fillBoxRight, 'outline-top-bot' : outlineBoxRight }"></span>
 
 	<span class="circle"
-		[ngClass]="{ 'selected' : calendarCell.isSelected, 'today' : calendarCell.isToday }"
+		[ngClass]="{ 'selected' : calendarCell.isSelected, 'today' : calendarCell.isToday, 'disabled': isDisabled }"
 		[tabindex]="calendarCell.tabIndex"
 		(click)="onSelect($event, calendarCell);" (keydown.enter)="onSelect($event, calendarCell);"
 		(mouseenter)="onHover($event, calendarCell);" (mouseleave)="onUnhover($event, calendarCell);"

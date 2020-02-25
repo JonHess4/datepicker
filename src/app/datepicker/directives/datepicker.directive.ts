@@ -7,9 +7,9 @@ import { PickerDirective } from './picker.directive';
 })
 export class DatepickerDirective extends PickerDirective {
 
-	// the datepicker component associated with this input form
-	private datepicker: DatepickerComponent;
-	// reference to the datepicker element
+	// the pickerComponent component associated with this input form
+	protected pickerComponent: DatepickerComponent;
+	// reference to the pickerComponent element
 	private pickerElem: HTMLElement;
 
 	private oldDate: Date;
@@ -27,17 +27,19 @@ export class DatepickerDirective extends PickerDirective {
 
 		this.setParentElement(this.elementRef.nativeElement);
 
-		this.datepicker = this.generatePickerComponent();
-		this.pickerElem = this.datepicker.elementRef.nativeElement;
+		this.pickerComponent = this.generatePickerComponent();
+		this.pickerElem = this.pickerComponent.elementRef.nativeElement;
 
 		this.generatePickerContainer();
 		this.appendPickerComponent(this.pickerElem);
+
+		this.processInputs();
 
 		this.hidePicker();
 	}
 
 	protected generatePickerComponent(): DatepickerComponent {
-		// using the componentFactoryResolver to create, attach, and gain a reference to a datepicker component
+		// using the componentFactoryResolver to create, attach, and gain a reference to a pickerComponent component
 		const datepickerComponent: Type<DatepickerComponent> = DatepickerComponent;
 		const componentFactory: ComponentFactory<DatepickerComponent>
 			= this.componentFactoryResolver.resolveComponentFactory(datepickerComponent);
@@ -55,7 +57,7 @@ export class DatepickerDirective extends PickerDirective {
 	}
 
 	protected updateInput(targetElement: HTMLElement): void {
-		const selectedDate: Date = this.datepicker.selectedDate;
+		const selectedDate: Date = this.pickerComponent.selectedDate;
 		if (this.oldDate !== selectedDate && selectedDate) {
 			this.oldDate = selectedDate;
 			this.elementRef.nativeElement.value = selectedDate.toLocaleDateString();

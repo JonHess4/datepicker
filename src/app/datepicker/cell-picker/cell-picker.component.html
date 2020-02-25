@@ -1,7 +1,7 @@
 <span *ngIf="calendarCell" class="picker-item-grid" [ngClass]="[calendarCell.value <= 31 ? 'day-grid' : 'year-grid']">
 
 	<span class="circle"
-		[ngClass]="{ 'selected' : calendarCell.isSelected, 'today' : calendarCell.isToday }"
+		[ngClass]="{ 'selected' : calendarCell.isSelected, 'today' : calendarCell.isToday, 'disabled': isDisabled }"
 		[tabindex]="calendarCell.tabIndex"
 		(click)="onSelect($event, calendarCell);" (keydown.enter)="onSelect($event, calendarCell);"
 		(keydown.arrowup)="onTraversal('up')"
@@ -10,5 +10,5 @@
 		(keydown.arrowright)="onTraversal('right')">
 		{{calendarCell.displayValue}}
 	</span>
-	
+
 </span>

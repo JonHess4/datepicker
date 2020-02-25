@@ -2,27 +2,30 @@
 $scalar: 256px;
 
 $cell-border-radius: 50px;
-$cell-hover-color: lightgrey;
+$cell-hover-color: rgba(211, 211, 211, .5);
 $cell-today-color: grey;
 $cell-selected-text-color: white;
-$cell-selected-background-color: blue;
-$cell-selected-range-highlight-color: lightblue;
-$cell-dashed-color: lightgrey;
+$cell-selected-background-color: rgba(0, 0, 255, .8);
+$cell-selected-range-highlight-color: rgba(173, 216, 230, .5);
+$cell-dashed-color: rgba(211, 211, 211, .5);
 $cell-font-size: $scalar * 13 / 256;
 
 $menu-font-size: $scalar * 16 / 256;
-$menu-font-color: grey;
+$menu-font-color: #5F4B32;
 
-$svg-color: grey;
+$svg-color: #5F4B32;
 
-$day-label-font-color: grey;
+$day-label-font-color: #5F4B32;
 $day-label-font-size: $scalar * 13 / 256;
 
 $picker-border-radius: 0px;
 $picker-font-color: #5F4B32;
 $picker-background-color: white;
 
+$disabled-color: rgba(200, 200, 200, .5);
+
 .showDis {
+	// empty
 }
 
 .hideDis{
@@ -34,7 +37,7 @@ $dp-284: $scalar * 284 / 256;
 // picker width
 $dp-256: $scalar;
 
-$dp-168: $scalar * 168 / 256;
+$dp-168: $scalar * 175 / 256;
 // year-cell-width
 $dp-56: $scalar * 56 / 256;
 // year-cell-inner-width

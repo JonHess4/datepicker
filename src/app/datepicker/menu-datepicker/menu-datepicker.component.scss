@@ -1,4 +1,5 @@
 @import '../datepicker-styles.scss';
+@import '../menu-picker/menu-picker.component.scss';
 
 .datepickerMenu-grid {
 	display: grid;
@@ -18,13 +19,3 @@
 .upDownArrow { grid-area: upDownArrow; }
 .leftArrow { grid-area: leftArrow; }
 .rightArrow { grid-area: rightArrow; }
-
-svg {
-	fill: $svg-color;
-	width: 90%;
-	height: 90%;
-}
-
-.upDownArrow, .leftArrow, .rightArrow {
-	cursor: pointer;
-}

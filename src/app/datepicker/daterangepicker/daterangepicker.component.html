@@ -1,11 +1,12 @@
 <div id="daterangepicker">
 
 	<span class="menu">
-		<app-daterangepicker-menu
-			[daterangepickerMenu]="mPickerMenu"
-			(leftPaginationEmitter)="onPagination($event);"
-			(rightPaginationEmitter)="onPagination($event);">
-		</app-daterangepicker-menu>
+		<app-menu-daterangepicker
+			[pickerMenu]="mPickerMenu"
+			[disablePaginationLeft]="minDate >= mTrackerDate"
+			[disablePaginationRight]="maxDate.getFullYear() <= mTrackerDate.getFullYear() && maxDate.getMonth() <= mTrackerDate.getMonth() + 1 "
+			(paginationEmitter)="onPagination($event);">
+		</app-menu-daterangepicker>
 	</span>
 
 	<div class="calendar-cell-grid date-cell-grid left">
@@ -19,6 +20,7 @@
 		<span *ngFor="let dateCell of mLeftDateCells">
 			<app-cell-daterangepicker
 				[calendarCell]="dateCell"
+				[isDisabled]="(maxDate && dateCell?.date > maxDate) || (minDate && dateCell?.date < minDate)"
 				[startDate]="mStartDateCell ? mStartDateCell.date : null"
 				[endDate]="mEndDateCell ? mEndDateCell.date : null"
 				[hoveredDate]="mHoveredDateCell ? mHoveredDateCell.date : null"
@@ -29,16 +31,6 @@
 				></app-cell-daterangepicker>
 		</span>
 	</div>
-
-	<!-- <div class="calendar-cell-grid year-cell-grid left" [ngClass]="[mLeftDisplay === 'year' ? 'show' : 'hide']">
-		<span *ngFor="let yearCell of mLeftYearCells">
-			<app-cell-picker
-				[calendarCell]="yearCell"
-				(selectEmitter)="onYearSelectedLeft($event);"
-				(traversalEmitter)="onYearTraversal($event);"
-				></app-cell-picker>
-		</span>
-	</div> -->
 
 	<div class="calendar-cell-grid date-cell-grid right">
 		<span>S</span>
@@ -51,6 +43,7 @@
 		<span *ngFor="let dateCell of mRightDateCells">
 			<app-cell-daterangepicker
 				[calendarCell]="dateCell"
+				[isDisabled]="(maxDate && dateCell?.date > maxDate) || (minDate && dateCell?.date < minDate)"
 				[startDate]="mStartDateCell ? mStartDateCell.date : null"
 				[endDate]="mEndDateCell ? mEndDateCell.date : null"
 				[hoveredDate]="mHoveredDateCell ? mHoveredDateCell.date : null"
@@ -61,15 +54,5 @@
 				></app-cell-daterangepicker>
 		</span>
 	</div>
-
-	<!-- <div class="calendar-cell-grid year-cell-grid right" [ngClass]="[mRightDisplay === 'year' ? 'show' : 'hide']">
-		<span *ngFor="let yearCell of mRightYearCells">
-			<app-cell-picker
-				[calendarCell]="yearCell"
-				(selectEmitter)="onYearSelectedRight($event);"
-				(traversalEmitter)="onYearTraversal($event);"
-				></app-cell-picker>
-		</span>
-	</div> -->
 
 </div>

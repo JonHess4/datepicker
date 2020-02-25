@@ -2,22 +2,22 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { CellDaterangepickerComponent } from './cell-daterangepicker/cell-daterangepicker.component';
 import { CellPickerComponent } from './cell-picker/cell-picker.component';
-import { CalendarMenuComponent } from './datepicker-menu/datepicker-menu.component';
 import { DatepickerComponent } from './datepicker/datepicker.component';
-import { DaterangepickerMenuComponent } from './daterangepicker-menu/daterangepicker-menu.component';
 import { DaterangepickerComponent } from './daterangepicker/daterangepicker.component';
 import { DatepickerDirective } from './directives/datepicker.directive';
 import { DaterangepickerDirective } from './directives/daterangepicker.directive';
+import { MenuDatepickerComponent } from './menu-datepicker/menu-datepicker.component';
+import { MenuDaterangepickerComponent } from './menu-daterangepicker/menu-daterangepicker.component';
 
 @NgModule({
 	declarations: [
 		CellPickerComponent,
-		CalendarMenuComponent,
+		MenuDatepickerComponent,
 		DatepickerComponent,
 		DatepickerDirective,
 		DaterangepickerDirective,
 		DaterangepickerComponent,
-		DaterangepickerMenuComponent,
+		MenuDaterangepickerComponent,
 		CellDaterangepickerComponent
 	],
 	imports: [

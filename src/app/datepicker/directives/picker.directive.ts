@@ -1,8 +1,11 @@
 // tslint:disable-next-line: max-line-length
-import { ComponentFactoryResolver, ElementRef, HostListener, OnInit, ViewContainerRef } from '@angular/core';
+import { ComponentFactoryResolver, ElementRef, HostListener, Input, OnInit, ViewContainerRef } from '@angular/core';
 import { PickerComponent } from '../picker.component';
 
 export abstract class PickerDirective implements OnInit {
+
+	@Input() min: string;
+	@Input() max: string;
 
 	// a reference to the parent element of this input form that contains both this input form and the pickerContainer
 	protected parentElement: HTMLElement;
@@ -22,6 +25,12 @@ export abstract class PickerDirective implements OnInit {
 	) { }
 
 	abstract ngOnInit(): void;
+
+	// this method is called by the child class after the child class instantiates their version of the pickerComponent
+	protected processInputs(): void {
+		this.pickerComponent.min = (this.min ? new Date(this.min) : null);
+		this.pickerComponent.max = (this.max ? new Date(this.max) : null);
+	}
 
 	protected setParentElement(childElement: HTMLInputElement): void {
 		// a parent element is required for this directive to work

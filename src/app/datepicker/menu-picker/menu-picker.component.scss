@@ -1,0 +1,18 @@
+@import '../datepicker-styles.scss';
+
+svg {
+	fill: $svg-color;
+}
+
+.upDownArrow, .leftArrow, .rightArrow {
+	cursor: pointer;
+}
+
+.disabled {
+	color: $disabled-color;
+	pointer-events: none;
+}
+
+.disabled svg {
+	fill: $disabled-color;
+}
