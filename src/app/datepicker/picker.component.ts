@@ -1,9 +1,14 @@
-import { ElementRef, OnInit } from '@angular/core';
+import { ElementRef, Input, OnInit } from '@angular/core';
 import { ICalendarCell, IDateCell } from './models/picker-cell';
 import { IDatepickerMenu, IPickerMenu } from './models/picker-menu';
 import { PickerService } from './services/picker.service';
 
 export abstract class PickerComponent implements OnInit {
+
+	protected minDate: Date;
+	protected maxDate: Date;
+	public set min(minDate: Date) { this.minDate = minDate; }
+	public set max(maxDate: Date) { this.maxDate = maxDate; }
 
 	// this key is used to retrieve the correct data from pickerCellService
 	protected readonly mKey: number = Math.floor(Math.random() * 10000);
@@ -11,14 +16,17 @@ export abstract class PickerComponent implements OnInit {
 	// holds the info for the picker menu
 	protected mPickerMenu: IPickerMenu;
 
+	// holds reference to which cell can be tabbed to
 	protected mTabableDate: IDateCell;
 	protected mTabableYear: ICalendarCell;
 
+	// keeps track of what view we are on, like a bookmark
 	protected mTrackerDate: Date;
 	protected mTrackerYear: number;
 
 	constructor(
 		protected pickerService: PickerService,
+		// gives the directive access to the instance's htmlelemnt
 		public elementRef: ElementRef
 	) { }
 
@@ -47,7 +55,9 @@ export abstract class PickerComponent implements OnInit {
 	}
 
 	protected updateTabableDate(newTabableDate: IDateCell): void {
-		this.mTabableDate.tabIndex = -1;
+		if (this.mTabableDate) {
+			this.mTabableDate.tabIndex = -1;
+		}
 		this.mTabableDate = newTabableDate;
 		this.mTabableDate.tabIndex = 0;
 	}

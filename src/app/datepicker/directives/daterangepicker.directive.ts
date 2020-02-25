@@ -45,6 +45,8 @@ export class DaterangepickerDirective extends PickerDirective {
 		this.rightInput.addEventListener('focus', this.onSecondInputFocus.bind(this));
 		this.rightInput.addEventListener('keydown.enter', this.hidePicker.bind(this));
 
+		this.processInputs();
+
 		this.hidePicker();
 	}
 

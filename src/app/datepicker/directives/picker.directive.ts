@@ -4,8 +4,8 @@ import { PickerComponent } from '../picker.component';
 
 export abstract class PickerDirective implements OnInit {
 
-	@Input() min: any;
-	@Input () max: any;
+	@Input() min: string;
+	@Input() max: string;
 
 	// a reference to the parent element of this input form that contains both this input form and the pickerContainer
 	protected parentElement: HTMLElement;
@@ -25,6 +25,11 @@ export abstract class PickerDirective implements OnInit {
 	) { }
 
 	abstract ngOnInit(): void;
+
+	protected processInputs(): void {
+		this.pickerComponent.min = (this.min ? new Date(this.min) : null);
+		this.pickerComponent.max = (this.max ? new Date(this.max) : null);
+	}
 
 	protected setParentElement(childElement: HTMLInputElement): void {
 		// a parent element is required for this directive to work
