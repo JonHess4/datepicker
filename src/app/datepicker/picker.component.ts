@@ -1,4 +1,4 @@
-import { ElementRef, Input, OnInit } from '@angular/core';
+import { ElementRef, OnInit } from '@angular/core';
 import { ICalendarCell, IDateCell } from './models/picker-cell';
 import { IDatepickerMenu, IPickerMenu } from './models/picker-menu';
 import { PickerService } from './services/picker.service';
@@ -101,7 +101,6 @@ export abstract class PickerComponent implements OnInit {
 			const yearCells: ICalendarCell[] = this.pickerService.getYearCells(this.mKey, this.mTrackerYear);
 			this.updateTabableYear(yearCells[this.mTrackerDate.getFullYear() - this.mTrackerYear]);
 		}
-
 	}
 
 	protected abstract onDateSelected(dateCell: IDateCell): void;

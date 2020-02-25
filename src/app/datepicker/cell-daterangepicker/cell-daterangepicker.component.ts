@@ -29,10 +29,6 @@ export class CellDaterangepickerComponent extends CellPickerComponent implements
 	ngOnInit(): void {
 	}
 
-	test(): void {
-		console.log('here');
-	}
-
 	ngOnChanges(): void {
 
 		// created these variables to shorten them

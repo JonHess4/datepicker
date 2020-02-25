@@ -26,6 +26,7 @@ export abstract class PickerDirective implements OnInit {
 
 	abstract ngOnInit(): void;
 
+	// this method is called by the child class after the child class instantiates their version of the pickerComponent
 	protected processInputs(): void {
 		this.pickerComponent.min = (this.min ? new Date(this.min) : null);
 		this.pickerComponent.max = (this.max ? new Date(this.max) : null);

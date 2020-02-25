@@ -22,6 +22,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	cursor: pointer;
 }
 
 .circle:hover {
@@ -35,4 +36,9 @@
 .selected {
 	color: $cell-selected-text-color;
 	background-color: $cell-selected-background-color !important;
+}
+
+.disabled {
+	color: $disabled-color;
+	pointer-events: none;
 }

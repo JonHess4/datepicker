@@ -37,9 +37,6 @@ export class DaterangepickerComponent extends PickerComponent implements OnInit 
 
 		super.ngOnInit();
 
-		console.log(this.minDate);
-		console.log(this.maxDate);
-
 		const today: Date = new Date();
 
 		this.mPickerMenu = {

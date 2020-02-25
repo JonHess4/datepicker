@@ -9,6 +9,7 @@ import { ICalendarCell } from '../models/picker-cell';
 export class CellPickerComponent implements OnInit {
 
 	@Input() calendarCell: ICalendarCell;
+	@Input() isDisabled: boolean;
 	@Output() selectEmitter: EventEmitter<ICalendarCell> = new EventEmitter<ICalendarCell>();
 	@Output() traversalEmitter: EventEmitter<string> = new EventEmitter<string>();
 
@@ -17,7 +18,9 @@ export class CellPickerComponent implements OnInit {
 	ngOnInit(): void {}
 
 	protected onSelect(event: UIEvent, calendarCell: ICalendarCell): boolean {
-		this.selectEmitter.emit(calendarCell);
+		if (!this.isDisabled) {
+			this.selectEmitter.emit(calendarCell);
+		}
 		return false;
 	}
 

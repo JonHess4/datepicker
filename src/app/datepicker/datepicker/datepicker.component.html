@@ -1,10 +1,12 @@
 <span id="datepicker">
 
-	<app-datepicker-menu
-		[datepickerMenu]="mPickerMenu"
+	<app-menu-datepicker
+		[pickerMenu]="mPickerMenu"
+		[disablePaginationLeft]="minDate >= mTrackerDate"
+		[disablePaginationRight]="maxDate.getFullYear() <= mTrackerDate.getFullYear() && maxDate.getMonth() <= mTrackerDate.getMonth()"
 		(displayToggle)="setDisplay(mPickerMenu, $event);"
-		(pagination)="onPagination($event)">
-	</app-datepicker-menu>
+		(paginationEmitter)="onPagination($event)">
+	</app-menu-datepicker>
 
 	<span class="calendar-cell-grid date-cell-grid" [ngClass]="[mPickerMenu.display === 'day' ? 'showDis' : 'hideDis']">
 		<span>S</span>
@@ -17,6 +19,7 @@
 		<span *ngFor="let dateCell of mDateCells">
 			<app-cell-picker
 				[calendarCell]="dateCell"
+				[isDisabled]="(maxDate && dateCell?.date > maxDate) || (minDate && dateCell?.date < minDate)"
 				(selectEmitter)="onDateSelected($event);"
 				(traversalEmitter)="onDateTraversal($event);"
 			></app-cell-picker>
