@@ -13,6 +13,7 @@ export class CellDaterangepickerComponent extends CellPickerComponent implements
 	@Input() startDate: Date;
 	@Input() endDate: Date;
 	@Input() hoveredDate: Date;
+	@Input() focusedInput: number;
 
 	private fillBoxLeft: boolean;
 	private fillBoxRight: boolean;
@@ -45,12 +46,16 @@ export class CellDaterangepickerComponent extends CellPickerComponent implements
 
 		this.outlineBoxLeft = (hovDate && startDate && (
 			(cellDate > hovDate && cellDate <= startDate) ||
-			(cellDate > endDate && cellDate <= hovDate)
+			(cellDate > endDate && cellDate <= hovDate) ||
+			(this.focusedInput === 1 && cellDate > hovDate && cellDate <= endDate && hovDate > startDate) ||
+			(this.focusedInput === 2 && cellDate <= hovDate && cellDate > startDate && hovDate < endDate)
 		));
 
 		this.outlineBoxRight = (hovDate && startDate && (
 			(cellDate >= hovDate && cellDate < startDate) ||
-			(cellDate >= endDate && cellDate < hovDate)
+			(cellDate >= endDate && cellDate < hovDate) ||
+			(this.focusedInput === 1 && cellDate >= hovDate && cellDate < endDate && hovDate > startDate) ||
+			(this.focusedInput === 2 && cellDate < hovDate && cellDate >= startDate && hovDate < endDate)
 		));
 	}
 
