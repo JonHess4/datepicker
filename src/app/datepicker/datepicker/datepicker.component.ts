@@ -132,5 +132,4 @@ export class DatepickerComponent extends PickerComponent implements OnInit {
 			this.focusTabableCell(index + distance + this.mDateCells.length - offset);
 		}
 	}
-
 }

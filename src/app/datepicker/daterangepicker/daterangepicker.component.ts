@@ -171,6 +171,9 @@ export class DaterangepickerComponent extends PickerComponent implements OnInit 
 			this.focusTabableCell(index + distance - monthOffset);
 		}
 	}
+
+	// implemented because it is an abstract method in the parent class
+	// there are possible plans to implement a year selection option in the daterangepicker
 	protected onYearTraversal(direction: string): void {
 		console.error('unreachable method reached');
 	}

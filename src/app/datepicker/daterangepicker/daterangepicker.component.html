@@ -17,7 +17,7 @@
 		<span>T</span>
 		<span>F</span>
 		<span>S</span>
-		<span *ngFor="let dateCell of mLeftDateCells">
+		<span *ngFor="let dateCell of mLeftDateCells" style="position: relative">
 			<app-cell-daterangepicker
 				[calendarCell]="dateCell"
 				[isDisabled]="(maxDate && dateCell?.date > maxDate) || (minDate && dateCell?.date < minDate)"
@@ -29,7 +29,7 @@
 				(hoverEmitter)="onDateHover($event);"
 				(unhoverEmitter)="onDateUnhover($event);"
 				(traversalEmitter)="onDateTraversal($event);"
-				></app-cell-daterangepicker>
+			></app-cell-daterangepicker>
 		</span>
 	</div>
 

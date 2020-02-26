@@ -2,7 +2,7 @@
 
 #datepicker {
 	display: inline-block;
-	width: min-content;
+	width: $dp-256;
 	border-radius: $picker-border-radius;
 	color: $picker-font-color;
 }
