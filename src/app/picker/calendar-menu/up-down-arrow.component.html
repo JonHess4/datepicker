@@ -1,0 +1,14 @@
+<span class="upDownArrow" tabindex="0" (click)="toggleDisplay()" (keydown.enter)='toggleDisplay()'>
+	<span [ngClass]="[pickerMenu.display === 'day' ? 'showDis' : 'hideDis']">
+		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+			<path d="M7 10l5 5 5-5z" />
+			<path d="M0 0h24v24H0z" fill="none" />
+		</svg>
+	</span>
+	<span [ngClass]="[pickerMenu.display === 'year' ? 'showDis' : 'hideDis']">
+		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+			<path fill="none" d="M0 0h24v24H0V0z" />
+			<path d="M7 14l5-5 5 5H7z" />
+		</svg>
+	</span>
+</span>

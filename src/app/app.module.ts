@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { DatepickerModule } from './datepicker/datepicker.module';
+import { PickerModule } from './picker/picker.module';
 
 @NgModule({
 	declarations: [
@@ -10,7 +11,8 @@ import { DatepickerModule } from './datepicker/datepicker.module';
 	],
 	imports: [
 		BrowserModule,
-		DatepickerModule
+		DatepickerModule,
+		PickerModule
 	],
 	providers: [],
 	bootstrap: [AppComponent]
