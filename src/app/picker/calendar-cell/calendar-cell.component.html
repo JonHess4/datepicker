@@ -1,1 +1,14 @@
-<p>calendar-cell works!</p>
+<div 
+	*ngIf="calendarCell" 
+	class="cell"
+	[ngClass]="{
+		'selected' : isSelected,
+		'today' : calendarCell.isToday,
+		'disabled': isDisabled,
+		'date' : calendarCell.type === 'date',
+		'month' : calendarCell.type === 'month',
+		'year' : calendarCell.type === 'year'
+	}"
+>
+	{{calendarCell.displayValue}}
+</div>

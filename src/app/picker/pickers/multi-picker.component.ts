@@ -22,8 +22,8 @@ export class MultiPickerComponent extends Picker implements OnInit {
 	protected onPagination(direction: string): void {
 		throw new Error('Method not implemented.');
 	}
-	protected onViewChange(newDisplay: string): void {
-		throw new Error('Method not implemented.');
+	protected onViewChange(newView: string): void {
+		super.onViewChange(newView);
 	}
 	protected onSelect(selectedCell: any): void {
 		throw new Error('Method not implemented.');

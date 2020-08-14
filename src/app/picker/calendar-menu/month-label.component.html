@@ -1,4 +1,4 @@
 <span class="monthYear">
-	<span>{{pickerMenu.month}} </span>
-	<span  tabindex="0" (click)="toggleDisplay()" (keydown.enter)='toggleDisplay()'>{{pickerMenu.year}}</span>
+	<span tabindex="0" (click)="changeView('month')" (keydown.enter)="changeView('month')">{{month}} </span>
+	<span tabindex="0" (click)="changeView('year')" (keydown.enter)="changeView('year')">{{year}}</span>
 </span>

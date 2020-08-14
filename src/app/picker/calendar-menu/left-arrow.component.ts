@@ -1,15 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-left-arrow',
-  templateUrl: './left-arrow.component.html',
-  styleUrls: ['./left-arrow.component.scss']
+	selector: 'app-left-arrow',
+	templateUrl: './left-arrow.component.html',
+	styleUrls: ['./left-arrow.component.scss']
 })
 export class LeftArrowComponent implements OnInit {
 
-  constructor() { }
+	@Input() isDisabled: boolean;
+	@Output() paginationEmitter: EventEmitter<string> = new EventEmitter<string>();
 
-  ngOnInit() {
-  }
+	constructor() { }
+
+	ngOnInit(): void {
+	}
+
+	private onPagination(): void {
+		this.paginationEmitter.emit('left');
+	}
 
 }

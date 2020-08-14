@@ -1,5 +1,5 @@
 import { ElementRef, OnInit } from '@angular/core';
-import { ICalendarCell } from '../models/calendar-cell';
+import { DateCell, ICalendarCell } from '../models/calendar-cell';
 import { CalendarCellService } from '../services/calendar-cell.service';
 
 export abstract class Picker implements OnInit {
@@ -23,13 +23,13 @@ export abstract class Picker implements OnInit {
 	protected mCalendarCells: ICalendarCell[];
 
 	// the list of date cells that have been selected, should only be date cells
-	protected mSelectedCells: ICalendarCell[];
+	protected mSelectedCells: DateCell[];
 
 	// tells us if we are currently showing dates, months or years
 	protected mCurrentView: string;
 
 	// tells us which cell is currently being hovered, only useful in the range-picker currently, should only be a date cell
-	protected mHoveredCell: ICalendarCell;
+	protected mHoveredCell: DateCell;
 
 	constructor(
 		protected calendarCellService: CalendarCellService,
@@ -48,7 +48,13 @@ export abstract class Picker implements OnInit {
 	 * is called when an event is emitted that wants to set the view
 	 * @param newDisplay denotes if the new view should be dates, months or years
 	 */
-	protected abstract onViewChange(newDisplay: string): void;
+	protected onViewChange(newView: string): void {
+		if (this.mCurrentView === newView) {
+			this.mCurrentView = 'date';
+		} else {
+			this.mCurrentView = newView;
+		}
+	}
 
 	/**
 	 * is called when a cell in the picker is selected

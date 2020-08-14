@@ -25,6 +25,9 @@ import { RangePickerComponent } from './pickers/range-picker.component';
 	],
 	imports: [
 		CommonModule
+	],
+	exports: [
+		DatePickerComponent
 	]
 })
 export class PickerModule { }

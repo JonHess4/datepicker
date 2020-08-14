@@ -1,0 +1,37 @@
+@import '../dp.scss';
+@import '../variables.scss';
+
+.cell {
+	display: flex;
+	height: $dp-28;
+	padding: $dp-2;
+	border-radius: $cell-border-radius;
+	justify-content: center;
+	align-content: center;
+}
+
+.year, .month {
+	width: $dp-52;
+}
+
+.date {
+	width: $dp-28;
+}
+
+.selected {
+	color: white;
+	background-color: blue;
+}
+
+.today {
+	border: 1px solid grey;
+}
+
+.disabled {
+	pointer-events: none;
+	color: lightgrey;
+}
+
+.cell:hovered {
+	border: 1px solid lightgrey;
+}

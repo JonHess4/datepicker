@@ -1,15 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-month-label',
-  templateUrl: './month-label.component.html',
-  styleUrls: ['./month-label.component.scss']
+	selector: 'app-month-label',
+	templateUrl: './month-label.component.html',
+	styleUrls: ['./month-label.component.scss']
 })
 export class MonthLabelComponent implements OnInit {
 
-  constructor() { }
+	@Input() month: string;
+	@Input() year: number;
+	@Output() viewChangeEmitter: EventEmitter<string> = new EventEmitter<string>();
 
-  ngOnInit() {
-  }
+	constructor() { }
+
+	ngOnInit(): void {
+	}
+
+	private changeView(newView: string): void {
+		this.viewChangeEmitter.emit(newView);
+	}
 
 }

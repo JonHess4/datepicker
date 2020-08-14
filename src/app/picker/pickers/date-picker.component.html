@@ -1,1 +1,31 @@
-<p>date-picker works!</p>
+<div class="date-picker">
+	<app-month-label
+		[month]="'February'"
+		[year]="2020"
+		(viewChangeEmitter)="onViewChange($event)"
+	></app-month-label>
+	<app-up-down-arrow
+		[currentView]="mCurrentView"
+		(viewToggleEmitter)="onViewChange($event)"
+	></app-up-down-arrow>
+	<app-left-arrow
+		[isDisabled]="false"
+		(paginationEmitter)="onPagination($event)"
+	></app-left-arrow>
+	<app-right-arrow
+		[isDisabled]="false"
+		(paginationEmitter)="onPagination($event)"
+	></app-right-arrow>
+
+	<div *ngFor="let cell of mCalendarCells">
+		<app-calendar-cell
+			[calendarCell]="cell"
+			[isToday]="cell?.isToday"
+			[isSelected]="cell && 'true'"
+			[isDisabled]="cell && 'true'"
+			(selectEmitter)="onSelect($event)"
+			(traversalEmitter="onTraversal($event)";
+			(hoverChangeEmitter)="onHoverChange($event)"
+		></app-calendar-cell>
+	</div>
+</div>
